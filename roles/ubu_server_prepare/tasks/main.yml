@@ -1,0 +1,65 @@
+- name: Upgrade servers
+  apt:
+    update_cache: yes
+    upgrade: "yes"
+
+- name: Ensure we have sudo installed
+  apt:
+    name: sudo
+
+- name: Make sure we have a 'sudo' group
+  group:
+    name: sudo
+    state: present
+
+# - name: Allow 'sudo' group to have passwordless sudo
+#   lineinfile:
+#     dest: /etc/sudoers
+#     state: present
+#     regexp: '^%sudo'
+#     line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+#     validate: visudo -cf %s
+
+- name: Ensure standard sudoers configuration with passwordless sudo 
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+
+- name: Add {{ ssh_user }} users to sudo group
+  user:
+    name: "{{ ssh_user }}"
+    password: "{{ unix_password | password_hash('sha512', 'myseOoijJIcretsalt') }}"
+    shell: /bin/bash
+    groups: ['sudo']
+    append: yes
+
+- name: Allow user '{{ ssh_user }}' ssh connexion
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: '^AllowUsers'
+    line: 'AllowUsers root {{ ssh_user }}'
+
+- name: Disable ssh connexion using password
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+
+- name: Ensure user .ssh folder present
+  file:
+    state: directory
+    path: /home/{{ ssh_user }}/.ssh
+
+- name: Configure {{ ssh_user }} authorized_keys
+  copy:
+    src: "{{ ssh_public_key }}"
+    dest: /home/{{ ssh_user }}/.ssh/authorized_keys
+    owner: "{{ ssh_user }}"
+    group: "{{ ssh_user }}"
+
+- name: reload sshd
+  systemd:
+    name: sshd
+    state: reloaded

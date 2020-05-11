@@ -1,0 +1,54 @@
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Apt update, upgrade and install utils
+      apt:
+        upgrade: yes
+        update_cache: yes
+
+    - name: Enable and configure ufw firewall
+      ufw:
+        state: disable
+        policy: allow
+
+    - name: Ensure ubuntu-desktop and x11vnc and some utils are present
+      apt:
+        name:
+          - htop
+          - vim
+
+    # - name: Ensure ubuntu-desktop and x11vnc and some utils are present
+    #   apt:
+    #     name:
+    #       - ubuntu-desktop
+
+    - name: Ensure ubuntu-desktop and x11vnc and some utils are present
+      apt:
+        name:
+          - xfce4
+          - xfce4-goodies
+
+    - name: Ensure ubuntu-desktop and x11vnc and some utils are present
+      apt:
+        name:
+          - tigervnc-standalone-server
+          - tigervnc-xorg-extension
+          - tigervnc-viewer
+
+    # - name: Ensure x11vnc password is configured
+    #   shell: x11vnc -storepasswd {{ vnc_password }} /etc/x11vnc.pass
+    #   args:
+    #     creates: /etc/x11vnc.pass
+
+    # - name: Ensure x11vnc service exist
+    #   template:
+    #     src: x11vnc.service.j2
+    #     dest: /etc/systemd/system/x11vnc.service
+
+    # - name: Ensure x11vnc service is enabled and started
+    #   systemd:
+    #     name: x11vnc
+    #     state: started
+    #     daemon_reload: yes
+    #     enabled: yes

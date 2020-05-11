@@ -1,0 +1,4 @@
+unix_password: devops101
+ssh_user: stagiaire
+ssh_public_key: ./ssh_ids/id_project.pub
+ssh_private_key: ./ssh_ids/id_project
