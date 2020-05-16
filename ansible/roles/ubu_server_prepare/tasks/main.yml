@@ -45,7 +45,7 @@
     dest: /etc/ssh/sshd_config
     state: present
     regexp: '^PasswordAuthentication'
-    line: 'PasswordAuthentication no'
+    line: 'PasswordAuthentication {{ allow_passwd_ssh_connection }}'
 
 - name: Ensure user .ssh folder present
   file:
