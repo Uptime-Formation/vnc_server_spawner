@@ -1,5 +1,0 @@
-- hosts: all
-  become: yes
-
-  roles:
-    - name: tigervnc_setup

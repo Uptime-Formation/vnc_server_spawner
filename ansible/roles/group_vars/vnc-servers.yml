@@ -1,0 +1,14 @@
+base_unix_user: stagiaire
+base_user_password: devops101
+allow_passwd_ssh_connection: yes
+ssh_public_key: ~/.ssh/id_ed25519.pub
+
+vnc_unix_user: stagiaire
+vnc_local_access_only: "yes"
+vnc_base_screen_res: 1300x700
+
+vnc_password: |
+  devops101
+
+vnc_view_password: |
+  devops202

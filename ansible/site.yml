@@ -1,0 +1,6 @@
+- hosts: vnc-servers
+  become: yes
+
+  roles:
+    - name: ubu_server_prepare
+    - name: tigervnc_setup

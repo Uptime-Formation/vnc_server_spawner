@@ -3,43 +3,53 @@
     upgrade: "yes"
     update_cache: yes
 
-- name: Enable and configure ufw firewall
-  ufw:
-    state: disabled
-    policy: allow
+# - name: Enable and configure ufw firewall
+#   ufw:
+#     state: disabled
+#     policy: allow
 
-- name: Ensure ubuntu-desktop and x11vnc and some utils are present
+- name: Ensure some utils are present
   apt:
-    name:
+    pkg:
       - htop
       - vim
 
-- name: Ensure ubuntu-desktop and x11vnc and some utils are present
+- name: Ensure xfce-desktop is present
   apt:
     name:
       - xfce4
       - xfce4-goodies
 
-- name: Ensure ubuntu-desktop and x11vnc and some utils are present
+- name: Ensure tigervnc server and plugins are present
   apt:
     name:
       - tigervnc-standalone-server
       - tigervnc-xorg-extension
-      - tigervnc-viewer
+      # - tigervnc-viewer
 
-# - name: Ensure x11vnc password is configured
-#   shell: vncpasswd -f {{ vnc_passwd }} >> /home/{{ ssh_user }}/.vnc/passwd
-#   args:
-#     creates: /home/{{ ssh_user }}/.vnc/passwd
+- name: Ensure password is configured
+  # with vncpasswd -f the password has to end with \n
+  # moreover to generate a view password concat a second binary passwd to the first one
+  shell: |
+    mkdir -p /home/{{ vnc_unix_user }}/.vnc
+    vncpasswd -f {{ vnc_passwd }} > /home/{{ vnc_unix_user }}/.vnc/passwd
+    vncpasswd -f {{ vnc_view_passwd }} >> /home/{{ vnc_unix_user }}/.vnc/passwd
+  args:
+    creates: /home/{{ base_unix_user }}/.vnc/passwd
 
-# - name: Ensure vncserver service exist
-#   template:
-#     src: vncserver.service.j2
-#     dest: /etc/systemd/system/vncserver@.service
+- name: Ensure xstartup config exist
+  template:
+    src: xstartup.j2
+    dest: /home/{{ vnc_unix_user }}/.vnc/xstartup
 
-# - name: Ensure vncserver service is enabled and started on screen :1 and port 5901
-#   systemd:
-#     name: vncserver@:1
-#     state: started
-#     daemon_reload: yes
-#     enabled: yes
+- name: Ensure vncserver service exist
+  template:
+    src: vncserver.service.j2
+    dest: /etc/systemd/system/vncserver@.service
+
+- name: Ensure vncserver service is enabled and started on screen :1 and port 5901
+  systemd:
+    name: vncserver@:1
+    state: started
+    daemon_reload: yes
+    enabled: yes
