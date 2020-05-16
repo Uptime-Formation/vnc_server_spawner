@@ -2,5 +2,5 @@ export PROJECT_DIR=$(pwd)
 export TERRAFORM_DIR=$PROJECT_DIR/terraform/
 export ANSIBLE_DIR=$PROJECT_DIR
 export ANSIBLE_INVENTORY=$PROJECT_DIR/ansible/terraform-inventory.py
-export ANSIBLE_PLAYBOOK=$PROJECT_DIR/ansible/setup.yml
+export ANSIBLE_PLAYBOOK=$PROJECT_DIR/ansible/site.yml
 export ANSIBLE_TF_DIR=$TERRAFORM_DIR

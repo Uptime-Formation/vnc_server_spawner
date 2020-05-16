@@ -1,10 +1,10 @@
-vnc_password: |
-  devops101
+# vnc_passwd: |
+#   devops101
 
-vnc_view_password: |
-  devops202
+# vnc_view_passwd: |
+#   devops202
 
-vnc_base_screen_res: 1300x700
-vnc_local_access_only: "yes"
+# vnc_base_screen_res: 1300x700
+# vnc_local_access_only: "yes"
 
-vnc_unix_user: ~
+# vnc_unix_user: ~

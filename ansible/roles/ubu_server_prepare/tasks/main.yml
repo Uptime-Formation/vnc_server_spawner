@@ -39,13 +39,15 @@
     state: present
     regexp: '^AllowUsers'
     line: 'AllowUsers root {{ base_unix_user }}'
+  notify: reload sshd
 
-- name: Disable ssh connexion using password
+- name: Configure (yes/no) ssh connexion using password
   lineinfile:
     dest: /etc/ssh/sshd_config
     state: present
     regexp: '^PasswordAuthentication'
     line: 'PasswordAuthentication {{ allow_passwd_ssh_connection }}'
+  notify: reload sshd
 
 - name: Ensure user .ssh folder present
   file:
@@ -58,8 +60,3 @@
     dest: /home/{{ base_unix_user }}/.ssh/authorized_keys
     owner: "{{ base_unix_user }}"
     group: "{{ base_unix_user }}"
-
-- name: reload sshd
-  systemd:
-    name: sshd
-    state: reloaded

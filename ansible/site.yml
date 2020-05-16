@@ -1,4 +1,4 @@
-- hosts: vnc-servers
+- hosts: vnc_servers
   become: yes
 
   roles:

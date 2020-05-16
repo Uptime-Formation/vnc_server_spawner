@@ -9,7 +9,9 @@ locals {
   vnc_servers = [
     "akitani",
     "chumillas",
+    "trucmuch",
   ]
+
   vnc_servers_formateur = [
     "formateur",
   ]

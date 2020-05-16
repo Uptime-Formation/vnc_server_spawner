@@ -7,7 +7,7 @@ Type=forking
 User={{ vnc_unix_user }}
 WorkingDirectory=/home/{{ vnc_unix_user }}
 ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
-ExecStart=/usr/bin/vncserver %i -geometry {{ vnc_base_screen_res }} -alwaysshared -localhost {{ vnc_local_access_only }}
+ExecStart=/usr/bin/vncserver %i -geometry -passwd /home/{{ vnc_unix_user }}/.vnc/passwd {{ vnc_base_screen_res }} -alwaysshared -localhost {{ vnc_local_access_only }}
 ExecStop=/usr/bin/vncserver -kill %i
 
 [Install]
