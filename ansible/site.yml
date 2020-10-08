@@ -4,3 +4,9 @@
   roles:
     - name: ubu_server_prepare
     - name: tigervnc_setup
+  vars:
+    base_user_password: pommedeterre
+    base_unix_user: stagiaire
+    allow_passwd_ssh_connection: yes
+    ssh_public_key: ~/Desktop/docker-humancoders
+    vnc_passwd: "pommedeterre"
