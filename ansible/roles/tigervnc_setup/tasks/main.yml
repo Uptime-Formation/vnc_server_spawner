@@ -31,9 +31,11 @@
   # moreover to generate a view password concat a second binary passwd to the first one
   shell: |
     mkdir -p /home/{{ vnc_unix_user }}/.vnc
-    vncpasswd -f {{ vnc_passwd }} > /home/{{ vnc_unix_user }}/.vnc/passwd
-  args:
-    creates: /home/{{ base_unix_user }}/.vnc/passwd
+    # set -o pipefail
+    echo {{ vnc_passwd }} | vncpasswd -f > /home/{{ vnc_unix_user }}/.vnc/passwd
+    # vncpasswd -f {{ vnc_passwd }} > /home/{{ vnc_unix_user }}/.vnc/passwd
+  # args:
+  #   creates: /home/{{ base_unix_user }}/.vnc/passwd
   become: yes
   become_user: stagiaire
   tags: vnc_passwd

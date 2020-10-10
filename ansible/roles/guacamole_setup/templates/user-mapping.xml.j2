@@ -1,7 +1,7 @@
 <user-mapping>
 
     <authorize username="guacadmin" password="{{ guac_passwd }}">
-    {% for vnc_server in vnc_servers %}
+    {% for vnc_server in groups['vnc_servers'] %}
         <connection name="{{ vnc_server.ansible_host }}">
             <protocol>vnc</protocol>
             <param name="hostname">{{ vnc_server.ansible_host }}</param>

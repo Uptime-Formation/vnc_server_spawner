@@ -1,35 +1,41 @@
-- hosts: vnc_servers
+- hosts: all
   become: yes
-
   roles:
     - name: ubu_server_prepare
-    - name: tigervnc_setup
   vars:
     base_user_password: pommedeterre
     base_unix_user: stagiaire
     allow_passwd_ssh_connection: yes
     ssh_public_key: ~/Desktop/docker-humancoders.pub
-    vnc_passwd: |
-      pommedeterre\n
+
+- hosts: vnc_servers
+  become: yes
+
+  roles:
+    # - name: ubu_server_prepare
+    - name: tigervnc_setup
+  vars:
+    vnc_passwd: pommedeterre
 
     vnc_local_access_only: "no"
 
 - hosts: guacamole_servers
   become: yes
+  tasks:
+    - name: Install docker-compose
+      command: sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      args:
+        creates: /usr/local/bin/docker-compose
 
   roles:
-    - name: ubu_server_prepare
-    - name: geerlingguy.pip
+    # - name: ubu_server_prepare
+    # - name: geerlingguy.pip
     - name: geerlingguy.docker
     - name: guacamole_setup
-  vars:
-    base_user_password: pommedeterre
-    base_unix_user: stagiaire
-    allow_passwd_ssh_connection: yes
-    ssh_public_key: ~/Desktop/docker-humancoders.pub
-    pip_install_packages:
-      - name: setuptools # https://stackoverflow.com/questions/7446187/no-module-named-pkg-resources
-      - name: docker
-    docker_install_compose: true
-    # docker_compose_version: "1.26.0"
-    docker_compose_path: /usr/local/bin/docker-compose
+  # vars:
+  # pip_install_packages:
+  #   - name: setuptools # https://stackoverflow.com/questions/7446187/no-module-named-pkg-resources
+  #   - name: docker
+  # docker_install_compose: true
+  # docker_compose_version: "1.26.0"
+  # docker_compose_path: /usr/local/bin/docker-compose

@@ -12,13 +12,14 @@
   git:
     dest: "{{ guac_path }}"
     repo: https://github.com/boschkundendienst/guacamole-docker-compose.git # required. git, SSH, or HTTP(S) protocol address of the git repository.
+    update: no
   tags: guac_install
   register: guac_code
 
 - name: Ensure vnc servers are configured
   template:
-    dest: "{{ guac_path }}/docker_compose.yml" # required. Location to render the template to on the remote machine.
-    src: docker_compose.yml.j2
+    dest: "{{ guac_path }}/docker-compose.yml" # required. Location to render the template to on the remote machine.
+    src: docker-compose.yml.j2
   tags: guac_install
   register: docker_code
 
@@ -28,8 +29,8 @@
   tags: guac_install
 
 - name: Prepare guacamole server
-  command:
-    freeform: ./prepare.sh
+  command: ./prepare.sh
+  args:
     chdir: "{{ guac_path }}"
   when: guac_just_installed
   tags: guac_install
@@ -38,7 +39,7 @@
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
     # restarted: yes
-    register: output
+    # register: output
 
 - name: Ensure vnc servers are configured
   template:
