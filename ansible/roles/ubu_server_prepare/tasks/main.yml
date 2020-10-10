@@ -20,7 +20,7 @@
 #     line: '%sudo ALL=(ALL) NOPASSWD: ALL'
 #     validate: visudo -cf %s
 
-- name: Ensure standard sudoers configuration with passwordless sudo 
+- name: Ensure standard sudoers configuration with passwordless sudo
   template:
     src: sudoers.j2
     dest: /etc/sudoers
@@ -30,23 +30,23 @@
     name: "{{ base_unix_user }}"
     password: "{{ base_user_password | password_hash('sha512', 'myseijJIjretsalt') }}"
     shell: /bin/bash
-    groups: ['sudo']
+    groups: ["sudo"]
     append: yes
 
 - name: Allow user '{{ base_unix_user }}' ssh connexion
   lineinfile:
     dest: /etc/ssh/sshd_config
     state: present
-    regexp: '^AllowUsers'
-    line: 'AllowUsers root {{ base_unix_user }}'
+    regexp: "^AllowUsers"
+    line: "AllowUsers root {{ base_unix_user }}"
   notify: reload sshd
 
 - name: Configure (yes/no) ssh connexion using password
   lineinfile:
     dest: /etc/ssh/sshd_config
     state: present
-    regexp: '^PasswordAuthentication'
-    line: 'PasswordAuthentication {{ allow_passwd_ssh_connection }}'
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication {{ allow_passwd_ssh_connection }}"
   notify: reload sshd
 
 - name: Ensure user .ssh folder present

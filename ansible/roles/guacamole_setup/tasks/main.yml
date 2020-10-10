@@ -1,0 +1,26 @@
+- name: Apt update, upgrade and install utils
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+
+# - name: Enable and configure ufw firewall
+#   ufw:
+#     state: disabled
+#     policy: allow
+
+- name: Ensure docker repo present
+  git:
+    dest: "{{ guac_docker_compose_path }}"
+    repo: https://github.com/boschkundendienst/guacamole-docker-compose.git # required. git, SSH, or HTTP(S) protocol address of the git repository.
+  tags: guacamole_service
+
+- name: Ensure docker-compose guacamole is started
+  community.general.docker_compose:
+    project_src: "{{ guac_docker_compose_path }}"
+    # restarted: yes
+    register: output
+  tags: guacamole_service
+# - name: Ensure vnc servers are configured
+#   template:
+#     # name: vncserver@:1
+#   tags: guacamole_config
