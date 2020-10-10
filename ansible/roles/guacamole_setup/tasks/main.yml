@@ -10,17 +10,29 @@
 
 - name: Ensure docker repo present
   git:
-    dest: "{{ guac_docker_compose_path }}"
+    dest: "{{ guac_path }}"
     repo: https://github.com/boschkundendienst/guacamole-docker-compose.git # required. git, SSH, or HTTP(S) protocol address of the git repository.
   tags: guacamole_service
+  # set_fact: guac_just_installed if changed
+
+  # when changed set "just installed" and execute task prepare.sh
+  # when: guac_just_installed
+- name: Ensure docker-compose guacamole is started
+  command:
+    freeform: ./prepare.sh
+    chdir: "{{ guac_path }}"
+  tags: guacamole_service, guacamole_install
 
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
-    project_src: "{{ guac_docker_compose_path }}"
+    project_src: "{{ guac_path }}"
     # restarted: yes
     register: output
   tags: guacamole_service
-# - name: Ensure vnc servers are configured
-#   template:
-#     # name: vncserver@:1
-#   tags: guacamole_config
+
+- name: Ensure vnc servers are configured
+  template:
+    # /etc/guacamole in the guacamole docker container
+    dest: "{{ guac_path }}/user-mapping.xml" # required. Location to render the template to on the remote machine.
+    src: user-mapping.xml.j2
+  tags: guacamole_config

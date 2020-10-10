@@ -8,5 +8,5 @@
 # vnc_local_access_only: "yes"
 
 # vnc_unix_user: ~
-guac_docker_compose_path: /guacamole-docker-compose
+guac_path: /guacamole-docker-compose
 guac_passwd: pommedeterre

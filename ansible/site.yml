@@ -8,5 +8,27 @@
     base_user_password: pommedeterre
     base_unix_user: stagiaire
     allow_passwd_ssh_connection: yes
-    ssh_public_key: ~/Desktop/docker-humancoders
-    vnc_passwd: "pommedeterre"
+    ssh_public_key: ~/Desktop/docker-humancoders.pub
+    vnc_passwd: |
+      pommedeterre\n
+
+    vnc_local_access_only: "no"
+
+- hosts: guacamole_servers
+  become: yes
+
+  roles:
+    - name: ubu_server_prepare
+    - name: geerlingguy.pip
+    - name: geerlingguy.docker
+    - name: guacamole_setup
+  vars:
+    base_user_password: pommedeterre
+    base_unix_user: stagiaire
+    allow_passwd_ssh_connection: yes
+    ssh_public_key: ~/Desktop/docker-humancoders.pub
+    pip_install_packages:
+      - name: docker
+    docker_install_compose: true
+    # docker_compose_version: "1.26.0"
+    docker_compose_path: /usr/local/bin/docker-compose

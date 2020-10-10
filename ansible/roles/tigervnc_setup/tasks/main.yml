@@ -38,6 +38,16 @@
   become_user: stagiaire
   tags: vnc_passwd
 
+# Alternative from https://github.com/shellbro/ansible-role-vnc-server/blob/master/tasks/main.yml:
+# shell: |
+#   set -o pipefail
+#   echo {{ password }} | vncpasswd -f > /home/{{ user }}/.vnc/passwd
+
+# alternative from https://cplatform99.blogspot.com/2017/05/vnc-configuration-using-ansible-in.html
+#   - name: "Generate vnc password for root user remotely"
+#     shell: |
+#         echo RedHat123 | vncpasswd -f > /root/.vnc/passwd
+
 - name: Ensure view password is configured
   # moreover to generate a view password concat a second binary passwd to the first one
   shell: |
