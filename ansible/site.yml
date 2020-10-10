@@ -28,6 +28,7 @@
     allow_passwd_ssh_connection: yes
     ssh_public_key: ~/Desktop/docker-humancoders.pub
     pip_install_packages:
+      - name: setuptools # https://stackoverflow.com/questions/7446187/no-module-named-pkg-resources
       - name: docker
     docker_install_compose: true
     # docker_compose_version: "1.26.0"

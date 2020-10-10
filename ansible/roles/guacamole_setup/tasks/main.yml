@@ -12,23 +12,33 @@
   git:
     dest: "{{ guac_path }}"
     repo: https://github.com/boschkundendienst/guacamole-docker-compose.git # required. git, SSH, or HTTP(S) protocol address of the git repository.
-  tags: guacamole_service
-  # set_fact: guac_just_installed if changed
+  tags: guac_install
+  register: guac_code
 
-  # when changed set "just installed" and execute task prepare.sh
-  # when: guac_just_installed
-- name: Ensure docker-compose guacamole is started
+- name: Ensure vnc servers are configured
+  template:
+    dest: "{{ guac_path }}/docker_compose.yml" # required. Location to render the template to on the remote machine.
+    src: docker_compose.yml.j2
+  tags: guac_install
+  register: docker_code
+
+- name: set guac_just_installed var
+  ansible.builtin.set_fact:
+    guac_just_installed: guac_code.changed or docker_code.changed
+  tags: guac_install
+
+- name: Prepare guacamole server
   command:
     freeform: ./prepare.sh
     chdir: "{{ guac_path }}"
-  tags: guacamole_service, guacamole_install
+  when: guac_just_installed
+  tags: guac_install
 
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
     # restarted: yes
     register: output
-  tags: guacamole_service
 
 - name: Ensure vnc servers are configured
   template:
