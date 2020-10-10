@@ -1,14 +1,12 @@
 <user-mapping>
 
     <authorize username="guacadmin" password="{{ guac_passwd }}">
-    {% for vnc_server in groups['vnc_servers'] %}
-        <connection name="{{ vnc_server.ansible_host }}">
+    {% for vnc_server_name in groups['vnc_servers'] %}
+        <connection name="{{ vnc_server_name }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ vnc_server.ansible_host }}</param>
+            <param name="hostname">{{ vnc_server_name }}</param>
             <param name="port">5901</param>
-                {# the "-" should strip newline? #}
-            {# <param name="password">{{- vnc_server.vnc_passwd -}}</param> #}
-            <param name="password">{{ "%s"|wordwrap(vnc_server.vnc_passwd, 8) }}</param>
+            <param name="password">{{ hostvars[vnc_server_name].vnc_passwd }}</param>
         </connection>
     {% endfor %}
     </authorize>

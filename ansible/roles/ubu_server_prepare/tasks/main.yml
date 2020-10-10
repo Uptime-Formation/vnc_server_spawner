@@ -1,7 +1,8 @@
-- name: Upgrade servers
+- name: Update apt
+  # - name: Upgrade servers
   apt:
     update_cache: yes
-    upgrade: "yes"
+# upgrade: "yes"
 
 - name: Ensure we have sudo installed
   apt:

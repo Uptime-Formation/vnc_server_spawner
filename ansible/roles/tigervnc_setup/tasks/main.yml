@@ -1,6 +1,6 @@
 - name: Apt update, upgrade and install utils
   apt:
-    upgrade: "yes"
+    # upgrade: "yes"
     update_cache: yes
 
 # - name: Enable and configure ufw firewall
@@ -79,7 +79,7 @@
 - name: Ensure vncserver service is enabled and started on screen :1 and port 5901
   systemd:
     name: vncserver@:1
-    state: started
+    state: restarted
     daemon_reload: yes
     enabled: yes
   tags: chown

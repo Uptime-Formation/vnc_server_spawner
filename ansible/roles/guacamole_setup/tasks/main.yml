@@ -25,7 +25,7 @@
 
 - name: set guac_just_installed var
   ansible.builtin.set_fact:
-    guac_just_installed: guac_code.changed or docker_code.changed
+    guac_just_installed: "{{ guac_code.changed or docker_code.changed }}"
   tags: guac_install
 
 - name: Prepare guacamole server

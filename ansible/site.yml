@@ -1,5 +1,10 @@
 - hosts: all
   become: yes
+  tasks:
+    - name: Display all variables/facts known for a host
+      debug:
+        var: hostvars[inventory_hostname]
+      tags: debug_info
   roles:
     - name: ubu_server_prepare
   vars:
@@ -7,35 +12,37 @@
     base_unix_user: stagiaire
     allow_passwd_ssh_connection: yes
     ssh_public_key: ~/Desktop/docker-humancoders.pub
+  tags: setup_servers
 
 - hosts: vnc_servers
   become: yes
 
   roles:
-    # - name: ubu_server_prepare
     - name: tigervnc_setup
-  vars:
-    vnc_passwd: pommedeterre
-
-    vnc_local_access_only: "no"
+  tags: setup_vnc
 
 - hosts: guacamole_servers
   become: yes
-  tasks:
-    - name: Install docker-compose
-      command: sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-      args:
-        creates: /usr/local/bin/docker-compose
-
+  pre_tasks:
+    - name: install pip3
+      apt:
+        name:
+          - python3-pip
+    - name: add docker python sdk
+      pip:
+        executable: pip3
+        name:
+          - docker
+          - docker-compose
+    # - name: Install docker-compose
+    #   command: sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    #   args:
+    #     creates: /usr/local/bin/docker-compose
   roles:
-    # - name: ubu_server_prepare
-    # - name: geerlingguy.pip
     - name: geerlingguy.docker
     - name: guacamole_setup
-  # vars:
-  # pip_install_packages:
-  #   - name: setuptools # https://stackoverflow.com/questions/7446187/no-module-named-pkg-resources
-  #   - name: docker
-  # docker_install_compose: true
-  # docker_compose_version: "1.26.0"
-  # docker_compose_path: /usr/local/bin/docker-compose
+  vars:
+    docker_install_compose: true
+    docker_compose_version: "1.26.0"
+    docker_compose_path: /usr/local/bin/docker-compose
+  tags: setup_guac
