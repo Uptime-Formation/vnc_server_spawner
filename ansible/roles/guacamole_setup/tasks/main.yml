@@ -35,15 +35,30 @@
   when: guac_just_installed
   tags: guac_install
 
-- name: Ensure docker-compose guacamole is started
-  community.general.docker_compose:
-    project_src: "{{ guac_path }}"
-    # restarted: yes
-    # register: output
-
 - name: Ensure vnc servers are configured
   template:
     # /etc/guacamole in the guacamole docker container
     dest: "{{ guac_path }}/user-mapping.xml" # required. Location to render the template to on the remote machine.
     src: user-mapping.xml.j2
-  tags: guacamole_config
+  tags: guac_config
+
+- name: Ensure docker-compose guacamole is started
+  community.general.docker_compose:
+    project_src: "{{ guac_path }}"
+    # recreate: always
+    # started: yes
+    restarted: yes
+    # register: output
+  tags: guac_config
+
+- name: Add user-mapping.xml file
+  shell: "docker cp {{ guac_path }}/user-mapping.xml guacamole_compose:/root/.guacamole/user-mapping.xml"
+  tags: guac_config
+
+- name: Ensure guacamole_compose is restarted with config file
+  community.general.docker_compose:
+    services: guacamole_compose
+    project_src: "{{ guac_path }}"
+    restarted: yes
+    # register: output
+  tags: guac_config

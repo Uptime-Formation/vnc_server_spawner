@@ -131,8 +131,8 @@ services:
     image: guacamole/guacamole
     links:
       - guacd
-    volumes:
-      - {{ guac_path }}/user-mapping.xml:/etc/guacamole/user-mapping.xml
+    # volumes:
+    #  - {{ guac_path }}/user-mapping.xml:/root/.guacamole/user-mapping.xml
     networks:
       guacnetwork_compose:
     ports:

@@ -4,7 +4,7 @@
     {% for vnc_server_name in groups['vnc_servers'] %}
         <connection name="{{ vnc_server_name }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ vnc_server_name }}</param>
+            <param name="hostname">{{ hostvars[vnc_server_name].ansible_host }}</param>
             <param name="port">5901</param>
             <param name="password">{{ hostvars[vnc_server_name].vnc_passwd }}</param>
         </connection>
