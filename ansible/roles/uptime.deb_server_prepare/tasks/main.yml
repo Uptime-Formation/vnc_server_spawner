@@ -32,7 +32,7 @@
     src: sudoers.j2
     dest: /etc/sudoers
 
-- name: Add {{ base_unix_user }} users to sudo group
+- name: Add {{ base_unix_user }} user and add it to sudo group
   user:
     name: "{{ base_unix_user }}"
     password: "{{ base_user_password | password_hash('sha512', 'myseijJIjretsalt') }}"

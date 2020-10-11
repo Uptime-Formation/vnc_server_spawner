@@ -19,12 +19,15 @@
     state: "{{ vscode_state }}"
     classic: yes
 
-- name: Create a nice security hole to fix some snap/vscode bug (server are temporary anyway)
+- name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
+  shell: id --user {{ base_unix_user }}
+  register: user_id
+
+- name: Fix some snap/vscode bug by ensuring /run/user/{{ user_id.stdout }} is owned by user {{ base_unix_user }}
   file:
-    path: /run/user
-    state: directory
-    mode: '1777'
-    recurse: yes
+    path: "/run/user/{{ user_id.stdout }}"
+    state: "directory"
+    owner: "{{ base_unix_user }}"
 
 - name: Ensure we have LXD installed
   snap:
