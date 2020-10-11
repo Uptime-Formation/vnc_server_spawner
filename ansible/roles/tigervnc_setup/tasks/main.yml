@@ -1,6 +1,6 @@
 - name: Apt update, upgrade and install utils
   apt:
-    # upgrade: "yes"
+    upgrade: "yes"
     update_cache: yes
 
 # - name: Enable and configure ufw firewall

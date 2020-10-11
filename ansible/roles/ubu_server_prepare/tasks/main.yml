@@ -26,7 +26,7 @@
     src: sudoers.j2
     dest: /etc/sudoers
 
-- name: Add {{ base_unix_user }} users to sudo group
+- name: Add {{ base_unix_user }} user and add it to sudo group
   user:
     name: "{{ base_unix_user }}"
     password: "{{ base_user_password | password_hash('sha512', 'myseijJIjretsalt') }}"
@@ -34,21 +34,27 @@
     groups: ["sudo"]
     append: yes
 
-- name: Allow user '{{ base_unix_user }}' ssh connexion
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    state: present
-    regexp: "^AllowUsers"
-    line: "AllowUsers root {{ base_unix_user }}"
-  notify: reload sshd
+- name: Ensure /run/user/1001 is owned by user {{ base_unix_user }}
+  file:
+    path: "/run/user/1001"
+    state: "directory"
+    owner: "{{ base_unix_user }}"
 
-- name: Configure (yes/no) ssh connexion using password
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    state: present
-    regexp: "^PasswordAuthentication"
-    line: "PasswordAuthentication {{ allow_passwd_ssh_connection }}"
-  notify: reload sshd
+# - name: Allow user '{{ base_unix_user }}' ssh connexion
+#   lineinfile:
+#     dest: /etc/ssh/sshd_config
+#     state: present
+#     regexp: "^AllowUsers"
+#     line: "AllowUsers root {{ base_unix_user }}"
+#   notify: reload sshd
+
+# - name: Configure (yes/no) ssh connexion using password
+#   lineinfile:
+#     dest: /etc/ssh/sshd_config
+#     state: present
+#     regexp: "^PasswordAuthentication"
+#     line: "PasswordAuthentication {{ allow_passwd_ssh_connection }}"
+#   notify: reload sshd
 
 - name: Ensure user .ssh folder present
   file:

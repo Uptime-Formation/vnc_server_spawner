@@ -1,10 +1,10 @@
 - hosts: all
   become: yes
-  tasks:
-    - name: Display all variables/facts known for a host
-      debug:
-        var: hostvars[inventory_hostname]
-      tags: debug_info
+  # tasks:
+  #   - name: Display all variables/facts known for a host
+  #     debug:
+  #       var: hostvars[inventory_hostname]
+  #     tags: debug_info
   roles:
     - name: ubu_server_prepare
   vars:
