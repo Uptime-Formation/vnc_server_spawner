@@ -1,12 +1,7 @@
-- name: Apt update, upgrade and install utils
+- name: Ensure git package is present
   apt:
-    upgrade: "yes"
-    update_cache: yes
-
-# - name: Enable and configure ufw firewall
-#   ufw:
-#     state: disabled
-#     policy: allow
+    name: git
+    state: present
 
 - name: Ensure docker repo present
   git:
@@ -35,15 +30,17 @@
   when: guac_just_installed
   tags: guac_install
 
+- name: Ensure vnc servers are declared in user configuration
+  template:
+    # /etc/guacamole in the guacamole docker container
+    dest: "{{ guac_path }}/user-mapping.xml"
+    src: user-mapping.xml.j2
+  tags: guacamole_config
+
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
     # restarted: yes
     # register: output
 
-- name: Ensure vnc servers are configured
-  template:
-    # /etc/guacamole in the guacamole docker container
-    dest: "{{ guac_path }}/user-mapping.xml" # required. Location to render the template to on the remote machine.
-    src: user-mapping.xml.j2
-  tags: guacamole_config
+
