@@ -8,12 +8,11 @@ provider "hcloud" {
 locals {
   vnc_servers = [
     "akitani",
-    "chumillas",
     "trucmuch",
   ]
 
   vnc_servers_formateur = [
-    "formateur",
+    # "formateur",
   ]
 }
 
@@ -30,6 +29,14 @@ resource "hcloud_server" "vnc_servers" {
 resource "hcloud_server" "vnc_servers_formateur" {
   count = length(local.vnc_servers_formateur)
   name  = "vnc-server-${element(local.vnc_servers_formateur, count.index)}"
+  server_type = "cx21"
+  image = "ubuntu-18.04"
+  location = "nbg1"
+  ssh_keys = ["lenox-main"]
+}
+
+resource "hcloud_server" "guacamole_server" {
+  name  = "guacamole-server"
   server_type = "cx21"
   image = "ubuntu-18.04"
   location = "nbg1"

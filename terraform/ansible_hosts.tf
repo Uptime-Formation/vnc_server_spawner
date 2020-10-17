@@ -20,6 +20,14 @@ resource "ansible_host" "ansible_vnc_servers_formateur" {
   }
 }
 
+resource "ansible_host" "ansible_guacamole_server" {
+  inventory_hostname = "guacamole-server"
+  groups = ["all", "hcloud", "guacamole_servers"]
+  vars = {
+    ansible_host = hcloud_server.guacamole_server.ipv4_address
+  }
+}
+
 # resource "ansible_group" "vnc_servers" {
 #   inventory_group_name = "vnc_servers"
 #   vars = {
