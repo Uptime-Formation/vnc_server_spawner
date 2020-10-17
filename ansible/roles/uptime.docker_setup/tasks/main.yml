@@ -1,0 +1,63 @@
+---
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg2
+      - python3-pip
+      - python3-setuptools
+      - curl
+    state: present
+
+- name: Add Docker apt key.
+  apt_key:
+    url: "{{ docker_apt_gpg_key }}"
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+  register: add_repository_key
+  ignore_errors: "{{ docker_apt_ignore_key_error }}"
+
+- name: Add Docker apt key (alternative for older systems without SNI).
+  shell: >
+    curl -sSL {{ docker_apt_gpg_key }} | sudo apt-key add -
+  args:
+    warn: false
+  when: add_repository_key is failed
+
+- name: Add Docker repository.
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+    update_cache: true
+
+- name: Install Docker.
+  apt:
+    name: docker
+    state: present
+  notify: restart docker
+
+- name: Ensure Docker is started and enabled at boot.
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Ensure docker-compose is present using pip3
+  pip:
+    name: docker-compose
+    state: present
+    executable: pip3
+
+- name: Ensure 'docker' python lib is present for ansible modules
+  pip:
+    name: docker
+    state: present
+    executable: pip3
+
+- name: Ensure docker users are added to the docker group.
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+  with_items: "{{ docker_users }}"
