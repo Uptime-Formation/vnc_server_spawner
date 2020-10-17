@@ -3,6 +3,12 @@
     update_cache: yes
     upgrade: "yes"
 
+- name: Ensure we have python3 tools installed
+  apt:
+    name:
+      - python3-pip
+      - python3-setuptools
+
 - name: Ensure we have sudo installed
   apt:
     name: sudo
@@ -12,13 +18,14 @@
     name: sudo
     state: present
 
-# - name: Allow 'sudo' group to have passwordless sudo
-#   lineinfile:
-#     dest: /etc/sudoers
-#     state: present
-#     regexp: '^%sudo'
-#     line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-#     validate: visudo -cf %s
+- name: Allow 'sudo' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s
+  when: passwordless_sudo
 
 - name: Ensure standard sudoers configuration with passwordless sudo
   template:
