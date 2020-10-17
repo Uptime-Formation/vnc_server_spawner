@@ -1,0 +1,8 @@
+- hosts: guacamole_servers
+  become: yes
+  roles:
+    - name: uptime.docker_setup
+      vars:
+        docker_users:
+          - "{{ base_unix_user }}"
+    - name: guacamole_setup
