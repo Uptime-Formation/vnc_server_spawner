@@ -17,3 +17,4 @@ ansible-digital_ocean.cache
 *.tfstate.backup
 
 *.retry
+geerlingguy.*
