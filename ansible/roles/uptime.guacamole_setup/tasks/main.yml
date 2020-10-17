@@ -35,6 +35,7 @@
     # /etc/guacamole in the guacamole docker container
     dest: "{{ guac_path }}/user-mapping.xml"
     src: user-mapping.xml.j2
+  when: guac_vnc_servers_autoconfig
   tags: guacamole_config
 
 - name: Ensure docker-compose guacamole is started
