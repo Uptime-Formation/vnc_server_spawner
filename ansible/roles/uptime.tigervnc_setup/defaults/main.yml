@@ -1,6 +1,12 @@
 vnc_passwd: ~
 vnc_view_passwd: ~
 
+# Add \n to passwd vars -> required by tigervnc to parse them correctly (lol)
+vnc_passwd_newline: |
+  "{{ vnc_passwd }}" 
+vnc_view_passwd_newline: | 
+  "{{ vnc_view_passwd }}" 
+
 vnc_base_screen_res: 1300x700
 vnc_local_access_only: "yes"
 
