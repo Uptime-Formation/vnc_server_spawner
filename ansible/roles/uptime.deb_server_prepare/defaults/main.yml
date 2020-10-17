@@ -1,0 +1,6 @@
+base_user_password: ~
+base_unix_user: ansible
+
+ssh_public_key: ~
+allow_passwd_ssh_connection: no
+passwordless_sudo: no

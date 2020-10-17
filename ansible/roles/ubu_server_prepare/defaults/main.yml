@@ -1,6 +1,0 @@
-base_user_password: devops101
-base_unix_user: stagiaire
-ssh_public_key: ~/.ssh/id_ed25519.pub
-
-allow_passwd_ssh_connection: "no"
-passwordless_sudo: no

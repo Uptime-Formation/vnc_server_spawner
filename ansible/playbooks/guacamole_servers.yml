@@ -5,4 +5,4 @@
       vars:
         docker_users:
           - "{{ base_unix_user }}"
-    - name: guacamole_setup
+    - name: uptime.guacamole_setup

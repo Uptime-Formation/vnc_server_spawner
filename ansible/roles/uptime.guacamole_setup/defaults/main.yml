@@ -1,2 +1,2 @@
 guac_path: /guacamole-docker-compose
-guac_passwd: pommedeterre
+guac_passwd: ~

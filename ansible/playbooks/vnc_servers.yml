@@ -2,5 +2,4 @@
   become: yes
 
   roles:
-    # - name: ubu_server_prepare
-    - name: tigervnc_setup
+    - name: uptime.tigervnc_setup
