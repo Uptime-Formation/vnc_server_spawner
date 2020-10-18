@@ -1,0 +1,23 @@
+- name: Set Xfce panel config for a simple panel on the bottom
+  template:
+    src: xfce4-panel.xml.j2
+    dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+    owner: "{{ vnc_unix_user }}"
+
+- name: Set Xfce desktop background to solid color
+  template:
+    src: xfce4-desktop.xml.j2
+    dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+    owner: "{{ vnc_unix_user }}"
+
+- name: Set Xfce WM config to switch workspace number to one 
+  template:
+    src: xfwm4.xml.j2
+    dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml
+    owner: "{{ vnc_unix_user }}"
+
+- name: Set Xfce theme to greybird dark
+  template:
+    src: xsettings.xml.j2
+    dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
+    owner: "{{ vnc_unix_user }}"
