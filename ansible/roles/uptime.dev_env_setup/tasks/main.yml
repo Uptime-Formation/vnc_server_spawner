@@ -1,0 +1,31 @@
+- name: Upgrade servers
+  apt:
+    update_cache: yes
+    upgrade: "yes"
+
+- name: Ensure we have firefox installed
+  apt:
+    name: firefox
+    state: "{{ firefox_state }}"
+
+- name: Ensure we have snap installed
+  apt:
+    name: snapd
+    state: present
+
+- name: Ensure we have vscode installed
+  snap:
+    name: code
+    state: "{{ vscode_state }}"
+    classic: yes
+
+- name: Ensure we have LXD installed
+  snap:
+    name: lxd
+    state: "{{ lxd_state }}"
+
+- name: Ensure we have kubectl installed
+  snap:
+    name: kubectl
+    state: "{{ kubectl_state }}"
+ 

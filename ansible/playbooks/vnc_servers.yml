@@ -3,3 +3,4 @@
 
   roles:
     - name: uptime.tigervnc_setup
+    - name: uptime.dev_env_setup
