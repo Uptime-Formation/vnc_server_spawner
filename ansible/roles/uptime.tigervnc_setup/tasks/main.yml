@@ -4,10 +4,11 @@
       - htop
       - vim
 
-- name: Ensure xubuntu-desktop is present
+- name: Ensure xubuntu-desktop and dbus-x11 are present
   apt:
     name:
       - xubuntu-desktop
+      - dbus-x11 # necessary to use dbus-launch xfce workaround (https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session)
 
 - name: Ensure tigervnc server and plugins are present
   apt:
@@ -23,27 +24,22 @@
     owner: "{{ vnc_unix_user }}"
   tags: vnc_passwd
 
-
 - name: Ensure password is configured
   # with vncpasswd -f the password has to end with \n
   # moreover to generate a view password concat a second binary passwd to the first one
   shell: echo '{{ vnc_passwd_newline }}' | vncpasswd -f > /home/{{ vnc_unix_user }}/.vnc/passwd
-  args:
-    creates: /home/{{ vnc_unix_user }}/.vnc/passwd
   become: yes
   become_user: "{{ vnc_unix_user }}"
+  notify: Restart vncserver
   tags: vnc_passwd
 
 - name: Ensure some view only password is configured
   # moreover to generate a view only password concat a second binary passwd to the first one
-  shell: >
-    echo '{{ vnc_view_passwd_newline }}' | vncpasswd -f  >> /home/{{ vnc_unix_user }}/.vnc/passwd
-    && touch /home/{{ vnc_unix_user }}/.vnc/viewpass_ansible_indempotency_flag
-  args:
-    creates: /home/{{ vnc_unix_user }}/.vnc/viewpass_ansible_indempotency_flag
+  shell: echo '{{ vnc_view_passwd_newline }}' | vncpasswd -f  >> /home/{{ vnc_unix_user }}/.vnc/passwd
   become: yes
   become_user: "{{ vnc_unix_user }}"
   tags: vnc_passwd
+  notify: Restart vncserver
   when: vnc_view_passwd_newline is defined
 
 - name: Ensure xstartup config exist
@@ -52,11 +48,14 @@
     dest: /home/{{ vnc_unix_user }}/.vnc/xstartup
   become: yes
   become_user: "{{ vnc_unix_user }}"
+  notify: Restart vncserver
+  tags: xstartup_config
 
 - name: Ensure vncserver service exist
   template:
     src: vncserver.service.j2
     dest: /etc/systemd/system/vncserver@.service
+  notify: Restart vncserver
 
 - name: Ensure vncserver service is enabled and started on screen :1 and port 5901
   systemd:
