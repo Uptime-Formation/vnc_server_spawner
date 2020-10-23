@@ -12,5 +12,3 @@ vnc_base_screen_res: 1300x700
 vnc_local_access_only: "yes"
 
 vnc_unix_user: ~
-
-vnc_customize_xfce: yes

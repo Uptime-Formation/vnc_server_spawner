@@ -63,7 +63,3 @@
     state: started
     daemon_reload: yes
     enabled: yes
-
-- name: Configure XFCE Desktop
-  include_tasks: customize_xfce_desktop.yml
-  when: vnc_customize_xfce
