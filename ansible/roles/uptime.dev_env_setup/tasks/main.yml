@@ -28,4 +28,5 @@
   snap:
     name: kubectl
     state: "{{ kubectl_state }}"
+    classic: yes
  
