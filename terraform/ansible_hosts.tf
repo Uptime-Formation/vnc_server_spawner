@@ -8,15 +8,17 @@ resource "ansible_host" "ansible_vnc_servers" {
   groups = ["all", "hcloud", "vnc_servers", "vnc_servers_stagiaires"]
   vars = {
     ansible_host = element(hcloud_server.vnc_servers.*.ipv4_address, count.index)
+    username = element(local.vnc_servers, count.index)
   }
 }
 
 resource "ansible_host" "ansible_vnc_servers_formateur" {
   count = length(local.vnc_servers_formateur)
-  inventory_hostname = "vnc-${element(local.vnc_servers_formateur, count.index)}"
+  inventory_hostname = "vnc-formateur-${element(local.vnc_servers_formateur, count.index)}"
   groups = ["all", "hcloud", "vnc_servers", "vnc_servers_formateur"]
   vars = {
     ansible_host = element(hcloud_server.vnc_servers_formateur.*.ipv4_address, count.index)
+    username = element(local.vnc_servers_formateur, count.index)
   }
 }
 

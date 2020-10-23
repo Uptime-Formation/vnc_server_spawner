@@ -1,0 +1,5 @@
+- hosts: vnc_servers
+  become: yes
+
+  roles:
+    - name: uptime.customize_xfce

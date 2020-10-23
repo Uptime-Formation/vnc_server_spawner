@@ -1,3 +1,4 @@
 guac_path: /guacamole-docker-compose
-guac_passwd: ~
+guac_stagiaire_passwd: ~
+guac_formateur_passwd: ~
 guac_vnc_servers_autoconfig: yes

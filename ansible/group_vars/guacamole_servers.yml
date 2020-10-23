@@ -1,2 +1,4 @@
 guac_path: /guacamole-docker-compose
-guac_passwd: devops101 
+guac_stagiaire_passwd: devops101
+guac_formateur_passwd: devops202
+base_unix_user: guacamole
