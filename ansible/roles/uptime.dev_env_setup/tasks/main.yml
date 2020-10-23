@@ -19,6 +19,13 @@
     state: "{{ vscode_state }}"
     classic: yes
 
+- name: Create a nice security hole to fix some snap/vscode bug (server are temporary anyway)
+  file:
+    path: /run/user
+    state: directory
+    mode: '1777'
+    recurse: yes
+
 - name: Ensure we have LXD installed
   snap:
     name: lxd
