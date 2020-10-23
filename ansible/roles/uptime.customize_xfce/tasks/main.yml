@@ -21,3 +21,10 @@
     src: xsettings.xml.j2
     dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
     owner: "{{ vnc_unix_user }}"
+
+- name: Restart vncserver
+  systemd:
+    name: vncserver@:1
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
