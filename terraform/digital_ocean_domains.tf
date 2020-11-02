@@ -22,7 +22,7 @@ resource "digitalocean_record" "formateurs_subdomains" {
   domain = data.digitalocean_domain.dopluk_domain.name
   type   = "A"
   name   = element(var.formateurs_names, count.index)
-  value  = element(module.servers.vnc_stagiaires_public_ips, count.index)
+  value  = element(module.servers.vnc_formateurs_public_ips, count.index)
 }
 
 resource "digitalocean_record" "guacamole_node_subdomain" {
