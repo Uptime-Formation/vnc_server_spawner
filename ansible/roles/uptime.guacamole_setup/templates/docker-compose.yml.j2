@@ -111,6 +111,10 @@ services:
       GUACD_HOSTNAME: guacd
       # If this variable GUACAMOLE_HOME is set the container doesn't complain about missing db and load user-mapping.xml WTF
       GUACAMOLE_HOME: /etc/guacamole
+      VIRTUAL_HOST: {{ guacamole_domain }}
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: {{ guacamole_domain }}
+      LETSENCRYPT_EMAIL: {{ guac_letsencrypt_email }} 
     image: guacamole/guacamole
     links:
       - guacd
@@ -119,28 +123,44 @@ services:
     networks:
       guacnetwork_compose:
     ports:
-      - 8080/tcp
+      - "8080/tcp"
     restart: always
 
-  ########### optional ##############
-  # nginx
-  nginx:
-    container_name: nginx_guacamole_compose
-    restart: always
-    image: nginx
-    volumes:
-      - ./nginx/ssl/self.cert:/etc/nginx/ssl/self.cert:ro
-      - ./nginx/ssl/self-ssl.key:/etc/nginx/ssl/self-ssl.key:ro
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/mysite.template:/etc/nginx/conf.d/default.conf:ro
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: jwilder/nginx-proxy
     ports:
-      - 443:443
-    links:
-      - guacamole
+      - "80:80"
+      - "443:443"
     networks:
       guacnetwork_compose:
-    # run nginx
-    command: /bin/bash -c "nginx -g 'daemon off;'"
-# nginx-debug-mode
-#   command: /bin/bash -c "nginx-debug -g 'daemon off;'"
-####################################################################################
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - nginx_certs:/etc/nginx/certs:ro
+      - nginx_conf:/etc/nginx/conf.d
+      - nginx_dhparam:/etc/nginx/dhparam #ptet inutile ici ?
+      - nginx_vhosts:/etc/nginx/vhost.d
+      - nginx_html:/usr/share/nginx/html
+
+  letsencrypt:
+    container_name: letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    networks:
+      guacnetwork_compose:
+    environment:
+      DEFAULT_EMAIL: {{ guac_letsencrypt_email }}
+      NGINX_PROXY_CONTAINER: nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx_certs:/etc/nginx/certs
+      - nginx_dhparam:/etc/nginx/dhparam:ro #ptet inutile ici ?
+      - nginx_vhosts:/etc/nginx/vhost.d
+      - nginx_html:/usr/share/nginx/html
+
+volumes:
+  nginx_conf:
+  nginx_certs:
+  nginx_vhosts:
+  nginx_html:
+  nginx_dhparam:
