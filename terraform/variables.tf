@@ -1,13 +1,21 @@
 variable "stagiaires_names" {
   default = [
-    "stagiaire1",
-    "stagiaire2",
+    "cedriclavanche",
+    "emmanuelaubert",
+    "jeromedescharmes",
+    "julienpellet",
+    "mathieuogier",
+    "mathieurichecoeur",
+    "quentinfetiveau",
+    "sebastienbaffert",
+    "sandracharbonnier",
+    "emmanuelrougier",
+    "antoinegalanti",
   ]
 }
 
 variable "formateurs_names" {
   default = [
-    "elie",
-    "hadrien",
+    "eliegavoty",
   ]
 }
