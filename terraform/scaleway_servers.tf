@@ -1,8 +1,14 @@
-variable "scaleway_token" {}
+variable "scaleway_api_access_key" {}
+variable "scaleway_api_secret_key" {}
+variable "scaleway_orga_id" {}
 
-# Configure the Hetzner Cloud Provider
+# Configure Scaleway Provider
 provider "scaleway" {
-  token = var.scaleway_token
+  access_key      = var.scaleway_api_access_key
+  secret_key      = var.scaleway_api_secret_key
+  organization_id = var.scaleway_orga_id
+  zone            = "fr-par-1"
+  region          = "fr-par"
 }
 
 locals {
@@ -33,7 +39,6 @@ resource "scaleway_instance_server" "vnc_servers" {
   name  = "vnc-server-${element(local.vnc_servers, count.index)}"
   type = "DEV1-L"
   image = "ubuntu-focal"
-  location = "fr-par-1"
 }
 
 resource "scaleway_instance_server" "vnc_servers_formateur" {
@@ -41,12 +46,10 @@ resource "scaleway_instance_server" "vnc_servers_formateur" {
   name  = "vnc-server-formateur-${element(local.vnc_servers_formateur, count.index)}"
   type = "DEV1-L"
   image = "ubuntu-focal"
-#   location = "nbg1"
 }
 
 resource "scaleway_instance_server" "guacamole_server" {
   name  = "guacamole-server"
   type = "DEV1-L"
   image = "ubuntu_focal"
-  location = "fr-par-1"
 }
