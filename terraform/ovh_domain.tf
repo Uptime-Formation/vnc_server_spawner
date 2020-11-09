@@ -11,7 +11,8 @@ provider "ovh" {
 }
 
 data "ovh_domain_zone" "doxx_domain" {
-    name = "lab.doxx.fr"
+    name = "doxx.fr"
+    # name = "lab.doxx.fr"
 }
 # variable "doxx_domain" {
 #   type = string
@@ -32,16 +33,17 @@ data "ovh_domain_zone" "doxx_domain" {
 # }
 
 # Add a record to a sub-domain
-# resource "ovh_domain_zone_record" "vnc_node_subdomains" {
-#     count = length(local.vnc_servers)
-#     zone = "lab.doxx.fr"
-#     subdomain = "test"
-#     fieldtype = "A"
-#     ttl = "3600"
-#     target = element(scaleway_instance_server.vnc_servers.*.public_ip, count.index)
-# }
 resource "ovh_domain_zone_record" "vnc_node_subdomains" {
     count = length(local.vnc_servers)
+    zone = data.ovh_domain_zone.doxx_domain.name
+    # subdomain = element(scaleway_instance_server.vnc_servers.*.public_ip, count.index)
+    subdomain = "${element(local.vnc_servers, count.index)}.lab"
+    fieldtype = "A"
+    ttl = "3600"
+    target = element(scaleway_instance_server.vnc_servers.*.public_ip, count.index)
+}
+
+resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
     zone = data.ovh_domain_zone.doxx_domain.name
     subdomain = "guacamole"
     fieldtype = "A"

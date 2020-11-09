@@ -28,17 +28,22 @@ locals {
   ]
 }
 
+resource "scaleway_instance_ip" "vnc_servers" {
+  count = length(local.vnc_servers)
+}
 
-# data "scaleway_account_ssh_key" "MBP" {
-#   name  = "MBP"
-# }
+resource "scaleway_instance_ip" "vnc_servers_formateur" {
+    count = length(local.vnc_servers_formateur)
+}
 
+resource "scaleway_instance_ip" "guacamole_server" {}
 
 resource "scaleway_instance_server" "vnc_servers" {
   count = length(local.vnc_servers)
   name  = "vnc-server-${element(local.vnc_servers, count.index)}"
   type = "DEV1-L"
   image = "ubuntu-focal"
+  ip_id = scaleway_instance_ip.vnc_servers[count.index].id
 }
 
 resource "scaleway_instance_server" "vnc_servers_formateur" {
@@ -46,10 +51,13 @@ resource "scaleway_instance_server" "vnc_servers_formateur" {
   name  = "vnc-server-formateur-${element(local.vnc_servers_formateur, count.index)}"
   type = "DEV1-L"
   image = "ubuntu-focal"
+  ip_id = scaleway_instance_ip.vnc_servers_formateur[count.index].id
+
 }
 
 resource "scaleway_instance_server" "guacamole_server" {
   name  = "guacamole-server"
   type = "DEV1-L"
   image = "ubuntu_focal"
+  ip_id = scaleway_instance_ip.guacamole_server.id
 }
