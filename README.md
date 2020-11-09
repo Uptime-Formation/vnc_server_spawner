@@ -11,13 +11,13 @@ With Ansible installed and an inventory configured:
 
 ### Terraform
 
-Configure your Terraform tokens, then:
+Configure your Terraform tokens and install the required plugins (see below), then:
 ```bash
 source env_file
 ./cloud_cli.sh setup_full
 ```
 
-### Ansible plugin to use Ansible as provider in Terraform
+#### Ansible plugin
 
-You need the Ansible provider for Terraform here: <https://github.com/nbering/terraform-provider-ansible/>
-Copy binary to ~/.terraform.d/plugins/
+To use Ansible as provider in Terraform, you need the Ansible provider here: <https://github.com/nbering/terraform-provider-ansible/>
+Copy the downloaded binary to `~/.terraform.d/plugins/`.
