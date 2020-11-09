@@ -1,4 +1,4 @@
-base_user_password: pommedeterre
+base_user_password: devops101
 allow_passwd_ssh_connection: "yes"
 ssh_public_key: /home/elie/.ssh/id_ed25519.pub
 

@@ -3,24 +3,22 @@
 # Copy binary to ~/.terraform.d/plugins/
 
 resource "ansible_host" "ansible_vnc_servers" {
-  count = length(local.vnc_servers)
-  inventory_hostname = "vnc-${element(local.vnc_servers, count.index)}"
-  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires"]
-  # groups = ["all", "hcloud", "vnc_servers", "vnc_servers_stagiaires"]
+  count = length(module.servers.vnc_stagiaires_public_ips)
+  inventory_hostname = "vnc-${element(var.stagiaires_names, count.index)}"
+  groups = ["all", "hcloud", "vnc_servers", "vnc_servers_stagiaires"]
   vars = {
-    ansible_host = element(scaleway_instance_server.vnc_servers.*.public_ip, count.index)
-    # ansible_host = element(hcloud_server.vnc_servers.*.ipv4_address, count.index)
-    username = element(local.vnc_servers, count.index)
+    ansible_host = element(module.servers.vnc_stagiaires_public_ips, count.index)
+    username = element(var.stagiaires_names, count.index)
   }
 }
 
 resource "ansible_host" "ansible_vnc_servers_formateur" {
-  count = length(local.vnc_servers_formateur)
-  inventory_hostname = "vnc-formateur-${element(local.vnc_servers_formateur, count.index)}"
-  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_formateur"]
+  count = length(var.formateurs_names)
+  inventory_hostname = "vnc-formateur-${element(var.formateurs_names, count.index)}"
+  groups = ["all", "hcloud", "vnc_servers", "vnc_servers_formateur"]
   vars = {
-    ansible_host = element(scaleway_instance_server.vnc_servers_formateur.*.public_ip, count.index)
-    username = element(local.vnc_servers_formateur, count.index)
+    ansible_host = element(module.servers.vnc_formateurs_public_ips, count.index)
+    username = element(var.formateurs_names, count.index)
   }
 }
 
@@ -28,7 +26,7 @@ resource "ansible_host" "ansible_guacamole_server" {
   inventory_hostname = "guacamole-server"
   groups = ["all", "scaleway", "guacamole_servers"]
   vars = {
-    ansible_host = scaleway_instance_server.guacamole_server.public_ip
+    ansible_host = module.servers.guacamole_public_ip
   }
 }
 
