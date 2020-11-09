@@ -3,7 +3,18 @@
 With Ansible, Terraform, Tigervnc and Guacamole.
 
 ## Usage
-With Ansible installed and an inventory configured (Terraform or plain Ansible):
+
+### Ansible-only
+
+With Ansible installed and an inventory configured:
 `ansible-playbook -i $INVENTORY_PATH site.yml`
 
+### Terraform
 
+Configure your Terraform tokens, then:
+`./cloud_cli.sh setup_full`
+
+### Ansible plugin to use Ansible as provider in Terraform
+
+You need the Ansible provider for Terraform here: <https://github.com/nbering/terraform-provider-ansible/>
+Copy binary to ~/.terraform.d/plugins/
