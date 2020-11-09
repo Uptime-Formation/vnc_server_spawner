@@ -1,5 +1,5 @@
 guac_path: /guacamole-docker-compose
-guacamole_domain: guacamole.dopl.uk
+# guacamole_domain: guacamole.dopl.uk
 guac_letsencrypt_email: eliegavoty@free.fr
 guac_stagiaire_passwd: devops101
 guac_formateur_passwd: devops202
