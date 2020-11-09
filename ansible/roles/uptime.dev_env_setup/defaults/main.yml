@@ -1,5 +1,5 @@
 firefox_state: present
 vscode_state: present
-lxd_state: present
-docker_state: present
-kubectl_state: present
+lxd_state: absent
+docker_state: absent
+kubectl_state: absent

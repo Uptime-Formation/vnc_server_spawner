@@ -4,3 +4,8 @@
   roles:
     - name: uptime.tigervnc_setup
     - name: uptime.dev_env_setup
+    - name: uptime.docker_setup
+      vars:
+        docker_users:
+          - "{{ base_unix_user }}"
+      when: "{{ docker_state }} == present"

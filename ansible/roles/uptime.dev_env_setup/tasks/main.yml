@@ -29,12 +29,12 @@
     state: "directory"
     owner: "{{ base_unix_user }}"
 
-- name: Ensure we have LXD installed
+- name: Ensure we have LXD installed or not
   snap:
     name: lxd
     state: "{{ lxd_state }}"
 
-- name: Ensure we have kubectl installed
+- name: Ensure we have kubectl installed or not
   snap:
     name: kubectl
     state: "{{ kubectl_state }}"
