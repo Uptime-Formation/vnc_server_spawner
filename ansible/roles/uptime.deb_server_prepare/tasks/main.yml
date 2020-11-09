@@ -22,8 +22,8 @@
   lineinfile:
     dest: /etc/sudoers
     state: present
-    regexp: '^%sudo'
-    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    regexp: "^%sudo"
+    line: "%sudo ALL=(ALL) NOPASSWD: ALL"
     validate: visudo -cf %s
   when: passwordless_sudo
 
@@ -61,9 +61,10 @@
     state: directory
     path: /home/{{ base_unix_user }}/.ssh
 
-- name: Configure {{ base_unix_user }} authorized_keys
+- name: Configure {{ base_unix_user }} authorized_keys if a public key was defined
   copy:
     src: "{{ ssh_public_key }}"
     dest: /home/{{ base_unix_user }}/.ssh/authorized_keys
     owner: "{{ base_unix_user }}"
     group: "{{ base_unix_user }}"
+  when: ssh_public_key|bool
