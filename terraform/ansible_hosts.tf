@@ -27,6 +27,7 @@ resource "ansible_host" "ansible_guacamole_server" {
   groups = ["all", "scaleway", "guacamole_servers"]
   vars = {
     ansible_host = module.servers.guacamole_public_ip
+    guacamole_domain = module.domains.guacamole_domain
   }
 }
 

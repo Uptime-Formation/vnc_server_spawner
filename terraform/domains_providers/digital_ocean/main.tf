@@ -37,3 +37,7 @@ resource "digitalocean_record" "guacamole_node_subdomain" {
   name   = "guacamole"
   value  = var.guacamole_public_ip
 }
+
+output "guacamole_domain" {
+  value = "guacamole.${data.digitalocean_domain.dopluk_domain.name}"
+}
