@@ -8,4 +8,4 @@
       vars:
         docker_users:
           - "{{ base_unix_user }}"
-      when: "{{ docker_state }} == present"
+      when: docker_state == "present"
