@@ -15,11 +15,11 @@ locals {
   vnc_servers = [
     "stagiaire1",
     "stagiaire2",
-    "stagiaire3",
-    "stagiaire4",
-    "stagiaire5",
-    "stagiaire6",
-    "stagiaire7",
+    # "stagiaire3",
+    # "stagiaire4",
+    # "stagiaire5",
+    # "stagiaire6",
+    # "stagiaire7",
   ]
 
   vnc_servers_formateur = [
