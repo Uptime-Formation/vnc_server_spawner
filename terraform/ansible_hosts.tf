@@ -5,9 +5,11 @@
 resource "ansible_host" "ansible_vnc_servers" {
   count = length(local.vnc_servers)
   inventory_hostname = "vnc-${element(local.vnc_servers, count.index)}"
-  groups = ["all", "hcloud", "vnc_servers", "vnc_servers_stagiaires"]
+  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires"]
+  # groups = ["all", "hcloud", "vnc_servers", "vnc_servers_stagiaires"]
   vars = {
-    ansible_host = element(hcloud_server.vnc_servers.*.ipv4_address, count.index)
+    ansible_host = element(scaleway_instance_server.vnc_servers.*.ipv4_address, count.index)
+    # ansible_host = element(hcloud_server.vnc_servers.*.ipv4_address, count.index)
     username = element(local.vnc_servers, count.index)
   }
 }
@@ -15,18 +17,18 @@ resource "ansible_host" "ansible_vnc_servers" {
 resource "ansible_host" "ansible_vnc_servers_formateur" {
   count = length(local.vnc_servers_formateur)
   inventory_hostname = "vnc-formateur-${element(local.vnc_servers_formateur, count.index)}"
-  groups = ["all", "hcloud", "vnc_servers", "vnc_servers_formateur"]
+  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_formateur"]
   vars = {
-    ansible_host = element(hcloud_server.vnc_servers_formateur.*.ipv4_address, count.index)
+    ansible_host = element(scaleway_instance_server.vnc_servers_formateur.*.ipv4_address, count.index)
     username = element(local.vnc_servers_formateur, count.index)
   }
 }
 
 resource "ansible_host" "ansible_guacamole_server" {
   inventory_hostname = "guacamole-server"
-  groups = ["all", "hcloud", "guacamole_servers"]
+  groups = ["all", "scaleway", "guacamole_servers"]
   vars = {
-    ansible_host = hcloud_server.guacamole_server.ipv4_address
+    ansible_host = scaleway_instance_server.guacamole_server.ipv4_address
   }
 }
 
