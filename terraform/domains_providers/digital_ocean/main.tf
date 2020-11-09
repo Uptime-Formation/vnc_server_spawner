@@ -1,6 +1,12 @@
 
 variable "digitalocean_token" {}
 
+variable "stagiaires_names" {}
+variable "formateurs_names" {}
+variable "vnc_stagiaires_public_ips" {}
+variable "vnc_formateurs_public_ips" {}
+variable "guacamole_public_ip" {}
+
 provider "digitalocean" {
   token = var.digitalocean_token
 }
@@ -14,7 +20,7 @@ resource "digitalocean_record" "stagiaires_subdomains" {
   domain = data.digitalocean_domain.dopluk_domain.name
   type   = "A"
   name   = element(var.stagiaires_names, count.index)
-  value  = element(module.servers.vnc_stagiaires_public_ips, count.index)
+  value  = element(var.vnc_stagiaires_public_ips, count.index)
 }
 
 resource "digitalocean_record" "formateurs_subdomains" {
@@ -22,12 +28,12 @@ resource "digitalocean_record" "formateurs_subdomains" {
   domain = data.digitalocean_domain.dopluk_domain.name
   type   = "A"
   name   = element(var.formateurs_names, count.index)
-  value  = element(module.servers.vnc_formateurs_public_ips, count.index)
+  value  = element(var.vnc_formateurs_public_ips, count.index)
 }
 
 resource "digitalocean_record" "guacamole_node_subdomain" {
   domain = data.digitalocean_domain.dopluk_domain.name
   type   = "A"
   name   = "guacamole"
-  value  = module.servers.guacamole_public_ip
+  value  = var.guacamole_public_ip
 }

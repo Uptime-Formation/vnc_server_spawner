@@ -20,7 +20,7 @@ resource "scaleway_instance_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
   name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
   image = "ubuntu_focal"
-  ip_id = "${element(scaleway_instance_ip.vnc_servers_stagiaires_ips.*.id, count.index)}"
+  ip_id = element(scaleway_instance_ip.vnc_servers_stagiaires_ips.*.id, count.index)
   type  = "DEV1-L"
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
@@ -34,7 +34,7 @@ resource "scaleway_instance_server" "vnc_servers_formateurs" {
   count = length(var.formateurs_names)
   name  = "vnc-server-${element(var.formateurs_names, count.index)}"
   image = "ubuntu_focal"
-  ip_id = "${element(scaleway_instance_ip.vnc_servers_formateurs_ips.*.id, count.index)}"
+  ip_id = element(scaleway_instance_ip.vnc_servers_formateurs_ips.*.id, count.index)
   type  = "DEV1-L"
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
@@ -45,7 +45,7 @@ resource "scaleway_instance_ip" "guacamole_server_ip" {
 resource "scaleway_instance_server" "guacamole_server" {
   name  = "guacamole-server"
   image = "ubuntu_focal"
-  ip_id = "${scaleway_instance_ip.guacamole_server_ip.id}"
+  ip_id = scaleway_instance_ip.guacamole_server_ip.id
   type  = "DEV1-L"
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
