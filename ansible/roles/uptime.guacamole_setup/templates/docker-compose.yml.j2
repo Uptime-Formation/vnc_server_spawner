@@ -140,8 +140,9 @@ services:
       - nginx_certs:/etc/nginx/certs:ro
       - nginx_conf:/etc/nginx/conf.d
       - nginx_dhparam:/etc/nginx/dhparam #ptet inutile ici ?
-      - nginx_vhosts:/etc/nginx/vhost.d
       - nginx_html:/usr/share/nginx/html
+
+      - /nginx_vhosts:/etc/nginx/vhost.d
 
   letsencrypt:
     container_name: letsencrypt

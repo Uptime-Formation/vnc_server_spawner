@@ -35,6 +35,18 @@
   notify:
     - Restart Guacamole
 
+- name: Ensure nginx nginx_vhosts dir is created
+  file:
+    path: "/nginx_vhosts"
+    state: directory
+  tags: guacamole_config
+
+- name: Ensure nginx default_locations file is copied
+  template:
+    src: default_locations.j2
+    dest: "/nginx_vhosts/"
+  tags: guacamole_config
+
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
