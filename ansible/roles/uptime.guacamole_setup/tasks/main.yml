@@ -32,11 +32,12 @@
     src: user-mapping.xml.j2
   when: guac_vnc_servers_autoconfig
   tags: guacamole_config
+  notify:
+    - Restart Guacamole
 
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
-    # restarted: yes
     # register: output
 
 

@@ -1,0 +1,4 @@
+- name: Restart Guacamole
+  community.general.docker_compose:
+    project_src: "{{ guac_path }}"
+    restarted: yes
