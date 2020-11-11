@@ -6,7 +6,7 @@
 - name: Ensure docker repo present
   git:
     dest: "{{ guac_path }}"
-    repo: https://github.com/boschkundendienst/guacamole-docker-compose.git # required. git, SSH, or HTTP(S) protocol address of the git repository.
+    repo: https://github.com/Uptime-Formation/guacamole-docker-compose.git # required. git, SSH, or HTTP(S) protocol address of the git repository.
     update: no
   tags: guac_install
   register: guac_code
