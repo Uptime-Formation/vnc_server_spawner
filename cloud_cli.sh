@@ -35,7 +35,7 @@ _setup_ansible() {
   printf "##############################################\\n"
   cd "$ANSIBLE_DIR"
   # ansible-galaxy install -i -r roles/requirements.yml -p roles
-  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK} 
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK} -vv
   cd "$PROJECT_DIR"
 }
 
@@ -73,6 +73,9 @@ _main() {
   then
     _recreate_infra
   elif [[ "${1:-}" =~ ^setup_full$  ]]
+  then
+    _setup_full
+  elif [[ "${1:-}" =~ ^setup_all$  ]]
   then
     _setup_full
   else
