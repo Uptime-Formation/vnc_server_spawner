@@ -43,13 +43,16 @@
 
 - name: Ensure nginx default_locations file is copied
   template:
-    src: default_locations.j2
-    dest: "/nginx_vhosts/"
+    src: nginx.conf.j2
+    dest: "/nginx_vhosts/{{ guacamole_domain }}_locations"
   tags: guacamole_config
+  notify:
+    - Restart guacamole nginx
 
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
-    # register: output
+    state: present
+  register: guac_compose
 
 
