@@ -63,7 +63,7 @@
 #                                      simplified nginx startup commands
 ####################################################################################
 
-version: "2.0"
+version: "3"
 
 # networks
 # create a network 'guacnetwork_compose' in mode 'bridged'
@@ -78,7 +78,7 @@ services:
     container_name: guacd_compose
     image: guacamole/guacd
     networks:
-      guacnetwork_compose:
+      - guacnetwork_compose
     restart: always
     volumes:
       - ./drive:/drive:rw
@@ -99,12 +99,10 @@ services:
       LETSENCRYPT_HOST: {{ guacamole_domain }}
       LETSENCRYPT_EMAIL: {{ guac_letsencrypt_email }} 
     image: guacamole/guacamole
-    links:
-      - guacd
     volumes:
       - {{ guac_path }}/user-mapping.xml:/etc/guacamole/user-mapping.xml
     networks:
-      guacnetwork_compose:
+      - guacnetwork_compose
     ports:
       - "8080/tcp"
     restart: always
@@ -117,12 +115,14 @@ services:
 
   nginx-proxy:
     container_name: nginx-proxy
+    depends_on:
+     - letsencrypt
     image: uptimeformation/nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     networks:
-      guacnetwork_compose:
+      - guacnetwork_compose
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - nginx_certs:/etc/nginx/certs:ro
@@ -133,7 +133,7 @@ services:
       - /nginx_vhosts:/etc/nginx/vhost.d
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      test: ["CMD", "curl", "-f", "https://{{ guacamole_domain }}:443"]
       interval: 30s
       timeout: 10s
       retries: 10
@@ -141,9 +141,11 @@ services:
 
   letsencrypt:
     container_name: letsencrypt
+    # depends_on:
+    #  - nginx-proxy
     image: jrcs/letsencrypt-nginx-proxy-companion
     networks:
-      guacnetwork_compose:
+      - guacnetwork_compose
     environment:
       DEFAULT_EMAIL: {{ guac_letsencrypt_email }}
       NGINX_PROXY_CONTAINER: nginx-proxy
@@ -158,6 +160,5 @@ services:
 volumes:
   nginx_conf:
   nginx_certs:
-  nginx_vhosts:
   nginx_html:
   nginx_dhparam:

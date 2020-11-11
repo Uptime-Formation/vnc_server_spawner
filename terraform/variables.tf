@@ -7,7 +7,7 @@ variable "stagiaires_names" {
 
 variable "formateurs_names" {
   default = [
-    "eliegavoty",
-    # "hadrien",
+    # "eliegavoty",
+    "hadrien",
   ]
 }
