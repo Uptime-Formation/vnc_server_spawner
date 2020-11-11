@@ -115,8 +115,8 @@ services:
 
   nginx-proxy:
     container_name: nginx-proxy
-    depends_on:
-     - letsencrypt
+    # depends_on:
+    # - letsencrypt
     image: uptimeformation/nginx-proxy
     ports:
       - "80:80"
@@ -141,8 +141,8 @@ services:
 
   letsencrypt:
     container_name: letsencrypt
-    # depends_on:
-    #  - nginx-proxy
+    depends_on:
+     - nginx-proxy
     image: jrcs/letsencrypt-nginx-proxy-companion
     networks:
       - guacnetwork_compose

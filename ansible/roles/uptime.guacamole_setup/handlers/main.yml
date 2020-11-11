@@ -18,5 +18,6 @@
     project_src: "{{ guac_path }}"
     services:
       - nginx-proxy
+      - letsencrypt
     state: present
     restarted: yes
