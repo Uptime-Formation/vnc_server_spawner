@@ -36,6 +36,7 @@ module "domains" {
   vnc_stagiaires_public_ips = module.servers.vnc_stagiaires_public_ips
   vnc_formateurs_public_ips = module.servers.vnc_formateurs_public_ips
   guacamole_public_ip       = module.servers.guacamole_public_ip
+  bbb_public_ip       = module.servers.bbb_public_ip
 }
 
 # module "domains" {

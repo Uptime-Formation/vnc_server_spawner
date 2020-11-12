@@ -2,3 +2,4 @@
 - import_playbook: playbooks/vnc_servers.yml
 - import_playbook: playbooks/guacamole_servers.yml
 - import_playbook: playbooks/customize_xfce_vnc.yml
+- import_playbook: playbooks/bbb_servers.yml

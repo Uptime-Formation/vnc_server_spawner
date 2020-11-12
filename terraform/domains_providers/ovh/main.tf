@@ -47,6 +47,14 @@ resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
   target    = var.guacamole_public_ip
 }
 
-output "guacamole_domain" {
-  value = "guacamole.${data.ovh_domain_zone.doxx_domain.name}"
+resource "ovh_domain_zone_record" "bbb_subdomain" {
+  zone      = data.ovh_domain_zone.doxx_domain.name
+  subdomain = "bbb"
+  fieldtype = "A"
+  ttl       = "0"
+  target    = var.bbb_public_ip
+}
+
+output "bbb_domain" {
+  value = "bbb.${data.ovh_domain_zone.doxx_domain.name}"
 }

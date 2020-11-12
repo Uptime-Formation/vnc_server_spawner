@@ -50,6 +50,18 @@ resource "scaleway_instance_server" "guacamole_server" {
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
+
+resource "scaleway_instance_ip" "bbb_server_ip" {
+}
+
+resource "scaleway_instance_server" "bbb_server" {
+  name  = "bbb-server"
+  image = "ubuntu_focal"
+  ip_id = scaleway_instance_ip.bbb_server_ip.id
+  type  = "DEV1-L"
+  # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
+}
+
 output "vnc_stagiaires_public_ips" {
   value = scaleway_instance_ip.vnc_servers_stagiaires_ips.*.address
 }
@@ -60,4 +72,8 @@ output "vnc_formateurs_public_ips" {
 
 output "guacamole_public_ip" {
   value = scaleway_instance_ip.guacamole_server_ip.address
+}
+
+output "bbb_public_ip" {
+  value = scaleway_instance_ip.bbb_server_ip.address
 }

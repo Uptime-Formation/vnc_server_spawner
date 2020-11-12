@@ -1,0 +1,17 @@
+- hosts: bbb_servers
+  become: yes
+  roles:
+    # geerlingguy.nodejs is a dependency
+    # - name: geerlingguy.nodejs
+    - name: uptime.docker_setup
+      vars:
+        docker_users:
+          - "{{ base_unix_user }}"
+    - name: n0emis.bigbluebutton
+      vars:
+        bbb_hostname: "{{ bbb_domain }}"
+        # To be changed of course
+        bbb_turn_secret: ee8d093109a9b273
+        bbb_greenlight_secret: 107308d54ff4a5f
+        bbb_greenlight_db_password: 2585c27c785e8895ec
+        bbb_letsencrypt_email: eliegavoty@free.fr
