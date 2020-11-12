@@ -1,6 +1,6 @@
 variable "stagiaires_names" {
   default = [
-    "demo",
+    "demo", # keep this to show the world the power of guacamole
     # "test2",
   ]
 }
