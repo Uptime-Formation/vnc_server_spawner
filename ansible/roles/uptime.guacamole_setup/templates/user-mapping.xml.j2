@@ -9,7 +9,7 @@
             <param name="port">5901</param>
             <param name="password">{{ guac_stagiaire_passwd }}</param>
         </connection>
-    {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
+    {% for vnc_server_formateur in groups['vnc_servers_formateurs'] %}
         <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
             <protocol>vnc</protocol>
             <param name="hostname">{{ hostvars[vnc_server_formateur].ansible_host }}</param>
@@ -23,7 +23,7 @@
 
 
 {# Every teacher/formateur has his server connection and all stagiaires servers connections #}
-{% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
+{% for vnc_server_formateur in groups['vnc_servers_formateurs'] %}
     <authorize username="{{ hostvars[vnc_server_formateur].username }}" password="{{ guac_formateur_passwd }}">
         <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
             <protocol>vnc</protocol>

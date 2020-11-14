@@ -1,13 +1,13 @@
-variable "stagiaires_names" {
-  default = [
-    "demo", # keep this to show the world the power of guacamole
-    # "test2",
-  ]
+variable "stagiaires" {
+  default = [{
+    name= "demo", # keep this to show the world the power of guacamole
+    password="devops101"
+  }]
 }
 
-variable "formateurs_names" {
-  default = [
-    # "eliegavoty",
-    "hadrien",
-  ]
+variable "formateurs" {
+  default = [{
+    name= "hadrien",
+    password="devops202"
+  }]
 }
