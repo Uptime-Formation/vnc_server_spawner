@@ -1,15 +1,15 @@
 variable "stagiaires" {
   default = [
     {
-    name= "demo", # keep this to show the world the power of guacamole
+    name= "demo", 
     password="devops101"
   },
     {
-    name= "stagiaire1", # keep this to show the world the power of guacamole
+    name= "stagiaire1", 
     password="stagiaire1_passwd"
   },
     {
-    name= "stagiaire2", # keep this to show the world the power of guacamole
+    name= "stagiaire2", 
     password="stagiaire2_passwd"
   }
   ]
