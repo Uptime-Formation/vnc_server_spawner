@@ -2,6 +2,8 @@
   apt:
     update_cache: yes
     upgrade: "yes"
+  environment:
+    - DEBIAN_FRONTEND: noninteractive
 
 - name: Ensure we have python3 tools installed
   apt:
@@ -39,6 +41,15 @@
     shell: /bin/bash
     groups: ["sudo"]
     append: yes
+    home: yes
+
+- name: Make sure {{ base_unix_user }} user owns its home
+  file:
+    path: /home/{{ base_unix_user }}
+    owner: "{{ base_unix_user }}"
+    group: "{{ base_unix_user }}"
+    recurse: yes
+
 
 - name: Allow user '{{ base_unix_user }}' ssh connexion
   lineinfile:
