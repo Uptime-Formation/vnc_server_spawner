@@ -9,13 +9,15 @@
     name: gdm3
     question: "shared/default-x-display-manager"
     vtype: "string"
-    value: "gdm3"
+    # value: "gdm3"
+    value: "lightdm"
 - name: prevent the xubuntu-desktop install dialog
   debconf: 
     name: lightdm
     question: "shared/default-x-display-manager"
     vtype: "string"
-    value: "gdm3"
+    value: "lightdm"
+    # value: "gdm3"
  # https://askubuntu.com/questions/1114525/reconfigure-the-display-manager-non-interactively
 
 - name: Ensure xubuntu-desktop and dbus-x11 are present
