@@ -41,7 +41,9 @@ resource "ovh_domain_zone_record" "formateurs_subdomains" {
 
 resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
   zone      = data.ovh_domain_zone.doxx_domain.name
-  subdomain = "guacamole"
+  # subdomain = "guacamole"
+  # Changing because of Let's Encrypt limit
+  subdomain = "lab"
   fieldtype = "A"
   ttl       = "0"
   target    = var.guacamole_public_ip
