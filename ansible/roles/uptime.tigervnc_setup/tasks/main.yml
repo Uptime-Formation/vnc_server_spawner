@@ -4,6 +4,20 @@
       - htop
       - vim
 
+- name: prevent the xubuntu-desktop install dialog
+  debconf: 
+    name: gdm3
+    question: "shared/default-x-display-manager"
+    vtype: "string"
+    value: "gdm3"
+- name: prevent the xubuntu-desktop install dialog
+  debconf: 
+    name: lightdm
+    question: "shared/default-x-display-manager"
+    vtype: "string"
+    value: "gdm3"
+ # https://askubuntu.com/questions/1114525/reconfigure-the-display-manager-non-interactively
+
 - name: Ensure xubuntu-desktop and dbus-x11 are present
   apt:
     name:
