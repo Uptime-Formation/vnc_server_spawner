@@ -35,7 +35,7 @@ _setup_ansible() {
   printf "##############################################\\n"
   cd "$ANSIBLE_DIR"
   # ansible-galaxy install -i -r roles/requirements.yml -p roles
-  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK} -vv
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK}
   cd "$PROJECT_DIR"
 }
 
