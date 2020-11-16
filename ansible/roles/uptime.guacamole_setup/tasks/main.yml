@@ -49,10 +49,30 @@
   notify:
     - Restart guacamole nginx
 
+- name: Push cert files from local path if they exist
+  ansible.posix.synchronize:
+    src: "{{ playbook_dir }}/stored_certs"
+    dest: /nginx_certs/
+    mode: push
+    recursive: yes
+    delete: no
+    times: yes
+
 - name: Ensure docker-compose guacamole is started
   community.general.docker_compose:
     project_src: "{{ guac_path }}"
     state: present
   register: guac_compose
 
+- name: Wait until the cert files are present before continuing
+  wait_for:
+    path: /nginx_certs/{{ guacamole_domain }}/fullchain.pem
 
+- name: Export cert files to local path
+# - name: Synchronization of src on the inventory host to the dest on the localhost in pull mode
+  ansible.posix.synchronize:
+    mode: pull
+    src: /nginx_certs/
+    dest: "{{ playbook_dir }}/stored_certs"
+    recursive: yes
+    times: yes
