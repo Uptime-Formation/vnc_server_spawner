@@ -64,7 +64,12 @@
     state: present
   register: guac_compose
 
-- name: Wait until the cert files are present before continuing
+- name: Wait until nginx-proxy is healthy
+  docker_container:
+    name: nginx-proxy
+    state: started
+    
+- name: Wait until one cert file is present before continuing
   wait_for:
     path: /nginx_certs/{{ guacamole_domain }}/fullchain.pem
 
@@ -74,5 +79,6 @@
     mode: pull
     src: /nginx_certs/
     dest: "{{ playbook_dir }}/stored_certs"
+    delete: no
     recursive: yes
     times: yes
