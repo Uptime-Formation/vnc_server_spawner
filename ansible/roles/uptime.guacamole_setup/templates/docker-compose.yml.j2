@@ -125,11 +125,11 @@ services:
       - guacnetwork_compose
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs:ro
       - nginx_conf:/etc/nginx/conf.d
       - nginx_dhparam:/etc/nginx/dhparam
       - nginx_html:/usr/share/nginx/html
 
+      - /nginx_certs:/etc/nginx/certs:ro
       - /nginx_vhosts:/etc/nginx/vhost.d
 
     healthcheck:
@@ -151,14 +151,13 @@ services:
       NGINX_PROXY_CONTAINER: nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs
       - nginx_dhparam:/etc/nginx/dhparam:ro
       - nginx_html:/usr/share/nginx/html
 
+      - /nginx_certs:/etc/nginx/certs
       - /nginx_vhosts:/etc/nginx/vhost.d
 
 volumes:
   nginx_conf:
-  nginx_certs:
   nginx_html:
   nginx_dhparam:
