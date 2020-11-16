@@ -20,6 +20,16 @@ data "ovh_domain_zone" "doxx_domain" {
   name = "doxx.fr"
 }
 
+data "ovh_domain_zone" "ethicaltech_domain" {
+  name = "ethicaltech.best"
+}
+data "ovh_domain_zone" "hp_domain" {
+  name = "hadrienpelissier.fr"
+}
+data "ovh_domain_zone" "uptime_domain" {
+  name = "uptime-formation.fr"
+}
+
 resource "ovh_domain_zone_record" "stagiaires_subdomains" {
   count     = length(var.stagiaires_names)
   zone      = data.ovh_domain_zone.doxx_domain.name
@@ -40,15 +50,16 @@ resource "ovh_domain_zone_record" "formateurs_subdomains" {
 }
 
 resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
-  zone      = data.ovh_domain_zone.doxx_domain.name
-  # subdomain = "guacamole"
   # Changing because of Let's Encrypt limit
+  zone      = data.ovh_domain_zone.hp_domain.name
   subdomain = "lab"
+  # zone      = data.ovh_domain_zone.doxx_domain.name
+  # subdomain = "guacamole"
   fieldtype = "A"
   ttl       = "0"
   target    = var.guacamole_public_ip
 }
 
 output "guacamole_domain" {
-  value = "guacamole.${data.ovh_domain_zone.doxx_domain.name}"
+  value = "${ovh_domain_zone_record.guacamole_node_subdomain.subdomain}.${ovh_domain_zone_record.guacamole_node_subdomain.zone}"
 }

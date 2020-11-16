@@ -14,9 +14,9 @@ HEREDOC
 
 _setup_full() {
   _setup_terraform
-  printf "Sleeping 15s to wait for VMs to boot fully\\n"
-  printf "##############################################\\n"
-  sleep 15
+  # printf "Sleeping 15s to wait for VMs to boot fully\\n"
+  # printf "##############################################\\n"
+  # sleep 15
   _setup_ansible
 }
 
