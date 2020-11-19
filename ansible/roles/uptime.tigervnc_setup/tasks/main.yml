@@ -1,5 +1,6 @@
 - name: Ensure some utils are present
   apt:
+    update_cache: yes
     name:
       - htop
       - vim
@@ -9,7 +10,6 @@
     name: gdm3
     question: "shared/default-x-display-manager"
     vtype: "string"
-    # value: "gdm3"
     value: "lightdm"
 - name: prevent the xubuntu-desktop install dialog
   debconf: 
@@ -17,7 +17,6 @@
     question: "shared/default-x-display-manager"
     vtype: "string"
     value: "lightdm"
-    # value: "gdm3"
  # https://askubuntu.com/questions/1114525/reconfigure-the-display-manager-non-interactively
 
 - name: Ensure xubuntu-desktop and dbus-x11 are present
@@ -25,6 +24,17 @@
     name:
       - xubuntu-desktop
       - dbus-x11 # necessary to use dbus-launch xfce workaround (https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session)
+
+- name: Ensure some unwanted packages are absent
+  apt:
+    name:
+      - ubuntu-desktop
+      - gdm3
+      # - light-locker
+      # - gvfs
+    state: absent
+    autoremove: yes
+    purge: yes
 
 - name: Ensure tigervnc server and plugins are present
   apt:

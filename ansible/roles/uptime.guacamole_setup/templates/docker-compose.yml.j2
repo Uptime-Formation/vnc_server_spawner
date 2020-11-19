@@ -84,6 +84,7 @@ services:
       - ./drive:/drive:rw
       - ./record:/record:rw
 
+
   # guacamole
   guacamole:
     container_name: guacamole_compose
@@ -111,10 +112,11 @@ services:
       interval: 30s
       timeout: 10s
       retries: 10
-      start_period: 40s
+      start_period: 60s
 
   nginx-proxy:
     container_name: nginx-proxy
+    restart: always
     # depends_on:
     # - letsencrypt
     image: uptimeformation/nginx-proxy
@@ -140,6 +142,7 @@ services:
       start_period: 10s
 
   letsencrypt:
+    restart: always
     container_name: letsencrypt
     depends_on:
      - nginx-proxy

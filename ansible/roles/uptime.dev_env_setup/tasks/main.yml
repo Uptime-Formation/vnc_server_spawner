@@ -1,4 +1,4 @@
-- name: Upgrade servers
+- name: Upgrade packages
   apt:
     update_cache: yes
     upgrade: "yes"
@@ -28,6 +28,7 @@
     path: "/run/user/{{ user_id.stdout }}"
     state: "directory"
     owner: "{{ base_unix_user }}"
+    recurse: true
 
 - name: Ensure we have LXD installed or not
   snap:
