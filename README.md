@@ -13,8 +13,7 @@ With Ansible installed and an inventory configured:
 
 Configure your Terraform tokens and install the required plugins (see below), then:
 ```bash
-source env_file
-./cloud_cli.sh setup_full
+./run.sh full
 ```
 
 #### Ansible plugin

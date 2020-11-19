@@ -4,7 +4,11 @@ set -o pipefail
 
 _print_help() {
   cat <<HEREDOC
-
+./run.sh setup or ./run.sh all or ./run.sh full: setup infra with terraform and ansible
+./run.sh terraform: setup infra with terraform only
+./run.sh ansible: setup infra with ansible only
+./run.sh destroy: destroy infra with terraform
+./run.sh recreate: recreate infra with terraform and ansible
 HEREDOC
 }
 
@@ -55,30 +59,28 @@ _recreate_infra() {
 }
 
 _main() {
-  source ./env_file
+  source ./.env
 
   if [[ "${1:-}" =~ ^-h|--help$  ]]
   then
     _print_help
-  elif [[ "${1:-}" =~ ^setup_terraform$  ]]
+  elif [[ "${1:-}" =~ ^terraform[\ setup]?$  ]]
   then
     _setup_terraform
-  elif [[ "${1:-}" =~ ^setup_ansible$  ]]
+  elif [[ "${1:-}" =~ ^ansible[\ setup]?$  ]]
   then
     _setup_ansible
-  elif [[ "${1:-}" =~ ^destroy_infra$  ]]
+  elif [[ "${1:-}" =~ ^destroy$  ]]
   then
     _destroy_infra
-  elif [[ "${1:-}" =~ ^recreate_infra$  ]]
+  elif [[ "${1:-}" =~ ^recreate$  ]]
   then
     _recreate_infra
-  elif [[ "${1:-}" =~ ^setup_full$  ]]
-  then
-    _setup_full
-  elif [[ "${1:-}" =~ ^setup_all$  ]]
+  elif [[ "${1:-}" =~ ^setup|all|full$  ]]
   then
     _setup_full
   else
+    # _setup_full
     _print_help
   fi
 }
