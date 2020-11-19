@@ -18,6 +18,7 @@ resource "ansible_host" "ansible_vnc_servers_stagiaires" {
     vnc_unix_user = element(local.stagiaires_names, count.index)
     vnc_passwd = element(var.stagiaires, count.index).password
     base_user_password = element(var.stagiaires, count.index).password
+    guac_passwd = element(var.stagiaires, count.index).password
   }
 }
 
@@ -32,6 +33,7 @@ resource "ansible_host" "ansible_vnc_servers_formateurs" {
       vnc_unix_user = element(local.formateurs_names, count.index)
       vnc_passwd = element(var.formateurs, count.index).password
       base_user_password = element(var.formateurs, count.index).password
+      guac_passwd = element(var.formateurs, count.index).password
 
   }
 }
