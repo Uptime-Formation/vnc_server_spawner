@@ -4,7 +4,7 @@
     dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
     owner: "{{ vnc_unix_user }}"
 
-- name: Set Xfce desktop background to solid color
+- name: Set Xfce desktop background to something nice
   template:
     src: xfce4-desktop.xml.j2
     dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
@@ -26,6 +26,7 @@
   lineinfile:
       path: /etc/xdg/autostart/light-locker.desktop
       line: Hidden=true
+      create: yes
 
 - name: Restart vncserver
   systemd:
