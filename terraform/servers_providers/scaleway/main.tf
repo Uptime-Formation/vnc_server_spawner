@@ -3,6 +3,7 @@ variable "formateurs_names" {}
 variable "scaleway_api_secret_key" {}
 variable "scaleway_api_access_key" {}
 variable "scaleway_orga_id" {}
+variable "servers_size" {}
 
 provider "scaleway" {
   access_key      = var.scaleway_api_access_key
@@ -21,7 +22,7 @@ resource "scaleway_instance_server" "vnc_servers_stagiaires" {
   name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
   image = "ubuntu_focal"
   ip_id = element(scaleway_instance_ip.vnc_servers_stagiaires_ips.*.id, count.index)
-  type  = "DEV1-L"
+  type  = var.servers_size
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
@@ -35,7 +36,7 @@ resource "scaleway_instance_server" "vnc_servers_formateurs" {
   name  = "vnc-server-${element(var.formateurs_names, count.index)}"
   image = "ubuntu_focal"
   ip_id = element(scaleway_instance_ip.vnc_servers_formateurs_ips.*.id, count.index)
-  type  = "DEV1-L"
+  type  = var.servers_size
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 

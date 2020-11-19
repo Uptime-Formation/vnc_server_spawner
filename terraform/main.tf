@@ -19,6 +19,7 @@ module "servers" {
   scaleway_orga_id        = var.scaleway_orga_id
   stagiaires_names        = local.stagiaires_names
   formateurs_names        = local.formateurs_names
+  servers_size = var.scaleway_servers_size
 }
 
 # module "servers" {
