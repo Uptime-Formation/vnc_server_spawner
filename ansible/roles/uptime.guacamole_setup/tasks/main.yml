@@ -51,7 +51,7 @@
 
 - name: Push cert files from local path if they exist
   ansible.posix.synchronize:
-    src: "{{ playbook_dir }}/stored_certs"
+    src: "{{ playbook_dir }}/../stored_certs"
     dest: /nginx_certs/
     mode: push
     recursive: yes
@@ -64,11 +64,16 @@
     state: present
   register: guac_compose
 
-- name: Wait until nginx-proxy is healthy
-  docker_container:
-    name: nginx-proxy
-    state: started
-    
+# - name: Check if nginx-proxy is healthy
+#   docker_container_info:
+#     name: nginx-proxy
+#   register: result
+
+# - name: Print information about container nginx-proxy
+#   debug:
+#     var: result.container.State.Health.Status == "healthy"
+#   when: result.exists
+
 - name: Wait until one cert file is present before continuing
   wait_for:
     path: /nginx_certs/{{ guacamole_domain }}/fullchain.pem
@@ -78,7 +83,7 @@
   ansible.posix.synchronize:
     mode: pull
     src: /nginx_certs/
-    dest: "{{ playbook_dir }}/stored_certs"
+    dest: "{{ playbook_dir }}/../stored_certs"
     delete: no
     recursive: yes
     times: yes
