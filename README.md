@@ -7,7 +7,7 @@ With Ansible, Terraform, Tigervnc and Guacamole.
 ### Ansible-only
 
 With Ansible installed and an inventory configured:
-`ansible-playbook -i $INVENTORY_PATH site.yml`
+`ansible-playbook -i $INVENTORY_PATH lab.yml`
 
 ### Terraform
 

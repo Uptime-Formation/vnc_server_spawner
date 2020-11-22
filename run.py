@@ -75,7 +75,7 @@ def _recreate_infra () :
     _setup_full()
 
 def _main () :
-    subprocess.call(["source","./.env"],shell=True)
+    subprocess.call(["source","./env"],shell=True)
     if (re.search("^-h|--help"+"$",sys.argv[1]) ):
         _print_help()
     elif (re.search("^terraform"+"$",sys.argv[1]) ):

@@ -1,5 +1,5 @@
 export ANSIBLE_INVENTORY=terraform-inventory.py
-export ANSIBLE_PLAYBOOK=site.yml
+export ANSIBLE_PLAYBOOK=lab.yml
 export ANSIBLE_TF_DIR=../terraform/
 export PROJECT_DIR=../
 export TERRAFORM_DIR=../terraform/

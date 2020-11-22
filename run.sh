@@ -59,7 +59,7 @@ _recreate_infra() {
 }
 
 _main() {
-  source ./.env
+  source ./env
 
   if [[ "${1:-}" =~ ^-h|--help$  ]]
   then
