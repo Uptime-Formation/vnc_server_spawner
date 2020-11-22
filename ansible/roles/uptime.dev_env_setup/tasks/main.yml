@@ -27,13 +27,15 @@
   file:
     path: "/run/user/{{ user_id.stdout }}"
     state: "directory"
+    mode: "0700"
     owner: "{{ base_unix_user }}"
     recurse: true
 
-- name: Ensure we have LXD installed or not
+- name: Ensure we have LXD installed if required, but don't uninstall it
   snap:
     name: lxd
     state: "{{ lxd_state }}"
+  when: lxd_state == "present"
 
 - name: Ensure we have kubectl installed or not
   snap:
