@@ -36,6 +36,12 @@
     autoremove: yes
     purge: yes
 
+- name: crash reporting off (light-locker and xorg crashes)
+  lineinfile:
+      regexp: '^enabled='
+      line: enabled=0
+      path: /etc/default/apport
+
 - name: Ensure tigervnc server and plugins are present
   apt:
     name:
