@@ -4,6 +4,7 @@ variable "scaleway_api_secret_key" {}
 variable "scaleway_api_access_key" {}
 variable "scaleway_orga_id" {}
 variable "servers_size" {}
+variable "guac_servers_size" {}
 
 provider "scaleway" {
   access_key      = var.scaleway_api_access_key
@@ -47,7 +48,7 @@ resource "scaleway_instance_server" "guacamole_server" {
   name  = "guacamole-server"
   image = "ubuntu_focal"
   ip_id = scaleway_instance_ip.guacamole_server_ip.id
-  type  = "DEV1-L"
+  type  = var.guac_servers_size
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 

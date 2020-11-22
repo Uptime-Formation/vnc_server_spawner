@@ -28,6 +28,10 @@ variable "formateurs" {
   ]
 }
 
-variable "scaleway_servers_size" {
+variable "scaleway_vnc_servers_size" {
+  default = "DEV1-L"
+}
+
+variable "scaleway_guac_servers_size" {
   default = "DEV1-L"
 }
