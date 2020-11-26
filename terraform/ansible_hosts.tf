@@ -13,6 +13,7 @@ resource "ansible_host" "ansible_vnc_servers_stagiaires" {
   groups = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires"]
   vars = {
     ansible_host = element(module.servers.vnc_stagiaires_public_ips, count.index)
+    private_ip = element(module.servers.vnc_stagiaires_private_ips, count.index)
     username = element(local.stagiaires_names, count.index)
     base_unix_user = element(local.stagiaires_names, count.index)
     vnc_unix_user = element(local.stagiaires_names, count.index)
@@ -28,6 +29,7 @@ resource "ansible_host" "ansible_vnc_servers_formateurs" {
   groups = ["all", "scaleway", "vnc_servers", "vnc_servers_formateurs"]
   vars = {
       ansible_host = element(module.servers.vnc_formateurs_public_ips, count.index)
+      private_ip = element(module.servers.vnc_formateurs_private_ips, count.index)
       username = element(local.formateurs_names, count.index)
       base_unix_user = element(local.formateurs_names, count.index)
       vnc_unix_user = element(local.formateurs_names, count.index)
