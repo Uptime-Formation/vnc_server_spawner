@@ -56,9 +56,9 @@ resource "scaleway_instance_ip" "bbb_server_ip" {
 
 resource "scaleway_instance_server" "bbb_server" {
   name  = "bbb-server"
-  image = "ubuntu_focal"
+  image = "ubuntu_xenial"
   ip_id = scaleway_instance_ip.bbb_server_ip.id
-  type  = "DEV1-L"
+  type  = "DEV1-XL"
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
