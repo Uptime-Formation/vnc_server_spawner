@@ -1,6 +1,6 @@
 <user-mapping>
 
-{# Every stagiaire has his server connection and readonly connection for all formateurs servers #}
+{# Every stagiaire has their server connection and readonly connection for all formateurs servers #}
 {% for vnc_server_stagiaire in groups['vnc_servers_stagiaires'] %}
     <authorize username="{{ hostvars[vnc_server_stagiaire].username }}" password="{{ hostvars[vnc_server_stagiaire].guac_passwd }}">
         <connection name="{{ hostvars[vnc_server_stagiaire].inventory_hostname }}">
