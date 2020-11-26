@@ -56,5 +56,5 @@ resource "ovh_domain_zone_record" "bbb_subdomain" {
 }
 
 output "bbb_domain" {
-  value = "bbb.${data.ovh_domain_zone.doxx_domain.name}"
+  value = "${ovh_domain_zone_record.bbb_subdomain.subdomain}.${ovh_domain_zone_record.bbb_subdomain.zone}"
 }
