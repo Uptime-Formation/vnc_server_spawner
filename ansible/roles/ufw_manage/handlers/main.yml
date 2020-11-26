@@ -1,0 +1,9 @@
+# - name: Flush iptables port forwarding rules 
+#   command: 'iptables -t nat -F PREROUTING'
+#   changed_when: False
+#   listen: flush nat and reload
+
+# - name: Reload ufw with updated rules
+#   ufw:
+#     state: reloaded
+#   listen: flush nat and reload

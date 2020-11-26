@@ -1,0 +1,45 @@
+---
+- name: ensure UFW present
+  apt:
+    name: ufw
+    state: present
+    
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+
+# - name: allow OpenSSH 
+#   ufw:
+#     rule: allow
+#     port: '22'
+#     proto: tcp
+
+# - name: allow Ports
+#   ufw:
+#     rule: allow
+#     port: "{{ item }}"
+#     proto: any
+#   loop: "{{ ufw_allowed_ports }}"
+    
+
+# - name: Create table *nat in ufw iptable rules
+#   blockinfile:
+#     dest: /etc/ufw/before.rules
+#     block: |
+#       # NAT prerouting port forwarding rules to containers
+#       *nat
+#       :POSTROUTING ACCEPT [0:0]
+#       :PREROUTING ACCEPT [0:0]
+#       #Rules
+#       #One commit per table needed (here for nat table)
+#       COMMIT
+#   notify: flush nat and reload
+
+# # for every container loop on every rules by including a task loop
+# - name: loop to update nat rules in ufw
+#   include_tasks: nat_rules.yml
+#   loop: "{{ groups['linux_containers'] }}"
+#   loop_control:
+#     loop_var: container
+    
