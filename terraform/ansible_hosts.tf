@@ -32,7 +32,7 @@ resource "ansible_host" "ansible_guacamole_server" {
 }
 
 resource "ansible_host" "ansible_bbb_server" {
-  inventory_hostname = "guacamole-server"
+  inventory_hostname = "bbb-server"
   groups = ["all", "scaleway", "bbb_servers"]
   vars = {
     ansible_host = module.servers.bbb_public_ip
