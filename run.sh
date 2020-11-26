@@ -43,6 +43,15 @@ _setup_ansible() {
   cd "$PROJECT_DIR"
 }
 
+_reboot_ansible() {
+  printf "Reboot infra VPS using Ansible\\n"
+  printf "##############################################\\n"
+  cd "$ANSIBLE_DIR"
+  # ansible-galaxy install -i -r roles/requirements.yml -p roles
+  ansible all -a reboot -i ${ANSIBLE_INVENTORY}
+  cd "$PROJECT_DIR"
+}
+
 
 _destroy_infra() {
   printf "DESTROY Terraform resources\\n"
@@ -70,6 +79,9 @@ _main() {
   elif [[ "${1:-}" =~ ^ansible[\ setup]?$  ]]
   then
     _setup_ansible
+  elif [[ "${1:-}" =~ ^[ansible\ ]?reboot$  ]]
+  then
+    _reboot_ansible
   elif [[ "${1:-}" =~ ^destroy$  ]]
   then
     _destroy_infra
