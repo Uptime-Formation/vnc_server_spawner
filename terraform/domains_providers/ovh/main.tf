@@ -51,8 +51,9 @@ resource "ovh_domain_zone_record" "formateurs_subdomains" {
 
 resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
   # Changing because of Let's Encrypt limit
-  zone      = data.ovh_domain_zone.ethicaltech_domain.name
-  # zone      = data.ovh_domain_zone.doxx_domain.name
+#   zone      = data.ovh_domain_zone.ethicaltech_domain.name
+  zone      = data.ovh_domain_zone.hp_domain.name
+  # zone      = data.ovh_domain_zone.hp_domain.name
   subdomain = "lab"
   # subdomain = "guacamole"
   fieldtype = "A"
