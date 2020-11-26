@@ -7,16 +7,13 @@
 
 - name: prevent the xubuntu-desktop install dialog
   debconf: 
-    name: gdm3
+    name: "{{ item }}"
     question: "shared/default-x-display-manager"
     vtype: "string"
     value: "lightdm"
-- name: prevent the xubuntu-desktop install dialog
-  debconf: 
-    name: lightdm
-    question: "shared/default-x-display-manager"
-    vtype: "string"
-    value: "lightdm"
+  loop:
+    - gdm3
+    - lightdm
  # https://askubuntu.com/questions/1114525/reconfigure-the-display-manager-non-interactively
 
 - name: Ensure xubuntu-desktop and dbus-x11 are present
@@ -30,6 +27,7 @@
     name:
       - ubuntu-desktop
       - gdm3
+      - xfce4-screensaver
       # - light-locker
       # - gvfs
     state: absent
@@ -58,7 +56,6 @@
 
 - name: Ensure password is configured
   # with vncpasswd -f the password has to end with \n
-  # moreover to generate a view password concat a second binary passwd to the first one
   shell: echo '{{ vnc_passwd_newline }}' | vncpasswd -f > /home/{{ vnc_unix_user }}/.vnc/passwd
   become: yes
   become_user: "{{ vnc_unix_user }}"
@@ -74,7 +71,7 @@
   notify: Restart vncserver
   when: vnc_view_passwd_newline is defined
 
-- name: Ensure xstartup config exist
+- name: Ensure xstartup config exists
   template:
     src: xstartup.j2
     dest: /home/{{ vnc_unix_user }}/.vnc/xstartup
@@ -83,7 +80,7 @@
   notify: Restart vncserver
   tags: xstartup_config
 
-- name: Ensure vncserver service exist
+- name: Ensure vncserver service exists
   template:
     src: vncserver.service.j2
     dest: /etc/systemd/system/vncserver@.service
