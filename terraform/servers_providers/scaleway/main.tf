@@ -24,6 +24,9 @@ resource "scaleway_instance_server" "vnc_servers_stagiaires" {
   image = "ubuntu_focal"
   ip_id = element(scaleway_instance_ip.vnc_servers_stagiaires_ips.*.id, count.index)
   type  = var.servers_size
+  # dirty firewalling trick: should set ufw ansible role
+  security_group_id = scaleway_instance_security_group.vnc.id
+
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
@@ -38,6 +41,9 @@ resource "scaleway_instance_server" "vnc_servers_formateurs" {
   image = "ubuntu_focal"
   ip_id = element(scaleway_instance_ip.vnc_servers_formateurs_ips.*.id, count.index)
   type  = var.servers_size
+  # dirty firewalling trick: should set ufw ansible role
+  security_group_id = scaleway_instance_security_group.vnc.id
+
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
@@ -52,12 +58,43 @@ resource "scaleway_instance_server" "guacamole_server" {
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
+# dirty firewalling trick: should set ufw ansible role
+resource "scaleway_instance_security_group" "vnc" {
+  inbound_default_policy  = "accept"
+  outbound_default_policy = "accept"
+
+  inbound_rule {
+    action = "accept"
+    port   = "5901"
+    ip     = scaleway_instance_ip.guacamole_server_ip.address
+  }
+  inbound_rule {
+    action = "accept"
+    port   = "5901"
+    ip     = scaleway_instance_server.guacamole_server.private_ip
+  }
+
+  inbound_rule {
+    action = "drop"
+    port   = "5901"
+  }
+
+}
+
 output "vnc_stagiaires_public_ips" {
   value = scaleway_instance_ip.vnc_servers_stagiaires_ips.*.address
 }
 
 output "vnc_formateurs_public_ips" {
   value = scaleway_instance_ip.vnc_servers_formateurs_ips.*.address
+}
+
+output "vnc_stagiaires_private_ips" {
+  value = scaleway_instance_server.vnc_servers_stagiaires.*.private_ip
+}
+
+output "vnc_formateurs_private_ips" {
+  value = scaleway_instance_server.vnc_servers_formateurs.*.private_ip
 }
 
 output "guacamole_public_ip" {
