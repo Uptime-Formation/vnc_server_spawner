@@ -1,5 +1,8 @@
 firefox_state: present
 vscode_state: present
-lxd_state: absent
-docker_state: absent
+lxd_state: present
+docker_state: present
 kubectl_state: absent
+
+
+formation_ansible: ~

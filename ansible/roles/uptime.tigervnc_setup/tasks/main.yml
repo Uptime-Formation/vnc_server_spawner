@@ -8,6 +8,7 @@
   apt:
     name:
       - xubuntu-desktop
+      - light-locker
       - dbus-x11 # necessary to use dbus-launch xfce workaround (https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session)
 
 - name: Ensure tigervnc server and plugins are present

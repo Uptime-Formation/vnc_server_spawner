@@ -3,3 +3,4 @@
 
   roles:
     - name: uptime.customize_xfce
+      tags: ["customize_xfce"]
