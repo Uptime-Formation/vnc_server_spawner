@@ -5,14 +5,14 @@
     <authorize username="{{ hostvars[vnc_server].username }}" password="{{ guac_stagiaire_passwd }}">
         <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server].ansible_host }}</param>
+            <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
             <param name="port">5901</param>
             <param name="password">{{ guac_stagiaire_passwd }}</param>
         </connection>
     {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
         <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server_formateur].ansible_host }}</param>
+            <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
             <param name="port">5901</param>
             <param name="password">{{ guac_formateur_passwd }}</param>
             <param name="read-only">true</param>
@@ -27,14 +27,14 @@
     <authorize username="{{ hostvars[vnc_server_formateur].username }}" password="{{ guac_formateur_passwd }}">
         <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server_formateur].ansible_host }}</param>
+            <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
             <param name="port">5901</param>
             <param name="password">{{ guac_formateur_passwd }}</param>
         </connection>
     {% for vnc_server in groups['vnc_servers_stagiaires'] %}
         <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server].ansible_host }}</param>
+            <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
             <param name="port">5901</param>
             <param name="password">{{ guac_stagiaire_passwd }}</param>
         </connection>
