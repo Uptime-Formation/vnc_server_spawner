@@ -21,7 +21,7 @@ resource "hcloud_server" "vnc_servers_stagiaires" {
   name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
   server_type = "cx31"
   image = "ubuntu-20.04"
-  location = "nbg1"
+  location = "hel1"
   ssh_keys = ["lenox-main"]
 }
 
@@ -30,12 +30,20 @@ resource "hcloud_server" "vnc_servers_formateurs" {
   name  = "vnc-server-formateur-${element(var.formateurs_names, count.index)}"
   server_type = "cx31"
   image = "ubuntu-20.04"
-  location = "nbg1"
+  location = "hel1"
   ssh_keys = ["lenox-main"]
 }
 
 resource "hcloud_server" "guacamole_server" {
   name  = "guacamole-server"
+  server_type = "cx21"
+  image = "ubuntu-20.04"
+  location = "hel1"
+  ssh_keys = ["lenox-main"]
+}
+
+resource "hcloud_server" "lxd_images" {
+  name  = "lxd-images"
   server_type = "cx21"
   image = "ubuntu-20.04"
   location = "nbg1"
@@ -52,4 +60,8 @@ output "vnc_formateurs_public_ips" {
 
 output "guacamole_public_ip" {
   value = hcloud_server.guacamole_server.ipv4_address
+}
+
+output "lxd_images_public_ip" {
+  value = hcloud_server.lxd_images.ipv4_address
 }
