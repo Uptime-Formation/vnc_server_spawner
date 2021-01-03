@@ -8,26 +8,32 @@
     name: firefox
     state: "{{ firefox_state }}"
 
+- name: Add repo and install vscode using shell apt 
+  shell:
+    cmd: |
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+      echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+      apt update
+      apt install code
+      touch /root/vscode_install_flag
+    creates: /root/vscode_install_flag
+    executable: /bin/bash
+
 - name: Ensure we have snap installed
   apt:
     name: snapd
     state: present
 
-- name: Ensure we have vscode installed
-  snap:
-    name: code
-    state: "{{ vscode_state }}"
-    classic: yes
+# - name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
+#   shell: id --user {{ base_unix_user }}
+#   register: user_id
 
-- name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
-  shell: id --user {{ base_unix_user }}
-  register: user_id
-
-- name: Fix some snap/vscode bug by ensuring /run/user/{{ user_id.stdout }} is owned by user {{ base_unix_user }}
-  file:
-    path: "/run/user/{{ user_id.stdout }}"
-    state: "directory"
-    owner: "{{ base_unix_user }}"
+# - name: Fix some snap/vscode bug by ensuring /run/user/{{ user_id.stdout }} is owned by user {{ base_unix_user }}
+#   file:
+#     path: "/run/user/{{ user_id.stdout }}"
+#     state: "directory"
+#     owner: "{{ base_unix_user }}"
 
 - name: Ensure we have LXD installed or not
   snap:
