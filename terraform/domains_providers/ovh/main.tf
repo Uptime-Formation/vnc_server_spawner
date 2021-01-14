@@ -61,7 +61,7 @@ resource "ovh_domain_zone_record" "stagiaires_wildcard_subdomains" {
 resource "ovh_domain_zone_record" "formateurs_wildcard_subdomains" {
   count = length(var.stagiaires_names)
   zone  = data.ovh_domain_zone.doxx_domain.name
-  # subdomain = element(scaleway_instance_server.vnc_servers.*.public_ip, count.index)
+  # subdomain = element(scaleway_instance_server.vnc_servers_formateurs.*.public_ip, count.index)
   subdomain = "*.${element(var.formateurs_names, count.index)}.lab"
   fieldtype = "A"
   ttl       = "0"
