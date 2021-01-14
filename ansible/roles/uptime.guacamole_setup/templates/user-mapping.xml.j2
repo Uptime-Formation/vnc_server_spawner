@@ -14,7 +14,8 @@
             <protocol>vnc</protocol>
             <param name="hostname">{{ hostvars[vnc_server_formateur].ansible_host }}</param>
             <param name="port">5901</param>
-            <param name="password">{{ hostvars[vnc_server_formateur].vnc_view_passwd }}</param>
+            <param name="password">{{ hostvars[vnc_server_formateur].vnc_passwd }}</param>
+            {# <param name="password">{{ hostvars[vnc_server_formateur].vnc_view_passwd }}</param> #}
             <param name="read-only">true</param>
         </connection>
     {% endfor %}

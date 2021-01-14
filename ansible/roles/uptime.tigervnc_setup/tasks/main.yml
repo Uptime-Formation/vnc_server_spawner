@@ -62,14 +62,19 @@
   notify: Restart vncserver
   tags: vnc_passwd
 
-- name: Ensure some view only password is configured
-  # moreover to generate a view only password concat a second binary passwd to the first one
-  shell: echo '{{ vnc_view_passwd_newline }}' | vncpasswd -f  >> /home/{{ vnc_unix_user }}/.vnc/passwd
-  become: yes
-  become_user: "{{ vnc_unix_user }}"
-  tags: vnc_passwd
-  notify: Restart vncserver
-  when: vnc_view_passwd_newline is defined
+# - name: debug view only password
+#   debug:
+#     msg: "{{ vnc_view_passwd }}"
+
+# FIXME: Not working
+# - name: Ensure some view only password is configured
+#   # moreover to generate a view only password concat a second binary passwd to the first one
+#   shell: echo '{{ vnc_view_passwd_newline }}' | vncpasswd -f  >> /home/{{ vnc_unix_user }}/.vnc/passwd
+#   become: yes
+#   become_user: "{{ vnc_unix_user }}"
+#   tags: vnc_passwd
+#   notify: Restart vncserver
+#   when: vnc_view_passwd_newline is defined
 
 - name: Ensure xstartup config exists
   template:
