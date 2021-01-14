@@ -8,6 +8,15 @@ variable "vnc_stagiaires_public_ips" {}
 variable "vnc_formateurs_public_ips" {}
 variable "guacamole_public_ip" {}
 
+terraform {
+  required_providers {
+    ovh = {
+      source = "ovh/ovh"
+      version = "0.10.0"
+    }
+  }
+}
+
 provider "ovh" {
   endpoint           = "ovh-eu"
   application_key    = var.ovh_application_key
