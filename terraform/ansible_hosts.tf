@@ -1,6 +1,20 @@
-## Ansible mirroring hosts section
-# Using https://github.com/nbering/terraform-provider-ansible/ to be installed manually (third party provider)
-# Copy binary to ~/.terraform.d/plugins/
+# ## Ansible mirroring hosts section
+# # Using https://github.com/nbering/terraform-provider-ansible/ to be installed manually (third party provider)
+# # Copy binary to ~/.terraform.d/plugins/
+
+terraform {
+  required_providers {
+    ansible = {
+      source = "nbering/ansible"
+      version = "1.0.4"
+    }
+  }
+}
+
+
+provider "ansible" {
+  # Configuration options
+}
 
 # locals {
 #   stagiaires_names = [for stagiaire in var.stagiaires: stagiaire.name]

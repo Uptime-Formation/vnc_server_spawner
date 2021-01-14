@@ -3,6 +3,15 @@ variable "stagiaires_names" {}
 variable "formateurs_names" {}
 
 # Configure the Hetzner Cloud Provider
+terraform {
+  required_providers {
+    hcloud = {
+      source = "hetznercloud/hcloud"
+      version = "1.23.0"
+    }
+  }
+}
+
 provider "hcloud" {
   token = var.hcloud_token
 }
@@ -10,7 +19,7 @@ provider "hcloud" {
 resource "hcloud_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
   name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
-  server_type = "cx11"
+  server_type = "cx31"
   image = "ubuntu-20.04"
   location = "nbg1"
   ssh_keys = ["lenox-main"]
@@ -19,7 +28,7 @@ resource "hcloud_server" "vnc_servers_stagiaires" {
 resource "hcloud_server" "vnc_servers_formateurs" {
   count = length(var.formateurs_names)
   name  = "vnc-server-formateur-${element(var.formateurs_names, count.index)}"
-  server_type = "cx11"
+  server_type = "cx31"
   image = "ubuntu-20.04"
   location = "nbg1"
   ssh_keys = ["lenox-main"]
@@ -27,7 +36,7 @@ resource "hcloud_server" "vnc_servers_formateurs" {
 
 resource "hcloud_server" "guacamole_server" {
   name  = "guacamole-server"
-  server_type = "cx11"
+  server_type = "cx21"
   image = "ubuntu-20.04"
   location = "nbg1"
   ssh_keys = ["lenox-main"]
