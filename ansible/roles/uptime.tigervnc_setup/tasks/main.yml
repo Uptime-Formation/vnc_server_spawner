@@ -20,7 +20,8 @@
   apt:
     name:
       - xubuntu-desktop
-      - dbus-x11 # necessary to use dbus-launch xfce workaround (https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session)
+      # necessary to use dbus-launch xfce workaround (https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session)
+      - dbus-x11
 
 - name: Ensure some unwanted packages are absent
   apt:
@@ -34,18 +35,19 @@
     autoremove: yes
     purge: yes
 
-- name: crash reporting off (light-locker and xorg crashes)
-  lineinfile:
-      regexp: '^enabled='
-      line: enabled=0
-      path: /etc/default/apport
+# - name: crash reporting off (light-locker and xorg crashes)
+#   lineinfile:
+#       regexp: '^enabled='
+#       line: enabled=0
+#       path: /etc/default/apport
 
 - name: Ensure tigervnc server and plugins are present
   apt:
     name:
       - tigervnc-standalone-server
       - tigervnc-xorg-extension
-      - tigervnc-common # install 'vncpasswd' cli util
+      # install 'vncpasswd' cli util
+      - tigervnc-common
 
 - name: Ensure home vnc dir present
   file:
