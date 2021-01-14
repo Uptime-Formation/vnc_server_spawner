@@ -1,4 +1,5 @@
 variable "hcloud_token" {}
+variable "hcloud_ssh_keys" {}
 variable "stagiaires_names" {}
 variable "formateurs_names" {}
 
@@ -22,7 +23,8 @@ resource "hcloud_server" "vnc_servers_stagiaires" {
   server_type = "cx31"
   image = "ubuntu-20.04"
   location = "nbg1"
-  ssh_keys = ["lenox-main"]
+  ssh_keys = var.hcloud_ssh_keys
+#   ssh_keys = ["lenox-main"]
 }
 
 resource "hcloud_server" "vnc_servers_formateurs" {
@@ -31,7 +33,8 @@ resource "hcloud_server" "vnc_servers_formateurs" {
   server_type = "cx31"
   image = "ubuntu-20.04"
   location = "nbg1"
-  ssh_keys = ["lenox-main"]
+  ssh_keys = var.hcloud_ssh_keys
+#   ssh_keys = ["lenox-main"]
 }
 
 resource "hcloud_server" "guacamole_server" {
@@ -39,7 +42,8 @@ resource "hcloud_server" "guacamole_server" {
   server_type = "cx21"
   image = "ubuntu-20.04"
   location = "nbg1"
-  ssh_keys = ["lenox-main"]
+  ssh_keys = var.hcloud_ssh_keys
+#   ssh_keys = ["lenox-main"]
 }
 
 output "vnc_stagiaires_public_ips" {
