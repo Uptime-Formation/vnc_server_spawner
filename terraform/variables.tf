@@ -1,7 +1,17 @@
 variable "stagiaires_names" {
   default = [
-    "stagiaire1",
-    "stagiaire2",
+    "weiyu",
+    "zifu",
+    "jia",
+    "hanyang",
+    "mingyue",
+    "kejing",
+    "xuanyang",
+    "nanxi",
+    "jianwei",
+    "etudiante1",
+    "etudiante2",
+    "etudiante3",
   ]
 }
 

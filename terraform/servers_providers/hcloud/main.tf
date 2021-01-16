@@ -19,7 +19,7 @@ provider "hcloud" {
 resource "hcloud_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
   name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
-  server_type = "cx31"
+  server_type = "cx21"
   image = "ubuntu-20.04"
   location = "hel1"
   ssh_keys = ["lenox-main"]
@@ -28,7 +28,7 @@ resource "hcloud_server" "vnc_servers_stagiaires" {
 resource "hcloud_server" "vnc_servers_formateurs" {
   count = length(var.formateurs_names)
   name  = "vnc-server-formateur-${element(var.formateurs_names, count.index)}"
-  server_type = "cx31"
+  server_type = "cx21"
   image = "ubuntu-20.04"
   location = "hel1"
   ssh_keys = ["lenox-main"]

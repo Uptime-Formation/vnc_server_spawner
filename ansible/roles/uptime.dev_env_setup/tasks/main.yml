@@ -8,6 +8,15 @@
     name: firefox
     state: "{{ firefox_state }}"
 
+- name: Ensure we have thonny+img tools installed
+  apt:
+    name:
+      - thonny
+      - krita
+      - python3-pil #(install pillow fork)
+      - eog #(for pil show)
+    state: "present"
+
 - name: Add repo and install vscode using shell apt 
   shell:
     cmd: |
