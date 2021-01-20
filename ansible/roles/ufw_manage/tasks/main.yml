@@ -3,25 +3,57 @@
   apt:
     name: ufw
     state: present
-    
 
-- name: Enable UFW
+- name: allow OpenSSH 
   ufw:
-    state: enabled
+    rule: allow
+    port: '22'
+    proto: tcp
+  notify: reload ufw
 
-# - name: allow OpenSSH 
-#   ufw:
-#     rule: allow
-#     port: '22'
-#     proto: tcp
 
-# - name: allow Ports
-#   ufw:
-#     rule: allow
-#     port: "{{ item }}"
-#     proto: any
-#   loop: "{{ ufw_allowed_ports }}"
+- name: Set UFW default
+  ufw:
+    default: "{{ ufw_default }}"
+  notify: reload ufw
+
+- name: allow ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    # proto: tcp
+    from_ip: any
+    insert_relative_to: zero
+  loop: "{{ ufw_allow_ports }}"
+  notify: reload ufw
+
+- name: deny ports
+  ufw:
+    rule: deny
+    port: "{{ item }}"
+    from_ip: any
+    insert_relative_to: last-ipv4
+  loop: "{{ ufw_deny_ports }}"
+  notify: reload ufw
+
+- name: allow IP
+  ufw:
+    rule: allow
+    # port: "any"
+    from_ip: "{{ item }}"
+    protocol: any
+    # protocol: tcp
+    # insert: 1
+    insert_relative_to: zero
+  loop: "{{ ufw_allow_ips }}"
+  notify: reload ufw
+
     
+- name: "Set UFW to {{ ufw_state }}"
+  ufw:
+    state: "{{ ufw_state }}"
+  notify: reload ufw
+
 
 # - name: Create table *nat in ufw iptable rules
 #   blockinfile:

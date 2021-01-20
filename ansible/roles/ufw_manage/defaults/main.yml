@@ -1,3 +1,5 @@
----
-# ssh_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOw6CqqIaeK7hw7n70nIuwPnV6vAajIZNAWkrUCjL08W bob@lenox"
-# interface: enp2s0
+ufw_state: enabled
+ufw_default: "deny"
+ufw_allow_ports: [22, 80, 443]
+ufw_deny_ports: []
+ufw_allow_ips: []

@@ -1,8 +1,0 @@
-# ---
-
-# - name: configure ufw
-#   # hosts: frontal
-#   become: yes
-
-#   roles:
-#     - role: ufw_manage
