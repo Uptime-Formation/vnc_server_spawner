@@ -32,7 +32,8 @@
     rule: deny
     port: "{{ item }}"
     from_ip: any
-    insert_relative_to: last-ipv4
+    # insert_relative_to: last-ipv4
+    insert_relative_to: zero
   loop: "{{ ufw_deny_ports }}"
   notify: reload ufw
 
@@ -42,12 +43,22 @@
     # port: "any"
     from_ip: "{{ item }}"
     protocol: any
-    # protocol: tcp
-    # insert: 1
-    insert_relative_to: zero
+    # last one wins apparently?
+    insert_relative_to: last-ipv4
   loop: "{{ ufw_allow_ips }}"
   notify: reload ufw
 
+- name: allow IP on deny ports
+  ufw:
+    rule: allow
+    port: "{{ item[1] }}"
+    from_ip: "{{ item[0] }}"
+    protocol: any
+    # most specific rule should go first/last?  
+    insert_relative_to: last-ipv4
+# FIXME: cannot work, how to do nested loops / other logic?
+  loop: "{{ ufw_allow_ips | product(ufw_deny_ports) |list  }}"
+  notify: reload ufw
     
 - name: "Set UFW to {{ ufw_state }}"
   ufw:
