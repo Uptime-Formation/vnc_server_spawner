@@ -19,6 +19,8 @@
     state: "{{ vscode_state }}"
     classic: yes
 
+# TODO: Add VScode to "open with" menu with Thunar
+
 - name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
   shell: id --user {{ base_unix_user }}
   register: user_id
@@ -43,3 +45,15 @@
     state: "{{ kubectl_state }}"
     classic: yes
  
+# - name: Ensure we have Lens required library installed
+#   apt:
+#     name: libxss1
+#     state: "{{ lens_state }}"
+
+
+# TODO: snap not working, needs AppImage instead
+#  - name: Ensure we have Lens installed
+#   snap:
+#     name: kontena-lens
+#     state: present
+
