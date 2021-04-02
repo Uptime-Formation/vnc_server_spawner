@@ -7,3 +7,4 @@ ansible_user: root
 
 ## Which environment to setup
 formation_ansible: yes
+docker_state: present

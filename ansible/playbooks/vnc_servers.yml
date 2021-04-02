@@ -23,7 +23,7 @@
 
     - name: Deny VNC 5901 access (default rule for ips other than guacamole's one)
       community.general.ufw:
-        rule: allow
+        rule: deny
         port: '5901'
         to_ip: any
 
@@ -33,8 +33,9 @@
 
     - name: uptime.dev_env_setup
       tags: ["dev_env_setup"]
-    # - name: uptime.docker_setup
-    #   vars:
-    #     docker_users:
-    #       - "{{ base_unix_user }}"
-    #   when: docker_state == "present"
+
+    - name: uptime.docker_setup
+      vars:
+        docker_users:
+          - "{{ base_unix_user }}"
+      when: docker_state == "present"

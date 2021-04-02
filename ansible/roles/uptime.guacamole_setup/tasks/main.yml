@@ -50,8 +50,10 @@
     - Restart guacamole nginx
 
 - name: Ensure docker-compose guacamole is started
-  community.general.docker_compose:
+  community.docker.docker_compose:
     project_src: "{{ guac_path }}"
+    restarted: yes
+    recreate: always
     state: present
   register: guac_compose
 

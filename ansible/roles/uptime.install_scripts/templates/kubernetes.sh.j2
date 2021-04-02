@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -eux
+
+cd /tmp
+
+
+## Install and configure git
+
+sudo apt-get update
+sudo apt install -y git
+git config --global user.name stagiaire
+git config --global user.email stagiaire@email.example
+
+
+## Install and configure kubectl
+sudo snap install kubectl --classic
+
+sudo apt install -y bash-completion
+source <(kubectl completion bash)
+echo "source <(kubectl completion bash)" >> ${HOME}/.bashrc
+
+
+## Install minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+
+minikube start --driver=docker
+
+## Install Lens
+curl -LO https://github.com/lensapp/lens/releases/download/v4.1.4/Lens-4.1.4.amd64.deb
+sudo dpkg -i Lens-4.1.4.amd64.deb

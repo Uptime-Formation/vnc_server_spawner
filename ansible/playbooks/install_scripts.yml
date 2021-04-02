@@ -1,0 +1,6 @@
+- hosts: vnc_servers
+  become: yes
+
+  roles:
+    - name: uptime.install_scripts
+      tags: ["install_scripts"]
