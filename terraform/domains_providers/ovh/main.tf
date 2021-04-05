@@ -29,9 +29,6 @@ data "ovh_domain_zone" "doxx_domain" {
   name = "doxx.fr"
 }
 
-data "ovh_domain_zone" "ethicaltech_domain" {
-  name = "ethicaltech.best"
-}
 data "ovh_domain_zone" "hp_domain" {
   name = "hadrienpelissier.fr"
 }
