@@ -1,24 +1,28 @@
 variable "stagiaires_names" {
   default = [
-    "jeanyvesl",
-    "samuelr",
-    "pierreyvesl",
-    "sebastienl",
-    "alainp",
-    "aymericv",
-    "davidb",
-    "ericl",
-    "franckg",
-    "fredericl",
-    "gerardm",
-    "stagiairebonus",
+    "stagiaire1",
+    "stagiaire2",
+    "stagiaire3",
+    "stagiaire4",
+    "stagiaire5",
+    "stagiaire6",
+    "stagiaire7",
+    "stagiaire8",
+    "stagiaire9",
+    "stagiaire10",
+    "stagiaire11",
+    "stagiaire12",
   ]
 }
 
 variable "formateurs_names" {
   default = [
-    "hadrien",
+    "elie",
   ]
+}
+
+variable "formation_subdomain" {
+  default = "formation"
 }
 
 variable "hcloud_vnc_server_type" {

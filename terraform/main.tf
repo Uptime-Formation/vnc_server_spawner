@@ -23,11 +23,12 @@ variable "hcloud_token" {}
 module "servers" {
   source = "./servers_providers/hcloud"
 
-  hcloud_token = var.hcloud_token
-  stagiaires_names = var.stagiaires_names
-  formateurs_names = var.formateurs_names
-  vnc_server_type = var.hcloud_vnc_server_type
-  guacamole_server_type = var.hcloud_guacamole_server_type
+  hcloud_token              = var.hcloud_token
+  formation_subdomain       = var.formation_subdomain
+  stagiaires_names          = var.stagiaires_names
+  formateurs_names          = var.formateurs_names
+  vnc_server_type           = var.hcloud_vnc_server_type
+  guacamole_server_type     = var.hcloud_guacamole_server_type
 }
 
 
@@ -46,6 +47,7 @@ module "servers" {
 module "domains" {
   source                    = "./domains_providers/digital_ocean"
   digitalocean_token        = var.digitalocean_token
+  formation_subdomain       = var.formation_subdomain
   stagiaires_names          = var.stagiaires_names
   formateurs_names          = var.formateurs_names
   vnc_stagiaires_public_ips = module.servers.vnc_stagiaires_public_ips

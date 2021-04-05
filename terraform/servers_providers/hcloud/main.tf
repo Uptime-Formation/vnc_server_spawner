@@ -1,4 +1,6 @@
 variable "hcloud_token" {}
+
+variable "formation_subdomain" {}
 variable "stagiaires_names" {}
 variable "formateurs_names" {}
 variable "vnc_server_type" {}
@@ -20,7 +22,7 @@ provider "hcloud" {
 
 resource "hcloud_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
-  name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
+  name  = "vnc-${element(var.stagiaires_names, count.index)}.${var.formation_subdomain}"
   server_type = var.vnc_server_type
   image = "ubuntu-20.04"
   location = "hel1"
@@ -29,7 +31,7 @@ resource "hcloud_server" "vnc_servers_stagiaires" {
 
 resource "hcloud_server" "vnc_servers_formateurs" {
   count = length(var.formateurs_names)
-  name  = "vnc-server-formateur-${element(var.formateurs_names, count.index)}"
+  name  = "vnc-formateur-${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
   server_type = var.vnc_server_type 
   image = "ubuntu-20.04"
   location = "hel1"
@@ -37,7 +39,7 @@ resource "hcloud_server" "vnc_servers_formateurs" {
 }
 
 resource "hcloud_server" "guacamole_server" {
-  name  = "guacamole-server"
+  name  = "guacamole-server.${var.formation_subdomain}"
   server_type = var.guacamole_server_type
   image = "ubuntu-20.04"
   location = "hel1"
