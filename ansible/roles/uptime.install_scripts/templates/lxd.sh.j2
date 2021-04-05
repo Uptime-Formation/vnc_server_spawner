@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -eux
+
+cd /tmp
+
+cat /opt/lxd_config.yaml | lxd init --preseed
+
+lxc launch images:ubuntu/focal/amd64 ubu1
+lxc launch images:centos/7/amd64 centos1
+
+lxc exec centos1 -- yum update -y && yum install -y openssh-server sudo
+lxc exec centos1 -- systemctl start sshd
+lxc exec centos1 -- sed -i 's@\(%wheel.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
+lxc exec centos1 -- useradd -m -s /bin/bash -G wheel stagiaire
+lxc exec centos1 -- (echo 'devops101'; echo 'devops101') | passwd stagiaire
+lxc publish --alias centos_ansible centos1 && lxc delete --force centos1
+
+lxc exec ubu1 -- apt update && apt install -y openssh-server sudo
+lxc exec ubu1 -- sed -i 's@\(%sudo.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
+lxc exec ubu1 -- useradd -m -s /bin/bash -G sudo stagiaire
+lxc exec ubu1 -- (echo 'devops101'; echo 'devops101') | passwd stagiaire
+lxc publish --alias ubuntu_ansible ubu1 && lxc delete --force ubu1

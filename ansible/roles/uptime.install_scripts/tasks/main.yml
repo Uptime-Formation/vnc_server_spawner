@@ -4,4 +4,14 @@
     dest: /opt/kubernetes.sh
     mode: 0777
 
+- name: template ansible lxd teaching install script
+  template:
+    src: "{{ item }}.j2"
+    dest: /opt/{{ item }}
+    mode: 0777
+  loop:
+    - lxd_config.yaml
+    - lxd.sh
+
+
 
