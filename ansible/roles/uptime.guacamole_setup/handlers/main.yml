@@ -1,12 +1,12 @@
 - name: Restart Guacamole
 # - name: Restart Guacamole docker compose
-  community.general.docker_compose:
+  community.docker.docker_compose:
     project_src: "{{ guac_path }}"
     state: present
     restarted: yes
 
 - name: Restart Guacamole container only
-  community.general.docker_compose:
+  community.docker.docker_compose:
     project_src: "{{ guac_path }}"
     services:
       - guacamole_compose
@@ -14,7 +14,7 @@
     restarted: yes
 
 - name: Restart guacamole nginx
-  community.general.docker_compose:
+  community.docker.docker_compose:
     project_src: "{{ guac_path }}"
     services:
       - nginx-proxy
