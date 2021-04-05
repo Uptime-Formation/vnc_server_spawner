@@ -1,0 +1,22 @@
+
+- name: Ensure users exists 
+  user:
+    name: "{{ item.name }}"
+    shell: /bin/bash
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ deb_server_users }}"
+
+- name: Set users in sudo group if required
+  user:
+    name: "{{ item.name }}"
+    groups: ["sudo"]
+    append: yes
+  when: item.sudo
+  loop: "{{ deb_server_users }}"
+
+- name: Set users password if defined
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | password_hash('sha512', 'm0seijJIjrets4st') }}"
+  when: item.password is defined
+  loop: "{{ deb_server_users }}"

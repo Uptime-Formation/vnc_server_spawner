@@ -1,0 +1,10 @@
+- name: reload sshd
+  systemd:
+    name: sshd
+    state: reloaded
+
+
+- name: restart fail2ban
+  systemd:
+    name: fail2ban
+    state: reloaded
