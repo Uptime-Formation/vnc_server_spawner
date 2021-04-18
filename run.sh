@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -eu
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -o pipefail

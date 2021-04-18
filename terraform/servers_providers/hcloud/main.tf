@@ -1,7 +1,11 @@
 variable "hcloud_token" {}
 variable "hcloud_ssh_keys" {}
+
+variable "formation_subdomain" {}
 variable "stagiaires_names" {}
 variable "formateurs_names" {}
+variable "vnc_server_type" {}
+variable "guacamole_server_type" {}
 
 # Configure the Hetzner Cloud Provider
 terraform {
@@ -19,18 +23,19 @@ provider "hcloud" {
 
 resource "hcloud_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
-  name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
-  server_type = "cx31"
   image = "ubuntu-20.04"
-  location = "nbg1"
   ssh_keys = var.hcloud_ssh_keys
-#   ssh_keys = ["lenox-main"]
+  name  = "vnc-${element(var.stagiaires_names, count.index)}.${var.formation_subdomain}"
+  server_type = var.vnc_server_type
+  location = "hel1"
 }
 
 resource "hcloud_server" "vnc_servers_formateurs" {
   count = length(var.formateurs_names)
-  name  = "vnc-server-formateur-${element(var.formateurs_names, count.index)}"
-  server_type = "cx31"
+
+  name  = "vnc-formateur-${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
+  server_type = var.vnc_server_type 
+
   image = "ubuntu-20.04"
   location = "nbg1"
   ssh_keys = var.hcloud_ssh_keys
@@ -38,12 +43,12 @@ resource "hcloud_server" "vnc_servers_formateurs" {
 }
 
 resource "hcloud_server" "guacamole_server" {
-  name  = "guacamole-server"
-  server_type = "cx21"
   image = "ubuntu-20.04"
-  location = "nbg1"
   ssh_keys = var.hcloud_ssh_keys
-#   ssh_keys = ["lenox-main"]
+
+  name  = "guacamole-server.${var.formation_subdomain}"
+  server_type = var.guacamole_server_type
+  location = "hel1"
 }
 
 output "vnc_stagiaires_public_ips" {
@@ -56,4 +61,8 @@ output "vnc_formateurs_public_ips" {
 
 output "guacamole_public_ip" {
   value = hcloud_server.guacamole_server.ipv4_address
+}
+
+output "lxd_images_public_ip" {
+  value = hcloud_server.vnc_servers_formateurs.0.ipv4_address
 }

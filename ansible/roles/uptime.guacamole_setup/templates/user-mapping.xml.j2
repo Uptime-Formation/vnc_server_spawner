@@ -12,7 +12,7 @@
     {% for vnc_server_formateur in groups['vnc_servers_formateurs'] %}
         <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server_formateur].ansible_host }}</param>
+            <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
             <param name="port">5901</param>
             <param name="password">{{ hostvars[vnc_server_formateur].vnc_passwd }}</param>
             {# <param name="password">{{ hostvars[vnc_server_formateur].vnc_view_passwd }}</param> #}
@@ -28,7 +28,7 @@
     <authorize username="{{ hostvars[vnc_server_formateur].username }}" password="{{ hostvars[vnc_server_formateur].guac_passwd }}">
         <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server_formateur].ansible_host }}</param>
+            <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
             <param name="port">5901</param>
             <param name="password">{{ hostvars[vnc_server_formateur].vnc_passwd  }}</param>
         </connection>
