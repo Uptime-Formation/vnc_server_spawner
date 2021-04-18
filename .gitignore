@@ -9,6 +9,7 @@ ansible-digital_ocean.cache
 .idea
 .terraform
 .terraform.tfstate.lock.info
+.terraform.lock.hcl
 .vagrant
 
 *.tfvars
