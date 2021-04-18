@@ -28,6 +28,7 @@ _setup_terraform() {
   printf "Setup Terraform resources\\n"
   printf "##############################################\\n"
   cd "$TERRAFORM_DIR"
+  tfenv use 0.14.9
   terraform init
   terraform plan
   terraform apply -auto-approve 
