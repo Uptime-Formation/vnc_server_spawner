@@ -2,6 +2,12 @@
 # # Using https://github.com/nbering/terraform-provider-ansible/ to be installed manually (third party provider)
 # # Copy binary to ~/.terraform.d/plugins/
 
+
+# variable "stagiaires_names" {}
+# variable "formateurs_names" {}
+# variable "formateurs_password" {}
+# variable "stagiaires_password" {}
+
 terraform {
   required_providers {
     ansible = {
@@ -16,41 +22,38 @@ provider "ansible" {
   # Configuration options
 }
 
-# locals {
-#   stagiaires_names = [for stagiaire in var.stagiaires: stagiaire.name]
-#   formateurs_names = [for formateur in var.formateurs: formateur.name]
-# }
+
+
 
 resource "ansible_host" "ansible_vnc_servers_stagiaires" {
   count = length(module.servers.vnc_stagiaires_public_ips)
-  inventory_hostname = "vnc-${element(local.stagiaires_names, count.index)}"
+  inventory_hostname = "vnc-${element(var.stagiaires_names, count.index)}"
   groups = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires"]
   vars = {
     ansible_host = element(module.servers.vnc_stagiaires_public_ips, count.index)
     # private_ip = element(module.servers.vnc_stagiaires_private_ips, count.index)
-    username = element(local.stagiaires_names, count.index)
-    base_unix_user = element(local.stagiaires_names, count.index)
-    vnc_unix_user = element(local.stagiaires_names, count.index)
-    vnc_passwd = element(var.stagiaires, count.index).password
-    base_user_password = element(var.stagiaires, count.index).password
-    guac_passwd = element(var.stagiaires, count.index).password
+    username = element(var.stagiaires_names, count.index)
+    base_unix_user = element(var.stagiaires_names, count.index)
+    vnc_unix_user = element(var.stagiaires_names, count.index)
+    # vnc_passwd = var.stagiaires_password
+    # base_user_password = var.stagiaires_password
+    # guac_passwd = var.stagiaires_password
   }
 }
 
 resource "ansible_host" "ansible_vnc_servers_formateurs" {
-  count = length(local.formateurs_names)
-  inventory_hostname = "vnc-formateur-${element(local.formateurs_names, count.index)}"
+  count = length(var.formateurs_names)
+  inventory_hostname = "vnc-formateur-${element(var.formateurs_names, count.index)}"
   groups = ["all", "scaleway", "vnc_servers", "vnc_servers_formateurs"]
   vars = {
       ansible_host = element(module.servers.vnc_formateurs_public_ips, count.index)
     #   private_ip = element(module.servers.vnc_formateurs_private_ips, count.index)
-      username = element(local.formateurs_names, count.index)
-      base_unix_user = element(local.formateurs_names, count.index)
-      vnc_unix_user = element(local.formateurs_names, count.index)
-      vnc_passwd = element(var.formateurs, count.index).password
-      base_user_password = element(var.formateurs, count.index).password
-      guac_passwd = element(var.formateurs, count.index).password
-
+      username = element(var.formateurs_names, count.index)
+      base_unix_user = element(var.formateurs_names, count.index)
+      vnc_unix_user = element(var.formateurs_names, count.index)
+    #   vnc_passwd = var.formateurs_password
+    #   base_user_password = var.formateurs_password
+    #   guac_passwd = var.formateurs_password
   }
 }
 
