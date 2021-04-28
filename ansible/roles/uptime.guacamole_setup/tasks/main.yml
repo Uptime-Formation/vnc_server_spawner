@@ -60,7 +60,7 @@
 #     times: yes
 
 - name: Ensure docker-compose guacamole is started
-  community.docker.docker_compose:
+  docker_compose:
     project_src: "{{ guac_path }}"
     restarted: yes
     recreate: always
