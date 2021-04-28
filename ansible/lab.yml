@@ -1,5 +1,4 @@
 - import_playbook: playbooks/deb_server_prepare.yml
-- import_playbook: playbooks/wireguard.yml
 - import_playbook: playbooks/vnc_servers.yml
 - import_playbook: playbooks/guacamole_servers.yml
 - import_playbook: playbooks/customize_xfce_vnc.yml
