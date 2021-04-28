@@ -3,7 +3,12 @@
     update_cache: yes
     upgrade: "yes"
 
-- name: Ensure we have firefox installed
+- name: Ensure we have git installed
+  apt:
+    name: git
+    state: "present"
+
+- name: "Ensure we have firefox {{ firefox_state }}"
   apt:
     name: firefox
     state: "{{ firefox_state }}"
@@ -15,7 +20,7 @@
       install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
       echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
       apt update
-      apt install code
+      apt install -y code
       touch /root/vscode_install_flag
     creates: /root/vscode_install_flag
     executable: /bin/bash
