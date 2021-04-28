@@ -1,0 +1,6 @@
+- hosts: vnc_servers
+  become: yes
+
+  tasks:
+    - name: Reboot VNC servers
+      reboot:
