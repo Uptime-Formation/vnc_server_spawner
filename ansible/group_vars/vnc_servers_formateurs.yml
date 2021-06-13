@@ -4,3 +4,4 @@ vnc_passwd: devops202
 vnc_unix_user: formateur
 base_unix_user: formateur
 passwordless_sudo: true
+# vnc_base_screen_res: 1920x1080

@@ -6,5 +6,9 @@ ansible_user: root
 
 
 ## Which environment to setup
-formation_ansible: yes
+formation_ansible: no
+formation_k8s: yes
+
+kubectl_state: present
 docker_state: present
+lxd_state: absent

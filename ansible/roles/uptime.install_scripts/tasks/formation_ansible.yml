@@ -1,4 +1,3 @@
-
 - name: Ensure we have Ansible installed
   apt:
     name: ansible
@@ -46,3 +45,11 @@
   notify: Restart vncserver
   tags: ["formation_ansible", "lxd_group"]
 
+- name: template ansible lxd teaching install script
+  template:
+    src: "{{ item }}.j2"
+    dest: /opt/{{ item }}
+    mode: 0777
+  loop:
+    - lxd_config.yaml
+    - lxd.sh

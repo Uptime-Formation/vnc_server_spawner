@@ -1,17 +1,9 @@
-- name: template kubernetes teaching install script
-  template:
-    src: kubernetes.sh.j2
-    dest: /opt/kubernetes.sh
-    mode: 0777
+- name: Include Ansible teaching requirements tasks
+  include_tasks: formation_ansible.yml
+  when: formation_ansible
+  tags: ["formation_ansible", "lxd_group"]
 
-- name: template ansible lxd teaching install script
-  template:
-    src: "{{ item }}.j2"
-    dest: /opt/{{ item }}
-    mode: 0777
-  loop:
-    - lxd_config.yaml
-    - lxd.sh
-
-
-
+- name: Include kubernetes teaching requirements tasks
+  include_tasks: formation_k8s.yml
+  when: formation_k8s
+  tags: ["formation_k8s"]

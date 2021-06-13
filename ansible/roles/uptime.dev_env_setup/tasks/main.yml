@@ -13,7 +13,7 @@
     name: firefox
     state: "{{ firefox_state }}"
 
-- name: Add repo and install vscode using shell apt 
+- name: Add repo and install vscode using shell apt
   shell:
     cmd: |
       curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
@@ -57,22 +57,3 @@
     name: kubectl
     state: "{{ kubectl_state }}"
     classic: yes
-
-- name: Include Ansible teaching requirements tasks
-  include_tasks: formation_ansible.yml
-  when: formation_ansible
-  tags: ["formation_ansible", "lxd_group"]
-  
- 
-# - name: Ensure we have Lens required library installed
-#   apt:
-#     name: libxss1
-#     state: "{{ lens_state }}"
-
-
-# TODO: snap not working, needs AppImage instead
-#  - name: Ensure we have Lens installed
-#   snap:
-#     name: kontena-lens
-#     state: present
-

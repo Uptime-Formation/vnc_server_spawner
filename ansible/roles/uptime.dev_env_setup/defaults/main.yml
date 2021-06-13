@@ -5,5 +5,5 @@ terraform_state: present
 docker_state: present
 kubectl_state: absent
 
-
 formation_ansible: ~
+formation_k8s: ~

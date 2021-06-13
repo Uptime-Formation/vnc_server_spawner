@@ -1,6 +1,3 @@
-
-
-
 vnc_local_access_only: "no"
 vnc_base_screen_res: 1300x700
 # docker_state: present
@@ -11,5 +8,5 @@ ufw_state: disabled
 # ufw_state: enabled
 ufw_default: allow
 ufw_deny_ports:
-- 5901
+  - 5901
 ufw_allow_ips: "{{ groups['guacamole_servers'] | map('extract', hostvars, ['ansible_host']) }}"
