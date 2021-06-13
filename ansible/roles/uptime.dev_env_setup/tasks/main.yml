@@ -34,8 +34,6 @@
 #   shell: id --user {{ base_unix_user }}
 #   register: user_id
 
-# TODO: Add VScode to "open with" menu with Thunar
-
 - name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
   shell: id --user {{ base_unix_user }}
   register: user_id

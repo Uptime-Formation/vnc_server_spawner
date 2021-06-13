@@ -97,15 +97,16 @@ services:
       GUACAMOLE_HOME: /etc/guacamole
       VIRTUAL_HOST: {{ guacamole_domain }}
       VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: {{ guacamole_domain }}
-      LETSENCRYPT_EMAIL: {{ guac_letsencrypt_email }} 
+    #   LETSENCRYPT_HOST: {{ guacamole_domain }}
+    #   LETSENCRYPT_EMAIL: {{ guac_letsencrypt_email }} 
     image: guacamole/guacamole
     volumes:
       - {{ guac_path }}/user-mapping.xml:/etc/guacamole/user-mapping.xml
     networks:
       - guacnetwork_compose
     ports:
-      - "8080/tcp"
+      - "127.0.0.1:8080"
+    #   - "8080/tcp"
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
