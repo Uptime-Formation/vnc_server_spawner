@@ -1,17 +1,14 @@
 variable "stagiaires_names" {
   default = [
-    "stagiaire1",
-    "stagiaire2",
-    "stagiaire3",
-    "stagiaire4",
-    "stagiaire5",
-    "stagiaire6",
-    "stagiaire7",
-    "stagiaire8",
+    "arlot",
+    "eloufir",
+    "piedoie",
+    "goude",
+    "wang",
+    "barghane",
+    "coulbeaux",
+    "lecoq",
     "stagiaire9",
-    "stagiaire10",
-    "stagiaire11",
-    "stagiaire12",
   ]
 }
 

@@ -35,11 +35,27 @@ resource "digitalocean_record" "stagiaires_subdomains" {
   value  = element(var.vnc_stagiaires_public_ips, count.index)
 }
 
+resource "digitalocean_record" "stagiaires_wildcard_subdomains" {
+  count = length(var.stagiaires_names)
+  domain = data.digitalocean_domain.dopluk_domain.name
+  type   = "A"
+  name   = "*.${element(var.stagiaires_names, count.index)}.${var.formation_subdomain}"
+  value  = element(var.vnc_stagiaires_public_ips, count.index)
+}
+
 resource "digitalocean_record" "formateurs_subdomains" {
   count = length(var.formateurs_names)
   domain = data.digitalocean_domain.dopluk_domain.name
   type   = "A"
   name   = "${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
+  value  = element(var.vnc_formateurs_public_ips, count.index)
+}
+
+resource "digitalocean_record" "formateurs_wildcard_subdomains" {
+  count = length(var.formateurs_names)
+  domain = data.digitalocean_domain.dopluk_domain.name
+  type   = "A"
+  name   = "*.${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
   value  = element(var.vnc_formateurs_public_ips, count.index)
 }
 
