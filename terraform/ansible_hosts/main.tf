@@ -50,11 +50,22 @@ variable "guacamole_domain" {}
 
 resource "ansible_host" "ansible_guacamole_server" {
   inventory_hostname = "guacamole-server"
-  groups = ["all", "scaleway", "guacamole_servers", "wireguard"]
+  groups = ["all", "scaleway", "guacamole_servers", "wireguard", "wireguard_servers"]
   vars = {
     ansible_host = var.guacamole_public_ip
     guacamole_domain = var.guacamole_domain
-    vpn_ip = "10.111.0.1"
+    wireguard_public_ip = var.guacamole_public_ip
+    wireguard_listen_port = "51820"
+    # vpn_ip = "10.111.0.1"
+    wireguard_ip_end = "0.1"
+    wireguard_privkey = "cKIYsjYqaoPKtyatlb+Y74Zo35QU6D0QaoidMUYSUnk="
+    wireguard_pubkey = "iqKQGVkOMz77p38s6rbjo2FUyW3zbWVEnCUkqjjphRw="
   }
+}
+
+resource "ansible_group" "ansible_wireguard_clients" {
+  inventory_group_name = "wireguard_clients"
+  children = []
+  vars = {}
 }
 
