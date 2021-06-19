@@ -1,45 +1,56 @@
 <user-mapping>
 
-{# Every stagiaire has his server connection and readonly connection for all formateurs servers #}
-{% for vnc_server in groups['vnc_servers_stagiaires'] %}
-    <authorize username="{{ hostvars[vnc_server].username }}" password="{{ guac_stagiaire_passwd }}">
-        <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
+    <authorize username=stagiaire password="devops101">
+        <connection name="stagiaire1">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
+            <param name="hostname">10.111.0.6</param>
             <param name="port">5901</param>
-            <param name="password">{{ guac_stagiaire_passwd }}</param>
+            <param name="password">devops101</param>
         </connection>
-    {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
-        <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
+        <connection name="formateur-alex">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
+            <param name="hostname">10.111.0.2</param>
             <param name="port">5901</param>
-            <param name="password">{{ guac_formateur_passwd }}</param>
+            <param name="password">devops202</param>
             <param name="read-only">true</param>
         </connection>
-    {% endfor %}
+        <connection name="formateur-aurelien">
+            <protocol>vnc</protocol>
+            <param name="hostname">10.111.0.3</param>
+            <param name="port">5901</param>
+            <param name="password">devops202</param>
+            <param name="read-only">true</param>
+        </connection>
+        <connection name="formateur-hadrien">
+            <protocol>vnc</protocol>
+            <param name="hostname">10.111.0.4</param>
+            <param name="port">5901</param>
+            <param name="password">devops202</param>
+            <param name="read-only">true</param>
+        </connection>
+        <connection name="formateur-elie">
+            <protocol>vnc</protocol>
+            <param name="hostname">10.111.0.5</param>
+            <param name="port">5901</param>
+            <param name="password">devops202</param>
+            <param name="read-only">true</param>
+        </connection>
     </authorize>
-{% endfor %}
 
 
-{# Every teacher/formateur has his server connection and all stagiaires servers connections #}
-{% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
-    <authorize username="{{ hostvars[vnc_server_formateur].username }}" password="{{ guac_formateur_passwd }}">
-        <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
+    <authorize username="alex" password="devops202">
+        <connection name="formateur-alex">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
+            <param name="hostname">10.111.0.2</param>
             <param name="port">5901</param>
-            <param name="password">{{ guac_formateur_passwd }}</param>
+            <param name="password">devops202</param>
         </connection>
-    {% for vnc_server in groups['vnc_servers_stagiaires'] %}
-        <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
+        <connection name="stagiaire1">
             <protocol>vnc</protocol>
-            <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
+            <param name="hostname">10.111.0.6</param>
             <param name="port">5901</param>
-            <param name="password">{{ guac_stagiaire_passwd }}</param>
+            <param name="password">devops</param>
         </connection>
-    {% endfor %}
     </authorize>
-{% endfor %}
 
 </user-mapping>
