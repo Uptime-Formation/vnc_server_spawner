@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/e-lie/wireguard-role
+	branch = main
+	commit = 65b7877bf3a29e20ced42068509158f1be6e3477
+	parent = dc17b28cd9d7e47e58f48bed533b014206927dc4
+	method = merge
+	cmdver = 0.4.3
