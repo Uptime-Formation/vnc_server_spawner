@@ -11,14 +11,78 @@ docker_state: present
 
 
 liste_stagiaires:
-  - name: stagiaire1
+  - name: pierrick
     ip_end: "0.1"
     privkey: "YC83q2KrxvvzOoKeohF4CgbnwfOsSCK+hH3eMjNvEUk="
     pubkey: "fjm39lUf6syNe1KpIXH2qpsXqsF5x68FwA7niJarpFM="
-  - name: stagiaire2
+    guac_password: devops101
+    vnc_password: devops101
+  - name: said
     ip_end: "0.2"
     privkey: "cNOWoYvhTUGSCdVLszgrRck+O2onCxjLqu6wRItmc1I="
     pubkey: "uSl8gz2BCjPoZe+AJl8knuTgS5D5klm9F6NJ2C3jwSM="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: sebastien
+    ip_end: "0.3"
+    privkey: "ANlqNo4CnisoQCxnVqh1X0OoVqEKUaOwDaivPMq8vGE="
+    pubkey: "IgL1fCY28j8gaJssBjJa2f60jG1K6PmsIafbQgyDZHA="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: nicolas
+    ip_end: "0.4"
+    privkey: "mPTLQ3VN1DdzJe2Vln74s1ON7SxGLAdAWBMxBYBMcF0="
+    pubkey: "CKCNeUa+H7DiJUJwUDBpP+FxFl255IrT9pwT1d3NvHk="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: theophile
+    ip_end: "0.5"
+    privkey: "SO0mASlMcTWNtcmwKs08Zcy0ApmNgEX5THQQGTJi2HU="
+    pubkey: "O49R8wCCDnj72jJAePPEE6NS7RFEhbnUHfs3OmZ0w3k="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: abdillah
+    ip_end: "0.6"
+    privkey: "kKUjGBBLA2UxdzZp2zPV8t2qFDKZtfK6A6EgaKXRQm8="
+    pubkey: "nOm5QMyU4Z9g8ZY3OzxDmt2tLG5T0UBqfOOctILV/HQ="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: zakaria
+    ip_end: "0.7"
+    privkey: "wO1BuLkD0jivqeRsCz2g7e6TA7rcfc/V4wLwfQ0dF3o="
+    pubkey: "GyiFsB2By3bSwNUPbXj6Jr/WMZ7VXqH/xYE9ZcjIQ2I="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: jerome
+    ip_end: "0.8"
+    privkey: "GC55XyHzHmDCodsHsuFLQoRtwOLlXFA45BmFhtIgtnE="
+    pubkey: "Q/N9I7K6zN3GgaQzw4FjzoZ8WT2tRtj1pGC4lGv2Ils="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: fabrice
+    ip_end: "0.9"
+    privkey: "mH6xMEp5gdlE8qutW0DnO1uTw8rrqOvWs2ov6PYrg2o="
+    pubkey: "yk6Z4kCNWgmUe0qXK18VadSrTEYq76uO0sFpXu6qWj4="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: haythem
+    ip_end: "0.10"
+    privkey: "UOTA2Jrt4kUfTHUJ7MmYvLciE4SBIVNHh3/YSz/6S0M="
+    pubkey: "f7vDQ1g5aZj8Q70BwvQgjojQEUFQZkIUl3VSNwRARik="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: elhadji
+    ip_end: "0.11"
+    privkey: "kCRhNCxML0ba704WNc2y9VNIYp8QmDz68Fmf9cg1i0Y="
+    pubkey: "uMU+ydqZQzZYMY5QXptcxtO55FFH6dHTCIH45chkZRo="
+    guac_password: devops101
+    vnc_password: devops101
+  - name: mariacamila
+    ip_end: "0.12"
+    privkey: "AAQHhoaNJ0GJCQNiN7F7PwJBTaU9BBxk59xD6n5XzUE="
+    pubkey: "GcMPIW6hYSqBwaRwJAiQjoTbcWubHgPZnVv5/kskiF0="
+    guac_password: devops101
+    vnc_password: devops101
 
 liste_formateurs:
   - name: alex

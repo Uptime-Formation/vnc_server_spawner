@@ -1,5 +1,50 @@
 <user-mapping>
 
+{# Every stagiaire has his server connection and readonly connection for all formateurs servers #}
+{% for stagiaire in liste_stagiaires %}
+    <authorize username="{{ stagiaire.name }}" password="{{ stagiaire.guac_password }}">
+        <connection name="{{ stagiaire.name }}">
+            <protocol>vnc</protocol>
+            <param name="hostname">{{ wireguard_subnet + stagiaire.ip_end|string }}</param>
+            <param name="port">5901</param>
+            <param name="password">{{ stagiaire.vnc_password }}</param>
+        </connection>
+    {% for formateur in liste_formateurs %}
+        <connection name="formateur-{{ formateur.name }}">
+            <protocol>vnc</protocol>
+            <param name="hostname">{{ wireguard_subnet + formateur.ip_end|string }}</param>
+            <param name="port">5901</param>
+            <param name="password">{{ formateur.guac_password }}</param>
+            <param name="read-only">true</param>
+        </connection>
+    {% endfor %}
+    </authorize>
+{% endfor %}
+
+
+{# Every teacher/formateur has his server connection and all stagiaires servers connections #}
+{% for formateur in liste_formateurs %}
+    <authorize username="{{ formateur.name }}" password="{{ formateur.guac_password }}">
+        <connection name="formateur-{{ formateur.name }}">
+            <protocol>vnc</protocol>
+            <param name="hostname">{{ wireguard_subnet + formateur.ip_end|string }}</param>
+            <param name="port">5901</param>
+            <param name="password">{{ formateur.vnc_password }}</param>
+        </connection>
+    {% for stagiaire in liste_stagiaires %}
+        <connection name="{{ stagiaire.name }}">
+            <protocol>vnc</protocol>
+            <param name="hostname">{{ wireguard_subnet + stagiaire.ip_end|string }}</param>
+            <param name="port">5901</param>
+            <param name="password">{{ stagiaire.vnc_password }}</param>
+        </connection>
+    {% endfor %}
+    </authorize>
+{% endfor %}
+
+</user-mapping>
+{# 
+<user-mapping>
     <authorize username="stagiaire" password="devops101">
         <connection name="stagiaire1">
             <protocol>vnc</protocol>
@@ -53,4 +98,4 @@
         </connection>
     </authorize>
 
-</user-mapping>
+</user-mapping> #}

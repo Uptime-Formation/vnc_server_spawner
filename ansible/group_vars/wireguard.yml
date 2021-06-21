@@ -1,9 +1,9 @@
 wireguard_interface_state: "present"
-wireguard_interface_name: "wgpoec"
+wireguard_interface_name: "wg1"
 wireguard_subnet: "10.171."
 wireguard_external_conf_host: guacamole-server
 wireguard_external_conf_path: /etc/wireguard
 wireguard_config_hostnames: no
 
-wireguard_external_clients: liste_stagiaires + liste_formateurs
+wireguard_external_clients: ~
  

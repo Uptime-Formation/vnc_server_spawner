@@ -1,5 +1,9 @@
 - hosts: all
   become: yes
+  pre_tasks:
+    - name: merge stagiaires and formateurs lists into wg external
+      set_fact:
+        wireguard_external_clients: "{{ liste_stagiaires + liste_formateurs }}"
   roles:
     - name: uptime.wireguard 
       vars:

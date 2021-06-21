@@ -1,4 +1,6 @@
 base_user_password: devops101
+base_unix_user: stagiaire
+
 allow_passwd_ssh_connection: "yes"
 ssh_public_key: ~
 
@@ -16,4 +18,3 @@ vnc_base_screen_res: 1300x700
 vnc_passwd: devops101
 vnc_view_passwd: devops101
 vnc_unix_user: stagiaire
-base_unix_user: stagiaire
