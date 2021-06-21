@@ -8,3 +8,40 @@ ansible_user: root
 ## Which environment to setup
 formation_ansible: yes
 docker_state: present
+
+
+liste_stagiaires:
+  - name: stagiaire1
+    ip_end: "0.1"
+    privkey: "YC83q2KrxvvzOoKeohF4CgbnwfOsSCK+hH3eMjNvEUk="
+    pubkey: "fjm39lUf6syNe1KpIXH2qpsXqsF5x68FwA7niJarpFM="
+  - name: stagiaire2
+    ip_end: "0.2"
+    privkey: "cNOWoYvhTUGSCdVLszgrRck+O2onCxjLqu6wRItmc1I="
+    pubkey: "uSl8gz2BCjPoZe+AJl8knuTgS5D5klm9F6NJ2C3jwSM="
+
+liste_formateurs:
+  - name: alex
+    ip_end: "1.1"
+    privkey: "KIgm0qZr2CM6npvebfDqzZMc7+MPix8qHmjXPWA7kEA="
+    pubkey: "sRfzSA0SG05M9X6rb21QXYCIy2ombIxAe2iI+pv44VE="
+    guac_password: devops202
+    vnc_password: devops202
+  - name: hadrien
+    ip_end: "1.2"
+    privkey: "8BIZQMVBAy1ncvCjMcVvn1WRlZTQ3+1rQEms100i4l0="
+    pubkey: "rJK37Azb2r/wnOrNpobyEt3D28daDr+PFJ5ipRuUXho="
+    guac_password: devops202
+    vnc_password: devops202
+  - name: aurelien
+    ip_end: "1.3"
+    privkey: "kFf5nzlajP2soz/LPSXQ/cKqL+/ay+rWNJDNjXwg1G4="
+    pubkey: "noSaKJA9MIzAG/bmUCGcH6P8MWCUpjl5uRLbPr15zkM="
+    guac_password: devops202
+    vnc_password: devops202
+  - name: elie
+    ip_end: "1.4"
+    privkey: "sIIvOpGh/8PL6mjm846dEBBFj7rJaqIebE8vGGXkFV8="
+    pubkey: "q4QlIl9zciqCOQklxjyKBLFk2qcwWh8/o8fOikcc9FY="
+    guac_password: devops202
+    vnc_password: devops202
