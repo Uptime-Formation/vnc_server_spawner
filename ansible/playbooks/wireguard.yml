@@ -1,4 +1,6 @@
 - hosts: all
   become: yes
   roles:
-    - name: mawalu.wireguard 
+    - name: uptime.wireguard 
+      vars:
+        wireguard_group_name: wireguard
