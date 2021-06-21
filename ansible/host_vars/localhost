@@ -1,0 +1,19 @@
+base_user_password: devops101
+allow_passwd_ssh_connection: "yes"
+ssh_public_key: ~
+
+ansible_user: root
+
+
+## Which environment to setup
+formation_ansible: yes
+docker_state: present
+
+
+vnc_local_access_only: "no"
+vnc_base_screen_res: 1300x700
+
+vnc_passwd: devops101
+vnc_view_passwd: devops101
+vnc_unix_user: stagiaire
+base_unix_user: stagiaire

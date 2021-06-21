@@ -1,0 +1,20 @@
+- hosts: localhost
+  become: yes
+  roles:
+    - name: uptime.deb_server_prepare
+
+    - name: uptime.tigervnc_setup
+      tags: ["tigervnc_setup"]
+
+    - name: uptime.customize_xfce
+
+    - name: uptime.dev_env_setup
+      tags: ["dev_env_setup"]
+
+    - name: uptime.docker_setup
+      vars:
+        docker_users:
+          - "{{ base_unix_user }}"
+      when: docker_state == "present"
+
+
