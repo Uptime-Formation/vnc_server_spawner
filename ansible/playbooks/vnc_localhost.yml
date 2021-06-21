@@ -6,8 +6,6 @@
     - name: uptime.tigervnc_setup
       tags: ["tigervnc_setup"]
 
-    - name: uptime.customize_xfce
-
     - name: uptime.dev_env_setup
       tags: ["dev_env_setup"]
 
@@ -16,5 +14,7 @@
         docker_users:
           - "{{ base_unix_user }}"
       when: docker_state == "present"
+
+    - name: uptime.customize_xfce
 
 
