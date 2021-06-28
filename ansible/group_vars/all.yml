@@ -83,6 +83,12 @@ liste_stagiaires:
     pubkey: "GcMPIW6hYSqBwaRwJAiQjoTbcWubHgPZnVv5/kskiF0="
     guac_password: devops101
     vnc_password: devops101
+  - name: jeromeb
+    ip_end: "0.13"
+    privkey: "EGPCk4ns0ZTz101x1IZOKG8C8GfZmNe+DYTsrjxhMWk="
+    pubkey: "1hODJ3z5xKYcXtrNDZbcprA4Ghb0rGtlbiEFFsV5N2w="
+    guac_password: devops101
+    vnc_password: devops101
 
 liste_formateurs:
   - name: alex

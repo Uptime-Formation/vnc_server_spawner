@@ -5,5 +5,5 @@ wireguard_external_conf_host: guacamole-server
 wireguard_external_conf_path: /etc/wireguard
 wireguard_config_hostnames: no
 
-wireguard_external_clients: ~
+wireguard_external_clients: ~ # set_fact to add the formateurs and stagiaires lists in pre tasks
  
