@@ -97,8 +97,8 @@ services:
       GUACAMOLE_HOME: /etc/guacamole
       VIRTUAL_HOST: {{ guacamole_domain }}
       VIRTUAL_PORT: 8080
-    #   LETSENCRYPT_HOST: {{ guacamole_domain }}
-    #   LETSENCRYPT_EMAIL: {{ guac_letsencrypt_email }} 
+      LETSENCRYPT_HOST: {{ guacamole_domain }}
+      LETSENCRYPT_EMAIL: {{ guac_letsencrypt_email }} 
     image: guacamole/guacamole
     volumes:
       - {{ guac_path }}/user-mapping.xml:/etc/guacamole/user-mapping.xml
