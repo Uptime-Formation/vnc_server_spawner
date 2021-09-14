@@ -76,11 +76,13 @@
 #   debug:
 #     var: result.container.State.Health.Status == "healthy"
 #   when: result.exists
-
+# 
 - name: Wait until one cert file is present before continuing
   wait_for:
     path: /nginx_certs/{{ guacamole_domain }}/fullchain.pem
-# FIXME: creates stored_certs/stored_certs/ hierarchy
+  ignore_errors: true
+  
+# FIXME: creates stored_certs/stored_certs/ hierarchy #}
 - name: Export cert files to local path
   # - name: Synchronization of src on the inventory host to the dest on the localhost in pull mode
   ansible.posix.synchronize:
