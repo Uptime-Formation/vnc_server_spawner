@@ -14,8 +14,8 @@ variable "guacamole_public_ip" {}
 terraform {
   required_providers {
     ovh = {
-      source = "ovh/ovh"
-      version = "0.10.0"
+      source  = "ovh/ovh"
+      version = "0.13.0"
     }
   }
 }
@@ -79,8 +79,8 @@ resource "ovh_domain_zone_record" "formateurs_wildcard_subdomains" {
 
 resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
   # Changing because of Let's Encrypt limit
-#   zone      = data.ovh_domain_zone.ethicaltech_domain.name
-  zone      = data.ovh_domain_zone.doxx_domain.name
+  #   zone      = data.ovh_domain_zone.ethicaltech_domain.name
+  zone = data.ovh_domain_zone.doxx_domain.name
   # zone      = data.ovh_domain_zone.hp_domain.name
   subdomain = "lab"
   # subdomain = "guacamole"
