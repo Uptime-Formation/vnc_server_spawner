@@ -4,3 +4,6 @@ export ANSIBLE_DIR=$PROJECT_DIR/ansible/
 export ANSIBLE_INVENTORY=$PROJECT_DIR/ansible/terraform-inventory.py
 export ANSIBLE_PLAYBOOK=$PROJECT_DIR/ansible/lab.yml
 export ANSIBLE_TF_DIR=$TERRAFORM_DIR
+
+export ANSIBLE_ENABLE_TASK_DEBUGGER=True 
+ssh-add ~/.ssh/id_rsa 
