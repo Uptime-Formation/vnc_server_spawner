@@ -19,3 +19,5 @@ terraform/variables.tf
 
 *.retry
 geerlingguy.*
+
+.DS_Store
