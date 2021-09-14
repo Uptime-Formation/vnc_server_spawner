@@ -9,7 +9,7 @@
   docker_compose:
     project_src: "{{ guac_path }}"
     services:
-      - guacamole_compose
+      - guacamole
     state: present
     restarted: yes
 

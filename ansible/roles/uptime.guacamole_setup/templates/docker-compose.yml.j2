@@ -15,7 +15,7 @@
 # - create a network 'guacnetwork_compose' with the 'bridge' driver.
 # - create a service 'guacd_compose' from 'guacamole/guacd' connected to 'guacnetwork'
 # - create a service 'postgres_guacamole_compose' (1) from 'postgres' connected to 'guacnetwork'
-# - create a service 'guacamole_compose' (2)  from 'guacamole/guacamole/' conn. to 'guacnetwork'
+# - create a service 'guacamole' (2)  from 'guacamole/guacamole/' conn. to 'guacnetwork'
 # - create a service 'nginx-proxy' from 'nginx-proxy' connected to 'guacnetwork'
 # - create a service 'letsencrypt' from 'jrcs/letsencrypt-nginx-proxy-companion' connected to 'guacnetwork'
 #
@@ -87,7 +87,7 @@ services:
 
   # guacamole
   guacamole:
-    container_name: guacamole_compose
+    container_name: guacamole
     depends_on:
       - guacd
       # - postgres
@@ -104,8 +104,8 @@ services:
       - {{ guac_path }}/user-mapping.xml:/etc/guacamole/user-mapping.xml
     networks:
       - guacnetwork_compose
-    ports:
-      - "127.0.0.1:8080"
+    # ports:
+#      - "127.0.0.1:8080:8080"
     #   - "8080/tcp"
     restart: always
     healthcheck:
