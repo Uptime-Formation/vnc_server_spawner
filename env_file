@@ -3,4 +3,6 @@ export TERRAFORM_DIR=$PROJECT_DIR/terraform/
 export ANSIBLE_DIR=$PROJECT_DIR/ansible/
 export ANSIBLE_INVENTORY=$PROJECT_DIR/ansible/terraform-inventory.py
 export ANSIBLE_PLAYBOOK=$PROJECT_DIR/ansible/site.yml
+export ANSIBLE_PLAYBOOK_GUACAMOLE=$PROJECT_DIR/ansible/playbooks/guacamole_servers.yml
+export ANSIBLE_PLAYBOOK_VNC=$PROJECT_DIR/ansible/playbooks/vnc_servers.yml
 export ANSIBLE_TF_DIR=$TERRAFORM_DIR

@@ -41,6 +41,24 @@ _setup_ansible() {
   cd "$PROJECT_DIR"
 }
 
+_setup_ansible_guacamole() {
+  printf "Setup infra VPS using Ansible\\n"
+  printf "##############################################\\n"
+  cd "$ANSIBLE_DIR"
+  # ansible-galaxy install -i -r roles/requirements.yml -p roles
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUACAMOLE} -vv
+  cd "$PROJECT_DIR"
+}
+
+_setup_ansible_vnc() {
+  printf "Setup infra VPS using Ansible\\n"
+  printf "##############################################\\n"
+  cd "$ANSIBLE_DIR"
+  # ansible-galaxy install -i -r roles/requirements.yml -p roles
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_VNC} -vv
+  cd "$PROJECT_DIR"
+}
+
 
 _destroy_infra() {
   printf "DESTROY Terraform resources\\n"
@@ -68,6 +86,12 @@ _main() {
   elif [[ "${1:-}" =~ ^setup_ansible$  ]]
   then
     _setup_ansible
+  elif [[ "${1:-}" =~ ^setup_ansible_guacamole$  ]]
+  then
+    _setup_ansible_guacamole
+  elif [[ "${1:-}" =~ ^setup_ansible_vnc$  ]]
+  then
+    _setup_ansible_vnc
   elif [[ "${1:-}" =~ ^destroy_infra$  ]]
   then
     _destroy_infra
