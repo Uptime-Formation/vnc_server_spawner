@@ -1,7 +1,5 @@
 vnc_local_access_only: "no"
 vnc_base_screen_res: 1300x700
-# docker_state: present
-# kubectl_state: present
 
 # FIXME: vnc from guac not working, order of rules?
 ufw_state: disabled

@@ -2,6 +2,11 @@
   apt:
     update_cache: yes
     upgrade: "yes"
+  retries: 30
+  delay: 30
+  register: apt_upgrade
+  until: apt_upgrade is success
+
 
 - name: Ensure we have git installed
   apt:
@@ -52,7 +57,7 @@
     state: "{{ lxd_state }}"
   when: lxd_state == "present"
 
-- name: Ensure we have kubectl installed or not
+- name: "Ensure we have kubectl {{ kubectl_state }}"
   snap:
     name: kubectl
     state: "{{ kubectl_state }}"

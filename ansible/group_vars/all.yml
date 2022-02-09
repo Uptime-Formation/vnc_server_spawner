@@ -4,7 +4,6 @@ ssh_public_key: ~
 
 ansible_user: root
 
-
 ## Which environment to setup
 formation_ansible: no
 formation_k8s: yes

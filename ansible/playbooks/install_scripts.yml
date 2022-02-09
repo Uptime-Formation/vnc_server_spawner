@@ -1,5 +1,6 @@
 - hosts: vnc_servers
   become: yes
+  strategy: free
 
   roles:
     - name: uptime.install_scripts

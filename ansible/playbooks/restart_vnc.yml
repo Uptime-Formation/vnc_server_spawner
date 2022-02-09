@@ -1,5 +1,6 @@
 - hosts: vnc_servers
   become: yes
+  strategy: free
 
   tasks:
     # - name: Restart VNC service

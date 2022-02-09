@@ -3,6 +3,7 @@
 - name: configure ufw to authorize guacamole_servers.ansible_host
   hosts: vnc_servers
   become: yes
+  strategy: free
 
   roles:
     - role: ufw_manage
