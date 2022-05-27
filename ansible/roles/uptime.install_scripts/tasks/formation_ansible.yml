@@ -1,14 +1,23 @@
-- name: Ensure we have Ansible installed
-  apt:
-    name: ansible
-    state: present
-  tags: ["formation_ansible"]
+# - name: Ensure we have Ansible installed
+#   apt:
+#     name: ansible
+#     state: present
+#   tags: ["formation_ansible"]
 
 - name: Ensure we have LXD "{{ lxd_state }}"
   snap:
     name: lxd
     state: "{{ lxd_state }}"
   tags: ["formation_ansible"]
+
+- name: template ansible lxd teaching install script
+  template:
+    src: "{{ item }}.j2"
+    dest: /opt/{{ item }}
+    mode: 0777
+  loop:
+    - lxd_config.yaml
+    - lxd.sh
 
 - name: Ensure /.ssh/ folder exists
   file:
@@ -44,12 +53,3 @@
     append: yes
   notify: Restart vncserver
   tags: ["formation_ansible", "lxd_group"]
-
-- name: template ansible lxd teaching install script
-  template:
-    src: "{{ item }}.j2"
-    dest: /opt/{{ item }}
-    mode: 0777
-  loop:
-    - lxd_config.yaml
-    - lxd.sh

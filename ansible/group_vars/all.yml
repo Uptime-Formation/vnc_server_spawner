@@ -5,9 +5,9 @@ ssh_public_key: ~
 ansible_user: root
 
 ## Which environment to setup
-formation_ansible: no
-formation_k8s: yes
+formation_ansible: yes
+formation_k8s: no
 
-kubectl_state: present
+kubectl_state: absent
 docker_state: present
-lxd_state: absent
+lxd_state: present
