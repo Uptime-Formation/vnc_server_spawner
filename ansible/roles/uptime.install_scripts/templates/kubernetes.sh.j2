@@ -28,5 +28,9 @@ sudo dpkg -i minikube_latest_amd64.deb
 minikube start --driver=docker
 
 ## Install Lens
-curl -LO https://api.k8slens.dev/binaries/Lens-5.3.3-latest.20211214.2.amd64.deb
-sudo dpkg -i Lens-5.3.3-latest.20211214.2.amd64.deb 
+export LENS_VERSION=5.5.4
+curl -LO "https://github.com/MuhammedKalkan/OpenLens/releases/download/v$LENS_VERSION/OpenLens-$LENS_VERSION.deb"
+sudo dpkg -i "OpenLens-$LENS_VERSION.deb" 
+
+## install Helm
+sudo snap install helm --classic

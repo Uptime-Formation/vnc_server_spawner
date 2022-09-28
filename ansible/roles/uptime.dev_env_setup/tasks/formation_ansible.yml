@@ -1,9 +1,11 @@
 
-- name: Ensure we have Ansible installed
-  apt:
-    name: ansible
-    state: present
-  tags: ["formation_ansible"]
+# - name: Ensure we have Ansible installed
+#   apt:
+#     name: ansible
+#     state: present
+#   tags: ["formation_ansible"]
+
+# => install in a script using pip3 for last stable version
 
 - name: Ensure we have LXD "{{ lxd_state }}"
   snap:

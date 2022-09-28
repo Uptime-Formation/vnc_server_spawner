@@ -4,6 +4,18 @@
     dest: /opt/kubernetes.sh
     mode: 0777
 
+- name: template terraform install script
+  template:
+    src: terraform.sh.j2
+    dest: /opt/terraform.sh
+    mode: 0777
+
+- name: template ansible install script
+  template:
+    src: ansible.sh.j2
+    dest: /opt/ansible.sh
+    mode: 0777
+
 - name: template ansible lxd teaching install script
   template:
     src: "{{ item }}.j2"

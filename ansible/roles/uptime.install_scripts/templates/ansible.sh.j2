@@ -1,0 +1,10 @@
+
+#!/bin/bash
+
+set -eux
+
+
+pip3 install ansible
+
+export PATH=$PATH:$HOME/.local/bin
+echo export PATH=$PATH:$HOME/.local/bin | tee -a ~/.bashrc
