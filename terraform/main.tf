@@ -5,6 +5,7 @@ variable "scaleway_orga_id" {}
 variable "digitalocean_token" {}
 
 variable "hcloud_token" {}
+variable "hcloud_dns_token" {}
 
 # variable "ovh_application_key" {}
 # variable "ovh_application_secret" {}
@@ -45,8 +46,8 @@ module "servers" {
 # }
 
 module "domains" {
-  source                    = "./domains_providers/digital_ocean"
-  digitalocean_token        = var.digitalocean_token
+  source                    = "./domains_providers/hcloud"
+  hcloud_dns_token        = var.hcloud_dns_token
   formation_subdomain       = var.formation_subdomain
   stagiaires_names          = var.stagiaires_names
   formateurs_names          = var.formateurs_names
