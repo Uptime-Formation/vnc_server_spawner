@@ -23,7 +23,8 @@ variable "vnc_formateurs_public_ips" {}
 variable "guacamole_public_ip" {}
 variable "lxd_images_public_ip" {}
 
-variable "guacamole_domain" {}
+# variable "guacamole_domain" {}
+variable "formation_subdomain" {}
 
 
 resource "ansible_host" "ansible_vnc_servers" {
@@ -53,7 +54,7 @@ resource "ansible_host" "ansible_guacamole_server" {
   groups = ["all", "scaleway", "guacamole_servers", "wireguard"]
   vars = {
     ansible_host = var.guacamole_public_ip
-    guacamole_domain = var.guacamole_domain
+    guacamole_domain = "guacamole.${var.formation_subdomain}.dopl.uk" # var.guacamole_domain
     vpn_ip = "10.111.0.1"
   }
 }

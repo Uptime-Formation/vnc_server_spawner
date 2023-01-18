@@ -17,5 +17,7 @@ ansible-digital_ocean.cache
 *.tfstate
 *.tfstate.backup
 
+hcloud_token.json
+
 *.retry
 geerlingguy.*

@@ -1,0 +1,23 @@
+{
+    "builders": [
+      {
+        "type": "hcloud",
+        "token": "{{user `hcloud_token`}}",
+        "image": "ubuntu-20.04",
+        "location": "hel1",
+        "server_type": "cx31",
+        "ssh_username": "root"
+      }
+    ],
+    "provisioners": [
+        {
+          "inline": [
+            "export DEBIAN_FRONTEND=noninteractive",
+            "apt-get update",
+            "apt-get install -yq dialog htop vim xubuntu-desktop light-locker dbus-x11 tigervnc-standalone-server tigervnc-xorg-extension tigervnc-common apt-transport-https ca-certificates gnupg2 python3-pip python3-setuptools curl"
+          ],
+          "type": "shell"
+        }
+    ]
+  }
+  

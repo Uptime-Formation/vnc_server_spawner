@@ -1,14 +1,6 @@
 variable "stagiaires_names" {
   default = [
-    "arlot",
-    "eloufir",
-    "piedoie",
-    "goude",
-    "wang",
-    "barghane",
-    "coulbeaux",
-    "lecoq",
-    "stagiaire9",
+    "tyzz",
   ]
 }
 
@@ -19,7 +11,7 @@ variable "formateurs_names" {
 }
 
 variable "formation_subdomain" {
-  default = "formation"
+  default = "kube"
 }
 
 variable "hcloud_vnc_server_type" {
@@ -27,5 +19,5 @@ variable "hcloud_vnc_server_type" {
 }
 
 variable "hcloud_guacamole_server_type" {
-  default = "cx11"
+  default = "cpx21"
 }

@@ -46,15 +46,14 @@ module "servers" {
 # }
 
 module "domains" {
-  source                    = "./domains_providers/hcloud"
-  hcloud_dns_token        = var.hcloud_dns_token
+  source                    = "./domains_providers/digital_ocean"
+  digitalocean_token        = var.digitalocean_token
   formation_subdomain       = var.formation_subdomain
   stagiaires_names          = var.stagiaires_names
   formateurs_names          = var.formateurs_names
   vnc_stagiaires_public_ips = module.servers.vnc_stagiaires_public_ips
   vnc_formateurs_public_ips = module.servers.vnc_formateurs_public_ips
   guacamole_public_ip       = module.servers.guacamole_public_ip
-  lxd_images_public_ip      = module.servers.lxd_images_public_ip
 }
 
 
@@ -66,6 +65,7 @@ module "ansible_hosts" {
   vnc_formateurs_public_ips = module.servers.vnc_formateurs_public_ips
   guacamole_public_ip       = module.servers.guacamole_public_ip
   lxd_images_public_ip      = module.servers.lxd_images_public_ip
+  formation_subdomain       = var.formation_subdomain
 
-  guacamole_domain          = module.domains.guacamole_domain
+  # guacamole_domain          = module.domains.guacamole_domain
 }

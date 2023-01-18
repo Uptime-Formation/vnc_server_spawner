@@ -8,7 +8,6 @@ variable "formateurs_names" {}
 variable "vnc_stagiaires_public_ips" {}
 variable "vnc_formateurs_public_ips" {}
 variable "guacamole_public_ip" {}
-variable "lxd_images_public_ip" {}
 
 terraform {
   required_providers {
@@ -64,13 +63,6 @@ resource "digitalocean_record" "guacamole_node_subdomain" {
   type   = "A"
   name   = "guacamole.${var.formation_subdomain}"
   value  = var.guacamole_public_ip
-}
-
-resource "digitalocean_record" "lxd_images_node_subdomain" {
-  domain = data.digitalocean_domain.dopluk_domain.name
-  type   = "A"
-  name   = "lxd-images.${var.formation_subdomain}"
-  value  = var.lxd_images_public_ip
 }
 
 output "guacamole_domain" {
