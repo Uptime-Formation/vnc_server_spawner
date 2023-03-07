@@ -1,0 +1,238 @@
+---
+# Source: guacamole/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{  guacamole_release_name }}-guacamole
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{  guacamole_release_name }}-user-mappings-config
+data:
+  user-mappings.xml: |-
+    <user-mapping>
+    {# Every stagiaire has his server connection and readonly connection for all formateurs servers #}
+    {% for vnc_server in groups['vnc_servers_stagiaires'] %}
+        <authorize username="{{ hostvars[vnc_server].username }}" password="{{ guac_stagiaire_passwd }}">
+            <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_stagiaire_passwd }}</param>
+            </connection>
+        {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
+            <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_formateur_passwd }}</param>
+                <param name="read-only">true</param>
+            </connection>
+        {% endfor %}
+        </authorize>
+    {% endfor %}
+
+
+    {# Every teacher/formateur has his server connection and all stagiaires servers connections #}
+    {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
+        <authorize username="{{ hostvars[vnc_server_formateur].username }}" password="{{ guac_formateur_passwd }}">
+            <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_formateur_passwd }}</param>
+            </connection>
+        {% for vnc_server in groups['vnc_servers_stagiaires'] %}
+            <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_stagiaire_passwd }}</param>
+            </connection>
+        {% endfor %}
+        </authorize>
+    {% endfor %}
+    </user-mapping>
+---
+# Source: guacamole/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{  guacamole_release_name }}-guacamole
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  GUACD_HOSTNAME: "Z3VhY2Ftb2xlLWd1YWNk"
+  GUACD_PORT: "NDgyMg=="
+  WEBAPP_CONTEXT: "Uk9PVA=="
+---
+# Source: guacamole/templates/service-guacamole.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{  guacamole_release_name }}-guacamole-guacamole
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: guacamole-guacamole
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+---
+# Source: guacamole/templates/service-guacd.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{  guacamole_release_name }}-guacamole-guacd
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4822
+      targetPort: guacd
+      protocol: TCP
+      name: guacd
+  selector:
+    app.kubernetes.io/name: guacamole-guacd
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+---
+# Source: guacamole/templates/deployment-guacamole.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{  guacamole_release_name }}-guacamole-guacamole
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: guacamole-guacamole
+      app.kubernetes.io/instance: {{  guacamole_release_name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: guacamole-guacamole
+        app.kubernetes.io/instance: {{  guacamole_release_name }}
+    spec:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      serviceAccountName: {{  guacamole_release_name }}-guacamole
+      securityContext:
+        {}
+      containers:
+        - name: guacamole
+          securityContext:
+            {}
+          image: "guacamole/guacamole:1.5.0"
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: {{  guacamole_release_name }}-guacamole
+          env:
+          # If this variable GUACAMOLE_HOME is set the container doesn't complain about missing db and load user-mapping.xml WTF
+            - name: GUACAMOLE_HOME
+              value: /etc/guacamole
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+          volumeMounts:
+          - name: user-mappings-volume
+            mountPath: /etc/guacamole/user-mappings.xml
+            subPath: user-mappings.xml
+        volumes:
+        - name: user-mappings-config-volume
+          configMap:
+            name: user-mapping-configmap
+      # volumes:
+      #   - name: initdb
+      #     emptyDir: {}
+---
+# Source: guacamole/templates/deployment-guacd.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{  guacamole_release_name }}-guacamole-guacd
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{  guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: guacamole-guacd
+      app.kubernetes.io/instance: {{  guacamole_release_name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: guacamole-guacd
+        app.kubernetes.io/instance: {{  guacamole_release_name }}
+    spec:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      serviceAccountName: {{  guacamole_release_name }}-guacamole
+      securityContext:
+        {}
+      containers:
+        - name: guacamole
+          securityContext:
+            {}
+          image: "guacamole/guacd:1.5.0"
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: {{  guacamole_release_name }}-guacamole
+          ports:
+            - name: guacd
+              containerPort: 4822
+              protocol: TCP
+          resources:
+            {}

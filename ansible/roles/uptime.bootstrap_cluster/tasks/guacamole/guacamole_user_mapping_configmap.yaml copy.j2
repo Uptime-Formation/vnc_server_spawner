@@ -1,0 +1,54 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{  guacamole_release_name }}-user-mapping-configmap
+data:
+  user-mapping.xml: |-
+    <user-mapping>
+    {# Every stagiaire has his server connection and readonly connection for all formateurs servers #}
+    {% for vnc_server in groups['vnc_servers_stagiaires'] %}
+        <authorize username="{{ hostvars[vnc_server].username }}" password="{{ guac_stagiaire_passwd }}">
+            <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_stagiaire_passwd }}</param>
+                <param name="ignore-cert">true</param>
+            </connection>
+        {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
+            <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_formateur_passwd }}</param>
+                <param name="read-only">true</param>
+                <param name="ignore-cert">true</param>
+            </connection>
+        {% endfor %}
+        </authorize>
+    {% endfor %}
+
+
+    {# Every teacher/formateur has his server connection and all stagiaires servers connections #}
+    {% for vnc_server_formateur in groups['vnc_servers_formateur'] %}
+        <authorize username="{{ hostvars[vnc_server_formateur].username }}" password="{{ guac_formateur_passwd }}">
+            <connection name="{{ hostvars[vnc_server_formateur].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server_formateur].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_formateur_passwd }}</param>
+                <param name="ignore-cert">true</param>
+            </connection>
+        {% for vnc_server in groups['vnc_servers_stagiaires'] %}
+            <connection name="{{ hostvars[vnc_server].inventory_hostname }}">
+                <protocol>vnc</protocol>
+                <param name="hostname">{{ hostvars[vnc_server].vpn_ip }}</param>
+                <param name="port">5901</param>
+                <param name="password">{{ guac_stagiaire_passwd }}</param>
+                <param name="ignore-cert">true</param>
+            </connection>
+        {% endfor %}
+        </authorize>
+    {% endfor %}
+    </user-mapping>

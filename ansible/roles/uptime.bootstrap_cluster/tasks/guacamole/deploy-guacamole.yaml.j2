@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ guacamole_release_name }}-guacamole
+  labels:
+    app.kubernetes.io/name: guacamole
+    helm.sh/chart: guacamole-1.4.0
+    app.kubernetes.io/instance: {{ guacamole_release_name }}
+    app.kubernetes.io/version: "1.5.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: guacamole
+      app.kubernetes.io/instance: {{ guacamole_release_name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: guacamole
+        app.kubernetes.io/instance: {{ guacamole_release_name }}
+    spec:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+      serviceAccountName: {{ guacamole_release_name }}-guacamole
+      securityContext: {}
+      initContainers:
+        - name: init-guacamole-home
+          securityContext:
+            {}
+          image: "guacamole/guacamole:1.5.0"
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - |
+              mkdir -p /home/guacamole/.guacamole
+          resources:
+            {}
+      containers:
+      - name: guacamole
+        securityContext: {}
+        image: "guacamole/guacamole:1.5.0"
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: {{ guacamole_release_name }}-config
+        env:
+        # If this variable GUACAMOLE_HOME is set the container doesn't complain about missing db and load user-mapping.xml WTF
+        - name: GUACAMOLE_HOME
+          value: /etc/guacamole
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        resources: {}
+        volumeMounts:
+        - name: user-mapping-volume
+          mountPath: /etc/guacamole/user-mapping.xml
+          subPath: user-mapping.xml
+      volumes:
+      - name: user-mapping-volume
+        configMap:
+          name: {{ guacamole_release_name }}-user-mapping-configmap
+  

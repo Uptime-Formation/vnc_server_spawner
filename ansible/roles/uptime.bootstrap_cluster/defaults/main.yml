@@ -13,3 +13,12 @@ certmanager_chart_values:
   installCRDs: true
 
 argocd_chart_version: 5.19.7 # argocd chart values: see role template
+
+guacamole_release_name: guacamole
+
+# guac_path: /guacamole-docker-compose
+# guacamole_domain: guacamole.example.com
+# guac_letsencrypt_email: eliegavoty@free.fr
+guac_stagiaire_passwd: devops101
+guac_formateur_passwd: devops202
+base_unix_user: guacamole
