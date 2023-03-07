@@ -1,77 +1,76 @@
-# - name: add ingress nginx chart repo
-#   kubernetes.core.helm_repository:
-#     name: ingress-nginx
-#     repo_url: "https://kubernetes.github.io/ingress-nginx"
-#   tags:
-#     - ingress_nginx
+- name: add ingress nginx chart repo
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: "https://kubernetes.github.io/ingress-nginx"
+  tags:
+    - ingress_nginx
 
-# - name: install ingress nginx chart
-#   kubernetes.core.helm:
-#     kubeconfig: "{{ local_kubeconfig_path }}"
-#     name: ingress-nginx
-#     chart_ref: ingress-nginx/ingress-nginx
-#     chart_version: "{{ ingress_nginx_chart_version }}"
-#     release_namespace: ingress-nginx
-#     create_namespace: true
-#     values: "{{ ingress_nginx_chart_values }}"
-#   tags:
-#     - ingress_nginx
+- name: install ingress nginx chart
+  kubernetes.core.helm:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    name: ingress-nginx
+    chart_ref: ingress-nginx/ingress-nginx
+    chart_version: "{{ ingress_nginx_chart_version }}"
+    release_namespace: ingress-nginx
+    create_namespace: true
+    values: "{{ ingress_nginx_chart_values }}"
+  tags:
+    - ingress_nginx
 
-# - name: add cert-manager chart repo
-#   kubernetes.core.helm_repository:
-#     name: cert-manager
-#     repo_url: "https://charts.jetstack.io"
-#   tags:
-#     - cert_manager
+- name: add cert-manager chart repo
+  kubernetes.core.helm_repository:
+    name: cert-manager
+    repo_url: "https://charts.jetstack.io"
+  tags:
+    - cert_manager
 
-# - name: install cert-manager chart
-#   kubernetes.core.helm:
-#     kubeconfig: "{{ local_kubeconfig_path }}"
-#     name: cert-manager
-#     chart_ref: cert-manager/cert-manager
-#     release_namespace: cert-manager
-#     create_namespace: true
-#     chart_version: "{{ certmanager_chart_version }}"
-#     values: "{{ certmanager_chart_values }}"
-#   tags:
-#     - cert_manager
+- name: install cert-manager chart
+  kubernetes.core.helm:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    name: cert-manager
+    chart_ref: cert-manager/cert-manager
+    release_namespace: cert-manager
+    create_namespace: true
+    chart_version: "{{ certmanager_chart_version }}"
+    values: "{{ certmanager_chart_values }}"
+  tags:
+    - cert_manager
 
-# - name: create letsencrypt prod Cluster Issuer
-#   kubernetes.core.k8s:
-#     kubeconfig: "{{ local_kubeconfig_path }}"
-#     definition: "{{ lookup('template', './letsencrypt_prod_cluster_issuer.yaml.j2') }}"
-#   tags:
-#     - cert_manager
+- name: create letsencrypt prod Cluster Issuer
+  kubernetes.core.k8s:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    definition: "{{ lookup('template', './letsencrypt_prod_cluster_issuer.yaml.j2') }}"
+  tags:
+    - cert_manager
 
-# - name: add argo chart repo
-#   kubernetes.core.helm_repository:
-#     name: argo
-#     repo_url: "https://argoproj.github.io/argo-helm"
-#   tags:
-#     - argocd
+- name: add argo chart repo
+  kubernetes.core.helm_repository:
+    name: argo
+    repo_url: "https://argoproj.github.io/argo-helm"
+  tags:
+    - argocd
 
-# # - debug:
-#     # msg: "{{ lookup('template', './argocd_chart_values.yaml.j2') }}"
+# - debug:
+    # msg: "{{ lookup('template', './argocd_chart_values.yaml.j2') }}"
 
-# - name: install argo-cd chart
-#   kubernetes.core.helm:
-#     kubeconfig: "{{ local_kubeconfig_path }}"
-#     name: argo-cd
-#     chart_ref: argo/argo-cd
-#     release_namespace: argo-cd
-#     create_namespace: true
-#     chart_version: "{{ argocd_chart_version }}"
-#     values: "{{ lookup('template', './argocd_chart_values.yaml.j2') | from_yaml }}"
-#   tags:
-#     - argocd
+- name: install argo-cd chart
+  kubernetes.core.helm:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    name: argo-cd
+    chart_ref: argo/argo-cd
+    release_namespace: argo-cd
+    create_namespace: true
+    chart_version: "{{ argocd_chart_version }}"
+    values: "{{ lookup('template', './argocd_chart_values.yaml.j2') | from_yaml }}"
+  tags:
+    - argocd
 
-# - name: Deploy guacamole templated user-mappings.xml configmap
-#   kubernetes.core.k8s:
-#     state: present
-#     namespace: guacamole
-#     definition: "{{ lookup('template', './guacamole_user_mappings_configmap.yaml.j2') | from_yaml }}"
-#   tags:
-#     - "guacamole"
+- name: Create a guacamole namespace
+  kubernetes.core.k8s:
+    name: guacamole
+    api_version: v1
+    kind: Namespace
+    state: present
 
 - name: Deploy guacamole stack
   kubernetes.core.k8s:

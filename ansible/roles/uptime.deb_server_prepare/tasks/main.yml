@@ -37,7 +37,7 @@
     name: "{{ base_unix_user }}"
     password: "{{ base_user_password | password_hash('sha512', 'myseijJIjretsalt') }}"
     shell: /bin/bash
-    groups: ["sudo"]
+    groups: ["sudo", "docker"]
     append: yes
 
 - name: Allow user '{{ base_unix_user }}' ssh connexion

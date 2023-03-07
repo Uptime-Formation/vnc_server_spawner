@@ -19,3 +19,9 @@
         name: xrdp
         state: restarted
       tags: ["xrdp"]
+
+    - name: Add {{ base_unix_user }} user and add it to sudo group
+      user:
+        name: "{{ base_unix_user }}"
+        groups: ["docker"]
+        append: yes

@@ -1,5 +1,11 @@
 variable "stagiaires_names" {
   default = [
+    "dorval",
+    "leguillou",
+    "jarrige",
+    "gaultier",
+    "gautier",
+    "rhalmi",
     "stagiaire1",
   ]
 }
