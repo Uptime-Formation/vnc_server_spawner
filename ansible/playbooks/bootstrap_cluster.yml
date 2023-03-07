@@ -1,0 +1,4 @@
+- hosts: localhost
+  roles:
+    - name: uptime.bootstrap_cluster
+      tags: bootstrap_cluster 

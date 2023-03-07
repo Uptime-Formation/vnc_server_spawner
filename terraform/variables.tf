@@ -1,6 +1,6 @@
 variable "stagiaires_names" {
   default = [
-    "tyzz",
+    "stagiaire1",
   ]
 }
 
@@ -11,7 +11,11 @@ variable "formateurs_names" {
 }
 
 variable "formation_subdomain" {
-  default = "kube"
+  default = "formation"
+}
+
+variable "global_lab_domain" {
+  default = "eliegavoty.xyz"
 }
 
 variable "hcloud_vnc_server_type" {

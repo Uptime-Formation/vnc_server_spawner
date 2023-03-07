@@ -22,8 +22,8 @@ variable "vnc_stagiaires_public_ips" {}
 variable "vnc_formateurs_public_ips" {}
 variable "guacamole_public_ip" {}
 variable "lxd_images_public_ip" {}
+variable "global_lab_domain" {}
 
-# variable "guacamole_domain" {}
 variable "formation_subdomain" {}
 
 
@@ -50,11 +50,11 @@ resource "ansible_host" "ansible_vnc_servers_formateur" {
 }
 
 resource "ansible_host" "ansible_guacamole_server" {
-  inventory_hostname = "guacamole-server"
-  groups = ["all", "scaleway", "guacamole_servers", "wireguard"]
+  inventory_hostname = "guacamole.${var.formation_subdomain}.${var.global_lab_domain}"
+  groups = ["all", "scaleway", "guacamole_servers", "wireguard", "k3s_cluster", "k3s_server"]
   vars = {
     ansible_host = var.guacamole_public_ip
-    guacamole_domain = "guacamole.${var.formation_subdomain}.dopl.uk" # var.guacamole_domain
+    guacamole_domain = "guacamole.${var.formation_subdomain}.eliegavoty.xyz" # var.guacamole_domain
     vpn_ip = "10.111.0.1"
   }
 }

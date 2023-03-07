@@ -1,0 +1,21 @@
+- hosts: vnc_servers
+  tasks:
+    - name: add xsession config
+      lineinfile:
+        path: /home/{{ vnc_unix_user }}/.xsession
+        line: "xfce4-session"
+        create: yes
+      tags: ["xrdp"]
+
+    - name: add xrdp user to ssl-cert group
+      user:
+        name: xrdp
+        groups: ssl-cert
+        append: yes
+      tags: ["xrdp"]
+
+    - name: restart xrdp service
+      systemd:
+        name: xrdp
+        state: restarted
+      tags: ["xrdp"]

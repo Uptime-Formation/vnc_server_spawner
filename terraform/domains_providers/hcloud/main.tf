@@ -27,7 +27,7 @@ provider "hetznerdns" {
 
 
 data "hetznerdns_zone" "dopluk" {
-    name = "dopl.uk"
+    name = "eliegavoty.xyz"
 }
 
 resource "hetznerdns_record" "stagiaires_subdomains" {
@@ -75,5 +75,5 @@ resource "hetznerdns_record" "guacamole_node_subdomain" {
 }
 
 output "guacamole_domain" {
-  value = "guacamole.${var.formation_subdomain}.dopl.uk"
+  value = "guacamole.${var.formation_subdomain}.eliegavoty.xyz"
 }

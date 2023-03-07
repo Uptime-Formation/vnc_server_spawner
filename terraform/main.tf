@@ -49,6 +49,7 @@ module "domains" {
   source                    = "./domains_providers/digital_ocean"
   digitalocean_token        = var.digitalocean_token
   formation_subdomain       = var.formation_subdomain
+  global_lab_domain         = var.global_lab_domain
   stagiaires_names          = var.stagiaires_names
   formateurs_names          = var.formateurs_names
   vnc_stagiaires_public_ips = module.servers.vnc_stagiaires_public_ips
@@ -66,6 +67,7 @@ module "ansible_hosts" {
   guacamole_public_ip       = module.servers.guacamole_public_ip
   lxd_images_public_ip      = module.servers.lxd_images_public_ip
   formation_subdomain       = var.formation_subdomain
+  global_lab_domain         = var.global_lab_domain
 
   # guacamole_domain          = module.domains.guacamole_domain
 }

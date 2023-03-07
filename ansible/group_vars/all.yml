@@ -8,3 +8,29 @@ ansible_user: root
 ## Which environment to setup
 formation_ansible: yes
 docker_state: present
+
+
+# K8S config
+local_kubeconfig_path: ~/.kube/guac3s.kubeconfig
+
+cilium_chart_version: 1.13.0
+
+ingress_nginx_chart_version: 4.1.4
+
+ingress_nginx_chart_values:
+  replicats: 2
+  controller:
+    service:
+      labels:
+        svccontroller.k3s.cattle.io/lbpool: server
+
+certmanager_chart_version: 1.9.1
+
+certmanager_chart_values:
+  installCRDs: true
+
+argocd_chart_version: 5.19.7 # argocd chart values: see role template
+
+postgresql_chart_version: 12.2.0
+
+guacamole_chart_version: 1.4.0

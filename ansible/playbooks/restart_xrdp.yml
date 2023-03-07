@@ -1,0 +1,8 @@
+- hosts: vnc_servers
+  become: yes
+
+  tasks:
+    - name: Restart xrdp
+      systemd:
+        name: xrdp 
+        state: restarted

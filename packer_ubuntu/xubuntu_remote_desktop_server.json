@@ -1,0 +1,40 @@
+{
+    "builders": [
+      {
+        "type": "hcloud",
+        "token": "{{user `hcloud_token`}}",
+        "image": "ubuntu-22.04",
+        "location": "hel1",
+        "server_type": "cx31",
+        "ssh_username": "root"
+      }
+    ],
+    "provisioners": [
+        {
+          "inline": [
+            "export DEBIAN_FRONTEND=noninteractive",
+            "apt-get update",
+            "apt-get upgrade -y",
+            "apt-get install -yq dialog htop vim git neovim curl apt-transport-https ca-certificates gnupg2",
+            "apt-get install -yq xfce4 xfce4-goodies xrdp",
+            "echo \"xfce4-session\" | tee .xsession",
+            "apt-get install -yq python3-pip python3-setuptools",
+            "apt-get install -yq snapd",
+            "sudo mkdir -m 0755 -p /etc/apt/keyrings",
+            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+            "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+            "apt-get update",
+            "apt-get install -yq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
+            "pip3 install docker",
+            "apt-get install -yq firefox",
+            "curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg",
+            "install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/",
+            "echo \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\" > /etc/apt/sources.list.d/vscode.list",
+            "apt-get update",
+            "apt-get install -yq code"
+          ],
+          "type": "shell"
+        }
+    ]
+  }
+  

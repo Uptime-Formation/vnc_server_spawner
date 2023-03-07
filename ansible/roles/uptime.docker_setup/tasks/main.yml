@@ -49,11 +49,11 @@
     state: present
     executable: pip3
 
-- name: Ensure 'docker' python lib is present for ansible modules
-  pip:
-    name: docker
-    state: present
-    executable: pip3
+# - name: Ensure 'docker' python lib is present for ansible modules
+#   pip:
+#     name: docker
+#     state: present
+#     executable: pip3
 
 - name: Ensure docker users are added to the docker group.
   user:

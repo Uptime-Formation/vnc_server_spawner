@@ -1,0 +1,12 @@
+k3s_control_node: yes
+
+k3s_server:
+  disable:
+    - traefik
+  # necessary for cilium install : https://docs.cilium.io/en/stable/installation/k3s/
+  # flannel-backend: 'none'
+  # disable-network-policy: true
+  # labels pour controller le svclb avec plusieurs pools de noeuds voir https://docs.k3s.io/networking#service-load-balancer
+  # node-label:
+  #   - "svccontroller.k3s.cattle.io/lbpool=server"
+  #   - "svccontroller.k3s.cattle.io/enablelb=true"

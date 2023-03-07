@@ -2,3 +2,5 @@
   become: yes
   roles:
     - name: uptime.deb_server_prepare
+      tags:
+        - deb_server_prepare
