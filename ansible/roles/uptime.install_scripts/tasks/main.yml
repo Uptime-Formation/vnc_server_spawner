@@ -1,8 +1,12 @@
-- name: template kubernetes teaching install script
+- name: Copy flavour install shell to disk
   template:
-    src: kubernetes.sh.j2
-    dest: /opt/kubernetes.sh
-    mode: 0777
+    src: flavour.sh.j2
+    dest: /opt/flavour.sh
+    mode: 0550
+
+
+- name: run flavour install shell
+  shell: /opt/flavour.sh
 
 - name: template ansible lxd teaching install script
   template:
@@ -12,6 +16,5 @@
   loop:
     - lxd_config.yaml
     - lxd.sh
-
 
 

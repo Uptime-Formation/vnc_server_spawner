@@ -1,16 +1,17 @@
+terraform {
+  required_providers {
+      scaleway = {
+      source = "scaleway/scaleway"
+      version = "2.13.1"
+    }
+  }
+}
+
 variable "stagiaires_names" {}
 variable "formateurs_names" {}
 variable "scaleway_api_secret_key" {}
 variable "scaleway_api_access_key" {}
 variable "scaleway_orga_id" {}
-
-provider "scaleway" {
-  access_key      = var.scaleway_api_access_key
-  secret_key      = var.scaleway_api_secret_key
-  organization_id = var.scaleway_orga_id
-  zone            = "fr-par-1"
-  region          = "fr-par"
-}
 
 resource "scaleway_instance_ip" "vnc_servers_stagiaires_ips" {
   count = length(var.stagiaires_names)
@@ -60,4 +61,8 @@ output "vnc_formateurs_public_ips" {
 
 output "guacamole_public_ip" {
   value = scaleway_instance_ip.guacamole_server_ip.address
+}
+
+output "lxd_images_public_ip" {
+  value = scaleway_instance_ip.vnc_servers_formateurs_ips.0.address
 }

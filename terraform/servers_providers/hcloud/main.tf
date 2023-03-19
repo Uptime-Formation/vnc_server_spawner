@@ -1,11 +1,3 @@
-variable "hcloud_token" {}
-
-variable "formation_subdomain" {}
-variable "stagiaires_names" {}
-variable "formateurs_names" {}
-variable "vnc_server_type" {}
-variable "guacamole_server_type" {}
-
 # Configure the Hetzner Cloud Provider
 terraform {
   required_providers {
@@ -16,9 +8,14 @@ terraform {
   }
 }
 
-provider "hcloud" {
-  token = var.hcloud_token
-}
+variable "hcloud_token" {}
+
+variable "formation_subdomain" {}
+variable "stagiaires_names" {}
+variable "formateurs_names" {}
+variable "vnc_server_type" {}
+variable "guacamole_server_type" {}
+
 
 resource "hcloud_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
