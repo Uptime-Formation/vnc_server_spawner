@@ -1,17 +1,15 @@
 #!/bin/bash
 
+### Terraform Flavour install
+
+
 set -eux
 
-cd /tmp
-
-
 ## Install and configure git
-
 sudo apt-get update
-sudo apt install -y git
+sudo apt install -y git unzip
 git config --global user.name stagiaire
 git config --global user.email stagiaire@email.example
-
 
 ## Install and configure kubectl
 sudo snap install kubectl --classic
@@ -34,3 +32,4 @@ sudo dpkg -i "OpenLens-$LENS_VERSION.deb"
 
 ## install Helm
 sudo snap install helm --classic
+
