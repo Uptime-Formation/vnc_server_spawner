@@ -1,11 +1,11 @@
 terraform {
   required_providers {
     hcloud = {
-      source = "hetznercloud/hcloud"
+      source  = "hetznercloud/hcloud"
       version = "1.23.0"
     }
     scaleway = {
-      source = "scaleway/scaleway"
+      source  = "scaleway/scaleway"
       version = "2.13.1"
     }
   }
@@ -20,16 +20,16 @@ provider "scaleway" {
   region          = "fr-par"
 }
 
- module "scaleway_servers" {
-   count = var.servers_provider == "scaleway" ? 1 : 0
-   source = "./servers_providers/scaleway"
+module "scaleway_servers" {
+  count  = var.servers_provider == "scaleway" ? 1 : 0
+  source = "./servers_providers/scaleway"
 
-   scaleway_api_secret_key = var.scaleway_api_secret_key
-   scaleway_api_access_key = var.scaleway_api_access_key
-   scaleway_orga_id        = var.scaleway_orga_id
-   stagiaires_names        = var.stagiaires_names
-   formateurs_names        = var.formateurs_names
- }
+  scaleway_api_secret_key = var.scaleway_api_secret_key
+  scaleway_api_access_key = var.scaleway_api_access_key
+  scaleway_orga_id        = var.scaleway_orga_id
+  stagiaires_names        = var.stagiaires_names
+  formateurs_names        = var.formateurs_names
+}
 
 # Providers are global and can be inherited automatically by modules
 provider "hcloud" {
@@ -37,15 +37,15 @@ provider "hcloud" {
 }
 
 module "hertzner_servers" {
-  count = var.servers_provider == "hertzner"  ? 1 : 0
+  count  = var.servers_provider == "hertzner" ? 1 : 0
   source = "./servers_providers/hcloud"
 
-  hcloud_token              = var.hcloud_token
-  formation_subdomain       = var.formation_subdomain
-  stagiaires_names          = var.stagiaires_names
-  formateurs_names          = var.formateurs_names
-  vnc_server_type           = var.hcloud_vnc_server_type
-  guacamole_server_type     = var.hcloud_guacamole_server_type
+  hcloud_token          = var.hcloud_token
+  formation_subdomain   = var.formation_subdomain
+  stagiaires_names      = var.stagiaires_names
+  formateurs_names      = var.formateurs_names
+  vnc_server_type       = var.hcloud_vnc_server_type
+  guacamole_server_type = var.hcloud_guacamole_server_type
 }
 
 # module "domains" {
@@ -82,5 +82,5 @@ module "ansible_hosts" {
   guacamole_public_ip       = local.guacamole_public_ip
   lxd_images_public_ip      = local.lxd_images_public_ip
 
-  guacamole_domain          = module.domains.guacamole_domain
+  guacamole_domain = module.domains.guacamole_domain
 }
