@@ -1,8 +1,0 @@
-- hosts: vnc-formateur-elie
-  become: yes
-
-  tasks:
-    - name: Restart vncserver
-      systemd:
-        name: vncserver@:1
-        state: restarted
