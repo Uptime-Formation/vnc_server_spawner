@@ -1,0 +1,4 @@
+- hosts: localhost
+  roles:
+    - name: uptime.install_guacamole_k8s
+      tags: install_guacamole_k8s 

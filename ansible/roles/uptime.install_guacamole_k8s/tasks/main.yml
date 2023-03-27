@@ -1,0 +1,29 @@
+- name: Update an existing variable
+  set_fact:
+    local_kubeconfig_path: ~/.kube/guac3s.{{ hostvars[groups['guacamole_infra'][0]].infra_subdomain }}.kubeconfig
+
+- name: Create a guacamole namespace
+  kubernetes.core.k8s:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    name: guacamole
+    api_version: v1
+    kind: Namespace
+    state: present
+  register: create_guacamole_ns
+  until: "create_guacamole_ns is not failed"
+  retries: 5
+  delay: 10
+
+- name: Deploy guacamole stack
+  kubernetes.core.k8s:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    state: present
+    namespace: guacamole
+    definition: "{{ lookup('template', '{{ item }}') | from_yaml }}"
+  with_fileglob:
+    - "guacamole/*.yaml.j2"
+  tags:
+    - "guacamole"
+
+
+

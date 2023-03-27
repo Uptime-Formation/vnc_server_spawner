@@ -1,0 +1,4 @@
+guacamole_release_name: guacamole
+guac_stagiaire_passwd: devops101
+guac_formateur_passwd: devops202
+base_unix_user: guacamole
