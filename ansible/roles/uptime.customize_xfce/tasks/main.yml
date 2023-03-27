@@ -1,3 +1,9 @@
+- name: Ensure XFCE config folder exists
+  file:
+    path: "/home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/"
+    state: directory
+    recurse: yes
+
 - name: Set Xfce panel config for a simple panel on the bottom
   template:
     src: xfce4-panel.xml.j2
@@ -27,9 +33,29 @@
 #       path: /etc/xdg/autostart/light-locker.desktop
 #       line: Hidden=true
 
-- name: Restart vncserver
-  systemd:
-    name: xrdp
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
+- name: Ensure correct rights in home directory
+  file:
+    path: "/home/{{ vnc_unix_user }}/.config"
+    state: directory
+    recurse: yes
+    owner: "{{ vnc_unix_user }}"
+
+- name: Ensure correct rights in home directory
+  file:
+    path: "/home/{{ vnc_unix_user }}/.ssh"
+    state: directory
+    recurse: yes
+    owner: "{{ vnc_unix_user }}"
+
+- name: Ensure correct rights in home directory
+  file:
+    path: "/home/{{ vnc_unix_user }}/.xsession"
+    state: file
+    owner: "{{ vnc_unix_user }}"
+
+# - name: Restart vncserver
+#   systemd:
+#     name: xrdp
+#     state: restarted
+#     daemon_reload: yes
+#     enabled: yes
