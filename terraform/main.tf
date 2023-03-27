@@ -1,7 +1,3 @@
-variable "scaleway_api_secret_key" {}
-variable "scaleway_api_access_key" {}
-variable "scaleway_orga_id" {}
-
 variable "digitalocean_token" {}
 
 variable "hcloud_token" {}
@@ -10,16 +6,6 @@ variable "hcloud_dns_token" {}
 # variable "ovh_application_key" {}
 # variable "ovh_application_secret" {}
 # variable "ovh_consumer_key" {}
-
-# module "servers" {
-#   source = "./servers_providers/scaleway"
-
-#   scaleway_api_secret_key = var.scaleway_api_secret_key
-#   scaleway_api_access_key = var.scaleway_api_access_key
-#   scaleway_orga_id        = var.scaleway_orga_id
-#   stagiaires_names        = var.stagiaires_names
-#   formateurs_names        = var.formateurs_names
-# }
 
 module "servers" {
   source = "./servers_providers/hcloud"
@@ -56,7 +42,6 @@ module "domains" {
   vnc_formateurs_public_ips = module.servers.vnc_formateurs_public_ips
   guacamole_public_ip       = module.servers.guacamole_public_ip
 }
-
 
 module "ansible_hosts" {
   source                    = "./ansible_hosts"

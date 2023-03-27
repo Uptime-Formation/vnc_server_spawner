@@ -11,12 +11,11 @@
       slurp:
         src: /etc/rancher/k3s/k3s.yaml
       delegate_to: "{{ groups['k3s_server'][0] }}"
-      register: k3s_kubeconfig
       no_log: true
       tags:
        - k3s_cluster
-      register: slurp_k3s_config
-      until: " slurp_k3s_config is not failed"
+      register: k3s_kubeconfig
+      until: " k3s_kubeconfig is not failed"
       retries: 10
       delay: 10
 
