@@ -2,6 +2,10 @@
   apt:
     update_cache: yes
     upgrade: "yes"
+  register: first_ubuntu_update
+  until: "first_ubuntu_update is not failed"
+  retries: 10
+  delay: 10
 
 - name: Ensure we have python3 tools installed
   apt:
@@ -37,7 +41,7 @@
     name: "{{ base_unix_user }}"
     password: "{{ base_user_password | password_hash('sha512', 'myseijJIjretsalt') }}"
     shell: /bin/bash
-    groups: ["sudo", "docker"]
+    groups: ["sudo"]
     append: yes
 
 - name: Allow user '{{ base_unix_user }}' ssh connexion

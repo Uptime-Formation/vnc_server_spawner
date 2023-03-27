@@ -1,3 +1,19 @@
+- name: Update an existing variable
+  set_fact:
+    local_kubeconfig_path: ~/.kube/guac3s.{{ hostvars[groups['guacamole_infra'][0]].infra_subdomain }}.kubeconfig
+
+- name: Create a guacamole namespace
+  kubernetes.core.k8s:
+    kubeconfig: "{{ local_kubeconfig_path }}"
+    name: guacamole
+    api_version: v1
+    kind: Namespace
+    state: present
+  register: create_guacamole_ns
+  until: "create_guacamole_ns is not failed"
+  retries: 25
+  delay: 10
+
 - name: add ingress nginx chart repo
   kubernetes.core.helm_repository:
     name: ingress-nginx
@@ -43,34 +59,27 @@
   tags:
     - cert_manager
 
-- name: add argo chart repo
-  kubernetes.core.helm_repository:
-    name: argo
-    repo_url: "https://argoproj.github.io/argo-helm"
-  tags:
-    - argocd
+# - name: add argo chart repo
+#   kubernetes.core.helm_repository:
+#     name: argo
+#     repo_url: "https://argoproj.github.io/argo-helm"
+#   tags:
+#     - argocd
 
 # - debug:
     # msg: "{{ lookup('template', './argocd_chart_values.yaml.j2') }}"
 
-- name: install argo-cd chart
-  kubernetes.core.helm:
-    kubeconfig: "{{ local_kubeconfig_path }}"
-    name: argo-cd
-    chart_ref: argo/argo-cd
-    release_namespace: argo-cd
-    create_namespace: true
-    chart_version: "{{ argocd_chart_version }}"
-    values: "{{ lookup('template', './argocd_chart_values.yaml.j2') | from_yaml }}"
-  tags:
-    - argocd
-
-- name: Create a guacamole namespace
-  kubernetes.core.k8s:
-    name: guacamole
-    api_version: v1
-    kind: Namespace
-    state: present
+# - name: install argo-cd chart
+#   kubernetes.core.helm:
+#     kubeconfig: "{{ local_kubeconfig_path }}"
+#     name: argo-cd
+#     chart_ref: argo/argo-cd
+#     release_namespace: argo-cd
+#     create_namespace: true
+#     chart_version: "{{ argocd_chart_version }}"
+#     values: "{{ lookup('template', './argocd_chart_values.yaml.j2') | from_yaml }}"
+#   tags:
+#     - argocd
 
 - name: Deploy guacamole stack
   kubernetes.core.k8s:

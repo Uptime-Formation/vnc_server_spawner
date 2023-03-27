@@ -11,11 +11,6 @@ terraform {
   }
 }
 
-
-provider "ansible" {
-  # Configuration options
-}
-
 variable "stagiaires_names" {}
 variable "formateurs_names" {}
 variable "vnc_stagiaires_public_ips" {}
@@ -30,7 +25,7 @@ variable "formation_subdomain" {}
 resource "ansible_host" "ansible_vnc_servers" {
   count = length(var.stagiaires_names)
   inventory_hostname = "vnc-${element(var.stagiaires_names, count.index)}"
-  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires", "wireguard"]
+  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires", "wireguard", "guacamole_infra"]
   vars = {
     ansible_host = element(var.vnc_stagiaires_public_ips, count.index)
     username = element(var.stagiaires_names, count.index)
@@ -41,7 +36,7 @@ resource "ansible_host" "ansible_vnc_servers" {
 resource "ansible_host" "ansible_vnc_servers_formateur" {
   count = length(var.formateurs_names)
   inventory_hostname = "vnc-formateur-${element(var.formateurs_names, count.index)}"
-  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_formateur", "wireguard"]
+  groups = ["all", "scaleway", "vnc_servers", "vnc_servers_formateur", "wireguard", "guacamole_infra"]
   vars = {
     ansible_host = element(var.vnc_formateurs_public_ips, count.index)
     username = element(var.formateurs_names, count.index)
@@ -51,7 +46,7 @@ resource "ansible_host" "ansible_vnc_servers_formateur" {
 
 resource "ansible_host" "ansible_guacamole_server" {
   inventory_hostname = "guacamole.${var.formation_subdomain}.${var.global_lab_domain}"
-  groups = ["all", "scaleway", "guacamole_servers", "wireguard", "k3s_cluster", "k3s_server"]
+  groups = ["all", "scaleway", "guacamole_servers", "wireguard", "k3s_cluster", "k3s_server", "guacamole_infra"]
   vars = {
     ansible_host = var.guacamole_public_ip
     guacamole_domain = "guacamole.${var.formation_subdomain}.eliegavoty.xyz" # var.guacamole_domain
@@ -59,3 +54,9 @@ resource "ansible_host" "ansible_guacamole_server" {
   }
 }
 
+resource "ansible_group" "group_guacamole_infra" {
+  inventory_group_name = "guacamole_infra"
+  vars = {
+    infra_subdomain = var.formation_subdomain
+  }
+}

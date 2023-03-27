@@ -8,22 +8,22 @@
       delegate_to: localhost
 
 - import_playbook: playbooks/deb_server_prepare.yml
-# - import_playbook: playbooks/xrdp.yml
-# - import_playbook: playbooks/customize_xfce_vnc.yml
-# - import_playbook: playbooks/k3s.yml
+- import_playbook: playbooks/xrdp.yml
+- import_playbook: playbooks/k3s.yml
 - import_playbook: playbooks/bootstrap_cluster.yml
+- import_playbook: playbooks/install_scripts.yml
+
+# - import_playbook: playbooks/customize_xfce_vnc.yml
 # - import_playbook: playbooks/wireguard.yml
 # - import_playbook: playbooks/vnc_servers.yml
 # - import_playbook: playbooks/guacamole_servers.yml
-- import_playbook: playbooks/install_scripts.yml
-
-- hosts: vnc_servers
-  name: restart xrdp
-  gather_facts: false
-  tasks:
-    - name: Restart xrdp
-      systemd:
-        name: xrdp
-        state: restarted
-        daemon_reload: yes
-        enabled: yes
+# - hosts: vnc_servers
+#   name: restart xrdp
+#   gather_facts: false
+#   tasks:
+#     - name: Restart xrdp
+#       systemd:
+#         name: xrdp
+#         state: restarted
+#         daemon_reload: yes
+#         enabled: yes

@@ -15,11 +15,19 @@
       no_log: true
       tags:
        - k3s_cluster
+      register: slurp_k3s_config
+      until: " slurp_k3s_config is not failed"
+      retries: 10
+      delay: 10
 
     - name: write k3s kubeconfig locally
       copy:
         content: "{{ k3s_kubeconfig['content'] | b64decode | replace('127.0.0.1', hostvars[groups['k3s_server'][0]].ansible_host) }}"
-        dest: ~/.kube/guac3s.kubeconfig
+        dest: ~/.kube/guac3s.{{ hostvars[groups['guacamole_infra'][0]].infra_subdomain }}.kubeconfig
       no_log: true
       tags:
        - k3s_cluster
+      register: edit_k3s_config
+      until: " edit_k3s_config is not failed"
+      retries: 10
+      delay: 10

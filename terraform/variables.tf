@@ -1,12 +1,7 @@
 variable "stagiaires_names" {
   default = [
-    "dorval",
-    "leguillou",
-    "jarrige",
-    "gaultier",
-    "gautier",
-    "rhalmi",
     "stagiaire1",
+    "stagiaire2",
   ]
 }
 
@@ -17,7 +12,7 @@ variable "formateurs_names" {
 }
 
 variable "formation_subdomain" {
-  default = "formation"
+  default = "debugg"
 }
 
 variable "global_lab_domain" {
