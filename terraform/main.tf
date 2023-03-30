@@ -38,7 +38,6 @@ provider "hcloud" {
 
 module "hertzner_servers" {
   count  = var.servers_provider == "hertzner" ? 1 : 0
->>>>>>> 2445ac5 (fix: use count for modules)
   source = "./servers_providers/hcloud"
 
   hcloud_token          = var.hcloud_token
