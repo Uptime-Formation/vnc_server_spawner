@@ -120,10 +120,9 @@ pattern_matching(){
   echo "${CMD}"
 }
 
-REQUEST=${1:-}
-CMD=$(pattern_matching $REQUEST)
 _main() {
   source ./env_file
+  CMD=$(pattern_matching ${1:-})
   if [[ -n "${CMD}" ]] ; then
     _ensure_providers
     $CMD
