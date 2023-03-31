@@ -4,23 +4,14 @@ set -eu
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -o pipefail
 
-
+# Records all allowed actions 
 ACTIONS=()
-ACTIONS+=("setup_terraform")
-ACTIONS+=("setup_ansible")
-ACTIONS+=("setup_ansible_guacamole")
-ACTIONS+=("setup_ansible_vnc")
-ACTIONS+=("destroy_infra")
-ACTIONS+=("recreate_infra")
-ACTIONS+=("setup_full")
-ACTIONS+=("setup_all")
-
 
 ###############################################################################
 # Program Functions
 ###############################################################################
-
-_print_help() {
+ACTIONS+=("help")
+_help() {
   cat <<HEREDOC
 Usage ${BASH_SOURCE[0]} [ACTION]
 
@@ -29,11 +20,19 @@ $( for f in ${ACTIONS[@]}; do echo "   - $f"; done)
 
 HEREDOC
 }
+
+ACTIONS+=("setup_full")
 _setup_full() {
   _setup_terraform
   _setup_ansible
 }
 
+ACTIONS+=("setup_all")
+_setup_all(){
+  _setup_full
+}
+
+ACTIONS+=("setup_terraform")
 _setup_terraform() {
   printf "Setup Terraform resources\\n"
   printf "##############################################\\n"
@@ -44,6 +43,7 @@ _setup_terraform() {
   cd "$PROJECT_DIR"
 }
 
+ACTIONS+=("setup_ansible")
 _setup_ansible() {
   printf "Setup infra VPS using Ansible\\n"
   printf "##############################################\\n"
@@ -53,6 +53,7 @@ _setup_ansible() {
   cd "$PROJECT_DIR"
 }
 
+ACTIONS+=("setup_ansible_guacamole")
 _setup_ansible_guacamole() {
   printf "Setup infra VPS using Ansible\\n"
   printf "##############################################\\n"
@@ -62,6 +63,7 @@ _setup_ansible_guacamole() {
   cd "$PROJECT_DIR"
 }
 
+ACTIONS+=("setup_ansible_vnc")
 _setup_ansible_vnc() {
   printf "Setup infra VPS using Ansible\\n"
   printf "##############################################\\n"
@@ -72,6 +74,7 @@ _setup_ansible_vnc() {
 }
 
 
+ACTIONS+=("destroy_infra")
 _destroy_infra() {
   printf "DESTROY Terraform resources\\n"
   printf "##############################################\\n"
@@ -79,6 +82,7 @@ _destroy_infra() {
   terraform destroy -auto-approve
 }
 
+ACTIONS+=("recreate_infra")
 _recreate_infra() {
   printf "DESTROY AND REPROVISION\\n"
   printf "##############################################\\n"
@@ -127,7 +131,7 @@ _main() {
     _ensure_providers
     $CMD
   else
-    _print_help
+    _help
   fi
 }
 
