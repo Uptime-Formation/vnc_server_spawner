@@ -4,16 +4,31 @@ set -eu
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -o pipefail
 
-_print_help() {
-  cat <<HEREDOC
 
-HEREDOC
-}
+ACTIONS=()
+ACTIONS+=("setup_terraform")
+ACTIONS+=("setup_ansible")
+ACTIONS+=("setup_ansible_guacamole")
+ACTIONS+=("setup_ansible_vnc")
+ACTIONS+=("destroy_infra")
+ACTIONS+=("recreate_infra")
+ACTIONS+=("setup_full")
+ACTIONS+=("setup_all")
+
 
 ###############################################################################
 # Program Functions
 ###############################################################################
 
+_print_help() {
+  cat <<HEREDOC
+Usage ${BASH_SOURCE[0]} [ACTION]
+
+ACTION list:
+$( for f in ${ACTIONS[@]}; do echo "   - $f"; done)
+
+HEREDOC
+}
 _setup_full() {
   _setup_terraform
   _setup_ansible
@@ -90,36 +105,28 @@ _ensure_providers(){
   _ensure_providers_each "servers"
 }
 
+pattern_matching(){
+  REQUEST="$@"
+  for PATTERN in ${ACTIONS[@]}; do
+    CMD=""
+    if [[ "$REQUEST" == "${PATTERN}" ]]; then
+      FUNC="_${REQUEST}"
+      if $( type "${FUNC}" &>/dev/null); then
+        CMD="${FUNC}"
+        break
+      fi
+    fi
+  done
+  echo "${CMD}"
+}
+
+REQUEST=${1:-}
+CMD=$(pattern_matching $REQUEST)
 _main() {
   source ./env_file
-  _ensure_providers
-  if [[ "${1:-}" =~ ^-h|--help$  ]]
-  then
-    _print_help
-  elif [[ "${1:-}" =~ ^setup_terraform$  ]]
-  then
-    _setup_terraform
-  elif [[ "${1:-}" =~ ^setup_ansible$  ]]
-  then
-    _setup_ansible
-  elif [[ "${1:-}" =~ ^setup_ansible_guacamole$  ]]
-  then
-    _setup_ansible_guacamole
-  elif [[ "${1:-}" =~ ^setup_ansible_vnc$  ]]
-  then
-    _setup_ansible_vnc
-  elif [[ "${1:-}" =~ ^destroy_infra$  ]]
-  then
-    _destroy_infra
-  elif [[ "${1:-}" =~ ^recreate_infra$  ]]
-  then
-    _recreate_infra
-  elif [[ "${1:-}" =~ ^setup_full$  ]]
-  then
-    _setup_full
-  elif [[ "${1:-}" =~ ^setup_all$  ]]
-  then
-    _setup_full
+  if [[ -n "${CMD}" ]] ; then
+    _ensure_providers
+    $CMD
   else
     _print_help
   fi
