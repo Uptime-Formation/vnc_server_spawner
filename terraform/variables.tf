@@ -20,9 +20,9 @@ variable "global_lab_domain" {
   type = string
 }
 
-variable "servers_provider" {
-  type    = string
-  default = "scaleway"
+variable "ssh_key_content" {
+  type = string
+  default = "changeme"
 }
 
 # Domain providers::OVH

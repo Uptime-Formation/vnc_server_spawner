@@ -71,9 +71,28 @@ _recreate_infra() {
   _setup_full
 }
 
+_ensure_providers_each(){
+  PROVIDER_NAME="$1"
+  DEST_FILENAME="providers.${PROVIDER_NAME}.tf"
+  cd "$TERRAFORM_DIR"
+  [[ -h "${DEST_FILENAME}" ]] && return
+  local LIST=$( ls -1 providers.${PROVIDER_NAME}*off | sed -r "s:providers.${PROVIDER_NAME}.(.*).tf.off:\1:" )
+  echo "Please select a provider for $PROVIDER_NAME"
+  select PROVIDER in $LIST; do
+    ln -s "providers.${PROVIDER_NAME}.${PROVIDER}.tf.off" ${DEST_FILENAME}
+    break
+  done
+
+}
+
+_ensure_providers(){
+  _ensure_providers_each "domains"
+  _ensure_providers_each "servers"
+}
+
 _main() {
   source ./env_file
-
+  _ensure_providers
   if [[ "${1:-}" =~ ^-h|--help$  ]]
   then
     _print_help

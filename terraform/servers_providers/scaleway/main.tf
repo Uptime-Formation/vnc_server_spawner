@@ -7,11 +7,13 @@ terraform {
   }
 }
 
-variable "stagiaires_names" {}
-variable "formateurs_names" {}
-variable "scaleway_api_secret_key" {}
-variable "scaleway_api_access_key" {}
-variable "scaleway_orga_id" {}
+provider "scaleway" {
+  access_key      = var.scaleway_api_access_key
+  secret_key      = var.scaleway_api_secret_key
+  organization_id = var.scaleway_orga_id
+  zone            = "fr-par-1"
+  region          = "fr-par"
+}
 
 resource "scaleway_instance_ip" "vnc_servers_stagiaires_ips" {
   count = length(var.stagiaires_names)
@@ -49,20 +51,4 @@ resource "scaleway_instance_server" "guacamole_server" {
   ip_id = scaleway_instance_ip.guacamole_server_ip.id
   type  = "DEV1-L"
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
-}
-
-output "vnc_stagiaires_public_ips" {
-  value = scaleway_instance_ip.vnc_servers_stagiaires_ips.*.address
-}
-
-output "vnc_formateurs_public_ips" {
-  value = scaleway_instance_ip.vnc_servers_formateurs_ips.*.address
-}
-
-output "guacamole_public_ip" {
-  value = scaleway_instance_ip.guacamole_server_ip.address
-}
-
-output "lxd_images_public_ip" {
-  value = scaleway_instance_ip.vnc_servers_formateurs_ips.0.address
 }

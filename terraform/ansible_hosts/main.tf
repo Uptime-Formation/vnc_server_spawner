@@ -21,11 +21,10 @@ variable "global_lab_domain" {}
 
 variable "formation_subdomain" {}
 
-
 resource "ansible_host" "ansible_vnc_servers" {
   count              = length(var.stagiaires_names)
   inventory_hostname = "vnc-${element(var.stagiaires_names, count.index)}"
-  groups            = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires", "wireguard", "guacamole_infra"]
+  groups             = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires", "wireguard", "guacamole_infra"]
   vars = {
     ansible_host = element(var.vnc_stagiaires_public_ips, count.index)
     username     = element(var.stagiaires_names, count.index)
@@ -48,9 +47,9 @@ resource "ansible_host" "ansible_guacamole_server" {
   inventory_hostname = "guacamole.${var.formation_subdomain}.${var.global_lab_domain}"
   groups             = ["all", "scaleway", "guacamole_servers", "wireguard", "k3s_cluster", "k3s_server", "guacamole_infra"]
   vars = {
-    ansible_host      = var.guacamole_public_ip
-    guacamole_domain  = "guacamole.${var.formation_subdomain}.eliegavoty.xyz" # var.guacamole_domain
-    vpn_ip            = "10.111.0.1"
+    ansible_host     = var.guacamole_public_ip
+    global_lab_domain = var.global_lab_domain
+    vpn_ip           = "10.111.0.1"
   }
 }
 

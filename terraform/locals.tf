@@ -1,7 +1,8 @@
 
 locals {
-  stagiaires_servers_public_ips = var.servers_provider == "scaleway" ? module.scaleway_servers[0].vnc_stagiaires_public_ips : module.hertzner_servers[0].vnc_stagiaires_public_ips
-  formateurs_servers_public_ips = var.servers_provider == "scaleway" ? module.scaleway_servers[0].vnc_formateurs_public_ips : module.hertzner_servers[0].vnc_formateurs_public_ips
-  guacamole_public_ip           = var.servers_provider == "scaleway" ? module.scaleway_servers[0].guacamole_public_ip : module.hertzner_servers[0].guacamole_public_ip
-  lxd_images_public_ip          = var.servers_provider == "scaleway" ? module.scaleway_servers[0].lxd_images_public_ip : module.hertzner_servers[0].lxd_images_public_ip
+  formateurs_servers_public_ips = module.servers.vnc_formateurs_public_ips
+  global_lab_domain             = module.domains.global_lab_domain
+  guacamole_public_ip           = module.servers.guacamole_public_ip
+  lxd_images_public_ip          = module.servers.lxd_images_public_ip
+  stagiaires_servers_public_ips = module.servers.vnc_stagiaires_public_ips
 }

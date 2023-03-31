@@ -1,0 +1,10 @@
+
+module "servers" {
+  source = "./servers_providers/scaleway"
+
+  stagiaires_names        = var.stagiaires_names
+  formateurs_names        = var.formateurs_names
+  scaleway_api_secret_key = var.scaleway_api_secret_key
+  scaleway_api_access_key = var.scaleway_api_access_key
+  scaleway_orga_id        = var.scaleway_orga_id
+}

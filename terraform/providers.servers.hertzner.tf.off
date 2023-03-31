@@ -1,0 +1,13 @@
+
+module "servers" {
+  source = "./servers_providers/hcloud"
+
+  stagiaires_names      = var.stagiaires_names
+  formateurs_names      = var.formateurs_names
+
+  hcloud_token          = var.hcloud_token
+  formation_subdomain   = var.formation_subdomain
+  vnc_server_type       = var.hcloud_vnc_server_type
+  guacamole_server_type = var.hcloud_guacamole_server_type
+  ssh_key_content       = var.ssh_key_content
+}
