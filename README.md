@@ -54,21 +54,21 @@ Required informations
    - digitalocean_token 
 
 
-### 2.2 Configure your Terraform variable file
+#### 2.2 Configure your Terraform variable file
 
-#### 2.2.1 Copy the template file 
+##### 2.2.1 Copy the template file 
 
 
 ```bash
 $ cp terraform/secrets.auto.tfvars.dist terraform/secrets.auto.tfvars
 ```
 
-#### 2.2.2 Copy the template file 
+##### 2.2.2 Copy the template file 
 
 Edit the file to add your tokens and other required informations 
 
 
-### 3.  Run the shell script
+## 3.  Run the shell script
 
 ```bash
 ./cloud_cli.sh setup_full
