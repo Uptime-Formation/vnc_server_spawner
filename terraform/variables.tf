@@ -74,3 +74,11 @@ variable "hcloud_guacamole_server_type" {
   default = "cpx21"
   type    = string
 }
+variable "hcloud_image_name" {
+  type = string
+  default = "ubuntu-22.04"
+}
+variable "hcloud_image_id" {
+  type = string
+  default = ""
+}

@@ -7,3 +7,5 @@ variable "vnc_server_type" {}
 variable "guacamole_server_type" {}
 
 variable "ssh_key_content" {}
+variable "hcloud_image_name" {}
+variable "hcloud_image_id" {}

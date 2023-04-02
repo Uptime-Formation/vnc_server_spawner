@@ -10,4 +10,6 @@ module "servers" {
   vnc_server_type       = var.hcloud_vnc_server_type
   guacamole_server_type = var.hcloud_guacamole_server_type
   ssh_key_content       = var.ssh_key_content
+  hcloud_image_name     = var.hcloud_image_name
+  hcloud_image_id       = var.hcloud_image_id
 }
