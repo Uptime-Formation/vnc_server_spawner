@@ -4,7 +4,7 @@ set -eu
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -o pipefail
 
-# Records all allowed actions 
+# Records all allowed actions
 ACTIONS=()
 
 ###############################################################################
@@ -48,7 +48,8 @@ _setup_ansible() {
   printf "Setup infra VPS using Ansible\\n"
   printf "##############################################\\n"
   cd "$ANSIBLE_DIR"
-  # ansible-galaxy install -i -r roles/requirements.yml -p roles
+  ansible-galaxy collection install -i -r roles/requirements.yml
+  ansible-galaxy role install -i -r roles/requirements.yml
   ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK} -vv
   cd "$PROJECT_DIR"
 }
