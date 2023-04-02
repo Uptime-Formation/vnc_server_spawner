@@ -1,0 +1,18 @@
+---
+wireguard_port: "5888"
+wireguard_path: "/etc/wireguard"
+
+wireguard_sources_path: "/var/cache"
+
+wireguard_network_name: "private"
+
+debian_enable_backports: true
+debian_pin_packages: true
+
+client_vpn_ip: ""
+client_wireguard_path: "~/wg.conf"
+client_wireguard_dns: false
+
+wireguard_additional_peers: false
+wireguard_post_up: false
+wireguard_post_down: false

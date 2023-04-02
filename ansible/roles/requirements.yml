@@ -1,2 +1,6 @@
+roles:
 - name: mawalu.wireguard
   src: https://github.com/mawalu/wireguard-private-networking
+collections:
+- name: kubernetes.core
+  type: galaxy
