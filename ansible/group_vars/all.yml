@@ -9,5 +9,5 @@ formation_ansible: yes
 formation_k8s: no
 
 kubectl_state: absent
-docker_state: present
-lxd_state: present
+docker_state: absent 
+lxd_state: absent
