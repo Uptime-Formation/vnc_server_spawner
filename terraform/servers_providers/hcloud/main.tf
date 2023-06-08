@@ -19,6 +19,7 @@ data "hcloud_image" "image_by_name"{
   count = length(var.hcloud_image_id) > 1 ? 0 : 1
   name  = var.hcloud_image_name
 }
+
 data "hcloud_image" "image_by_id"{
   count = length(var.hcloud_image_id) > 1 ? 1 : 0
   id    = var.hcloud_image_id

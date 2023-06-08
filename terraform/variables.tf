@@ -11,7 +11,7 @@ variable "formateurs_names" {
 }
 
 variable "formation_subdomain" {
-  #default = "debugg"
+  #default = "debug"
   type = string
 }
 
@@ -59,6 +59,22 @@ variable "scaleway_api_access_key" {
 variable "scaleway_orga_id" {
   type    = string
   default = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+}
+variable "scaleway_image_name" {
+  type = string
+  default = "ubuntu-focal"
+}
+variable "scaleway_image_id" {
+  type = string
+  default = ""
+}
+variable "scaleway_vnc_server_type" {
+  type    = string
+  default = "DEV1-L"
+}
+variable "scaleway_guacamole_server_type" {
+  default = "DEV1-L"
+  type    = string
 }
 
 # Server providers::hertzner

@@ -1,10 +1,18 @@
-
 module "servers" {
   source = "./servers_providers/scaleway"
 
-  stagiaires_names        = var.stagiaires_names
   formateurs_names        = var.formateurs_names
-  scaleway_api_secret_key = var.scaleway_api_secret_key
+  formation_subdomain     = var.formation_subdomain
+  guacamole_server_type   = var.scaleway_guacamole_server_type
+
   scaleway_api_access_key = var.scaleway_api_access_key
+  scaleway_api_secret_key = var.scaleway_api_secret_key
+  scaleway_image_id       = var.scaleway_image_id
+  scaleway_image_name     = var.scaleway_image_name
   scaleway_orga_id        = var.scaleway_orga_id
+
+  ssh_key_content         = var.ssh_key_content
+  stagiaires_names        = var.stagiaires_names
+  vnc_server_type         = var.scaleway_vnc_server_type
+
 }

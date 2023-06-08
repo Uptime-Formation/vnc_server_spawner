@@ -1,5 +1,11 @@
 - hosts: vnc_servers
   tasks:
+    - name: Ensure xrdp package is present
+      apt:
+        name: xrdp
+        state: present
+      tags: ["xrdp"]
+
     - name: add xsession config
       lineinfile:
         path: /home/{{ vnc_unix_user }}/.xsession
