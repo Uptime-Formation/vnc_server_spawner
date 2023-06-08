@@ -7,7 +7,19 @@
         "location": "hel1",
         "server_type": "cx31",
         "ssh_username": "root"
+      },
+      {
+        "type": "scaleway",
+        "project_id": "{{user `scaleway_orga_id`}}",
+        "access_key": "{{user `scaleway_api_access_key`}}",
+        "secret_key": "{{user `scaleway_api_secret_key`}}",
+        "image": "ce453858-557c-4f1c-a7a9-70026e67d054",
+        "zone": "fr-par-1",
+        "commercial_type": "DEV1-S",
+        "ssh_username": "root"
       }
+
+
     ],
     "provisioners": [
         {

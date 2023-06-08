@@ -1,0 +1,12 @@
+{
+  "formation_subdomain": "",
+  "global_lab_domain": "",
+  "digitalocean_token": "",
+  "hcloud_token": "",
+  "scaleway_api_access_key": "",
+  "scaleway_api_secret_key": "",
+  "scaleway_orga_id": "",
+  "scaleway_project_id": "",
+  "ssh_key_content": "",
+  "hcloud_image_id": ""
+}
