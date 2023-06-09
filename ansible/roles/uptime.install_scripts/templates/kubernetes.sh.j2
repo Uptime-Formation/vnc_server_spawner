@@ -2,8 +2,12 @@
 
 ### Terraform Flavour install
 
+sudo dpkg --configure -a
 
-set -eux
+#set -eux
+
+sudo wget https://github.com/VSCodium/vscodium/releases/download/1.77.3.23102/codium_1.77.3.23102_amd64.deb -O /tmp/codium.deb
+sudo apt install -y /tmp/codium.deb
 
 ## Install and configure git
 sudo apt-get update
@@ -19,12 +23,6 @@ source <(kubectl completion bash)
 echo "source <(kubectl completion bash)" >> ${HOME}/.bashrc
 
 
-## Install minikube
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
-sudo dpkg -i minikube_latest_amd64.deb
-
-minikube start --driver=docker
-
 ## Install Lens
 export LENS_VERSION=5.5.4
 curl -LO "https://github.com/MuhammedKalkan/OpenLens/releases/download/v$LENS_VERSION/OpenLens-$LENS_VERSION.deb"
@@ -32,4 +30,10 @@ sudo dpkg -i "OpenLens-$LENS_VERSION.deb"
 
 ## install Helm
 sudo snap install helm --classic
+
+## Install minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
+
+
 

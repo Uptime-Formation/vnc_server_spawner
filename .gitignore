@@ -20,4 +20,6 @@ ansible-digital_ocean.cache
 hcloud_token.json
 
 *.retry
-geerlingguy.*
+geerlingguy.*.
+
+.ansible_recipe

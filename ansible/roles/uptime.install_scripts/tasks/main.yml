@@ -5,9 +5,6 @@
     mode: 0550
 
 
-- name: run flavour install shell
-  shell: /opt/flavour.sh
-
 - name: template terraform install script
   template:
     src: terraform.sh.j2
@@ -20,6 +17,12 @@
     dest: /opt/ansible.sh
     mode: 0777
 
+- name: template ansible install script
+  template:
+    src: kubernetes.sh.j2
+    dest: /opt/kubernetes.sh
+    mode: 0777
+
 - name: template ansible lxd teaching install script
   template:
     src: "{{ item }}.j2"
@@ -29,4 +32,10 @@
     - lxd_config.yaml
     - lxd.sh
 
+
+- name: run flavour install shell
+  shell: /opt/flavour.sh
+
+- name: run kubernetes install shell
+  shell: /opt/kubernetes.sh
 

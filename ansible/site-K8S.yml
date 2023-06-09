@@ -1,4 +1,4 @@
-- hosts: all
+  - hosts: all
   name: wait for ssh
   gather_facts: false
   tasks:

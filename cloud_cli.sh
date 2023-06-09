@@ -36,7 +36,7 @@ ACTIONS+=("setup_all")
 ACTIONS_HELP+=("Run all actions (ditto)")
 _setup_all(){
   _setup_terraform
-  _setup_ansible
+  _ansible
 }
 
 ACTIONS+=("packer")
@@ -76,7 +76,9 @@ _ansible() {
   cd "$ANSIBLE_DIR"
   ansible-galaxy collection install -i -r roles/requirements.yml
   ansible-galaxy role install -i -r roles/requirements.yml
-  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK} -vv
+  _get_ansible_recipe
+  ANSIBLE_PLAYBOOK="${ABS_PATH}/ansible/${RECIPE}"
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK} -vv -e servers_provider=$(_get_domain_provider servers)
   cd "$PROJECT_DIR"
 }
 
@@ -158,6 +160,43 @@ _ensure_providers(){
   _ensure_providers_each "domains"
   _ensure_providers_each "servers"
 }
+
+_get_ansible_recipe(){
+
+  CACHE_FILE="${ABS_PATH}/.ansible_recipe"
+  RECIPE=()
+  # Find possible recipes
+  while read file ; do
+    RECIPES+=($( basename "$file"))
+  done <<< $( ls -1 ${ANSIBLE_DIR}/site*yml )
+
+  echo ${RECIPES[@]}
+
+  # Get cache
+  CACHED_RECIPE=""
+  [[ -f "${CACHE_FILE}" ]] && CACHED_RECIPE=$(cat "${CACHE_FILE}")
+
+  # Let user choose
+  echo -e "\nPlease choose BY INDEX the ansible recipe to use:"
+  CACHED_RECIPE_INDEX=""
+#  for ((i=0; i<=${#RECIPES[@]}; i++))
+  for i in ${!RECIPES[@]}; do
+    file=${RECIPES[$i]}
+    [[ "$file" == "$CACHED_RECIPE" ]] &&  CACHED_RECIPE_INDEX=$i
+    echo "  - [$i] : $file"
+  done
+  while true; do
+    CACHED_FILE_STR="(Default: $CACHED_RECIPE)"
+    echo
+    read -i "$CACHED_RECIPE_INDEX" -e -p "Which file number to use $CACHED_FILE_STR ? : " index
+    RECIPE=${RECIPES[$index]}
+    [[ -z "$RECIPE" ]] && echo "Invalid choice. Try again." && continue
+    break
+  done
+  echo "${RECIPE}" > "${CACHE_FILE}"
+
+}
+
 
 pattern_matching(){
   REQUEST="$@"
