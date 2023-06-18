@@ -1,7 +1,7 @@
 
 variable "formateurs_names" {
   default = [
-    "alex"
+    "LOGIN_DU_FORMATEUR"
   ]
 }
 
@@ -32,10 +32,6 @@ variable "formation_subdomain" {
   default = "formation"
 }
 
-variable "hcloud_vnc_server_type" {
-  default = "cx31"
-}
-
-variable "hcloud_guacamole_server_type" {
-  default = "cx11"
+variable "guacamole_domain" {
+  default = "nom.de.domaine.pour.guacamole.tld"
 }
