@@ -57,14 +57,18 @@ resource "ansible_host" "ansible_vnc_servers_formateurs" {
   }
 }
 
+
+
 resource "ansible_host" "ansible_guacamole_server" {
   inventory_hostname = "guacamole-server"
   groups = ["all", "scaleway", "guacamole_servers"]
   vars = {
     ansible_host = module.servers.guacamole_public_ip
-    guacamole_domain = module.domains.guacamole_domain
+    guacamole_domain = var.guacamole_domain
   }
 }
+
+
 
 # resource "ansible_group" "vnc_servers" {
 #   inventory_group_name = "vnc_servers"

@@ -18,14 +18,14 @@ lxc exec centos1 -- yum install -y openssh-server sudo
 lxc exec centos1 -- systemctl start sshd
 lxc exec centos1 -- sed -i 's@\(%wheel.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
 lxc exec centos1 -- useradd -m -s /bin/bash -G wheel stagiaire
-lxc exec centos1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire --force"
-sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(lxc list -c4 --format csv centos1 | cut -d' ' -f1)
+lxc exec centos1 -- bash -c "(echo 'ilovepython'; echo 'ilovepython') | passwd stagiaire --force"
+sshpass -p "ilovepython" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(lxc list -c4 --format csv centos1 | cut -d' ' -f1)
 lxc publish --force --alias centos_ansible centos1 && lxc delete --force centos1
 
 lxc exec ubu1 -- apt update
 lxc exec ubu1 -- apt install -y openssh-server sudo
 lxc exec ubu1 -- sed -i 's@\(%sudo.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
 lxc exec ubu1 -- useradd -m -s /bin/bash -G sudo stagiaire
-lxc exec ubu1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire"
-sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(lxc list -c4 --format csv ubu1 | cut -d' ' -f1)
+lxc exec ubu1 -- bash -c "(echo 'ilovepython'; echo 'ilovepython') | passwd stagiaire"
+sshpass -p "ilovepython" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(lxc list -c4 --format csv ubu1 | cut -d' ' -f1)
 lxc publish --force --alias ubuntu_ansible ubu1 && lxc delete --force ubu1

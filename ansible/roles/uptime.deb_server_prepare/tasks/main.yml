@@ -2,11 +2,17 @@
   apt:
     upgrade: "yes"
     update_cache: yes
-  retries: 30
+  retries: 3
   delay: 30
   register: apt_upgrade
   until: apt_upgrade is success
 
+- name: Fix pip mess idk
+  shell: >
+    mv /usr/local/lib/python3.8/dist-packages/cryptography{,.bkp} && pip3 install pip --upgrade && pip3 install docker --upgrade
+  args:
+    warn: false
+  when: apt_upgrade is failed
 
 - name: Set hostname
   hostname:

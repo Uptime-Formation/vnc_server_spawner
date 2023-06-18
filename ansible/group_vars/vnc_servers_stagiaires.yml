@@ -1,6 +1,6 @@
-vnc_passwd: devops101
+vnc_passwd: ilovegit
 # FIXME: not working
-# vnc_view_passwd: devops101
+# vnc_view_passwd: ilovegit
 vnc_unix_user: stagiaire
 base_unix_user: stagiaire
 passwordless_sudo: true

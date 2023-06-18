@@ -1,7 +1,7 @@
 
 variable "formateurs_names" {
   default = [
-    "hadrien"
+    "alex"
   ]
 }
 
@@ -12,18 +12,19 @@ variable "scaleway_vnc_servers_size" {
 variable "scaleway_guac_servers_size" {
   default = "DEV1-L"
 }
-# 
-# variable "stagiaires_password" {
-#   default = "devops101"
-# }
-# 
-# variable "formateurs_password" {
-#   default = "devops202"
-# }
 
 variable "stagiaires_names" {
   default = [
-    "demo"
+    "stagiaire-1",
+    "stagiaire-2",
+    "stagiaire-3",
+    "stagiaire-4",
+    "stagiaire-5",
+    "stagiaire-6",
+    "stagiaire-7",
+    "stagiaire-8",
+    "stagiaire-9",
+    "stagiaire-10",
   ]
 }
 
@@ -37,4 +38,4 @@ variable "hcloud_vnc_server_type" {
 
 variable "hcloud_guacamole_server_type" {
   default = "cx11"
-} #}
+}
