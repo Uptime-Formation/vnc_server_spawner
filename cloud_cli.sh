@@ -89,7 +89,7 @@ _ansible_guacamole() {
   printf "##############################################\\n"
   cd "$ANSIBLE_DIR"
   # ansible-galaxy install -i -r roles/requirements.yml -p roles
-  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUACAMOLE} -vv
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUACAMOLE} -vv -e servers_provider=$(_get_domain_provider servers)
   cd "$PROJECT_DIR"
 }
 
@@ -100,7 +100,7 @@ _ansible_vnc() {
   printf "##############################################\\n"
   cd "$ANSIBLE_DIR"
   # ansible-galaxy install -i -r roles/requirements.yml -p roles
-  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_VNC} -vv
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_VNC} -vv -e servers_provider=$(_get_domain_provider servers)
   cd "$PROJECT_DIR"
 }
 
