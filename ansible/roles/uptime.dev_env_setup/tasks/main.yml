@@ -2,11 +2,17 @@
   apt:
     update_cache: yes
     upgrade: "yes"
-  retries: 30
+  retries: 3
   delay: 30
   register: apt_upgrade
   until: apt_upgrade is success
 
+- name: Fix pip mess idk
+  shell: >
+    mv /usr/local/lib/python3.8/dist-packages/cryptography{,.bkp} && pip3 install pip --upgrade && pip3 install docker --upgrade
+  args:
+    warn: false
+  when: apt_upgrade is failed
 
 - name: Ensure we have git installed
   apt:
@@ -17,6 +23,11 @@
   apt:
     name: firefox
     state: "{{ firefox_state }}"
+
+- name: "Ensure we have Thonny"
+  apt:
+    name: thonny
+    state: present
 
 - name: Add repo and install vscode using shell apt
   shell:
@@ -51,14 +62,14 @@
     owner: "{{ base_unix_user }}"
     recurse: true
 
-- name: Ensure we have LXD installed if required, but don't uninstall it
-  snap:
-    name: lxd
-    state: "{{ lxd_state }}"
-  when: lxd_state == "present"
-
-- name: "Ensure we have kubectl {{ kubectl_state }}"
-  snap:
-    name: kubectl
-    state: "{{ kubectl_state }}"
-    classic: yes
+#- name: Ensure we have LXD installed if required, but don't uninstall it
+#  snap:
+#    name: lxd
+#    state: "{{ lxd_state }}"
+#  when: lxd_state == "present"
+#
+#- name: "Ensure we have kubectl {{ kubectl_state }}"
+#  snap:
+#    name: kubectl
+#    state: "{{ kubectl_state }}"
+#    classic: yes
