@@ -4,11 +4,11 @@
 #     state: present
 #   tags: ["formation_ansible"]
 
-- name: Ensure we have LXD "{{ lxd_state }}"
-  snap:
-    name: lxd
-    state: "{{ lxd_state }}"
-  tags: ["formation_ansible"]
+# - name: Ensure we have LXD "{{ lxd_state }}"
+#   snap:
+#     name: lxd
+#     state: "{{ lxd_state }}"
+#   tags: ["formation_ansible"]
 
 - name: template ansible lxd teaching install script
   template:
@@ -43,6 +43,12 @@
   lineinfile:
     path: /home/{{ base_unix_user }}/.bashrc
     line: eval $(ssh-agent)
+  tags: ["formation_ansible"]
+  
+- name: Add pip to path
+  lineinfile:
+    path: "/home/{{ base_unix_user }}/.bashrc"
+    line: 'export PATH=$PATH:/home/{{ base_unix_user }}/.local/bin'
   tags: ["formation_ansible"]
 
 - name: Ensure unix user is in the lxd group
