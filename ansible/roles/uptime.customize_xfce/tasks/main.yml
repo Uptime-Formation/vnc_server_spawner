@@ -28,11 +28,12 @@
     dest: /home/{{ vnc_unix_user }}/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
     owner: "{{ vnc_unix_user }}"
 
-# - name: Disable light-locker to avoid blank screens after a while
-#   lineinfile:
-#       path: /etc/xdg/autostart/light-locker.desktop
-#       line: Hidden=true
+- name: Disable light-locker to avoid blank screens after a while
+  lineinfile:
+      path: /etc/xdg/autostart/light-locker.desktop
+      line: Hidden=true
 
+<<<<<<< HEAD
 - name: Ensure correct rights in home directory
   file:
     path: "/home/{{ vnc_unix_user }}/.config"
@@ -59,3 +60,11 @@
 #     state: restarted
 #     daemon_reload: yes
 #     enabled: yes
+=======
+- name: Restart vncserver
+  systemd:
+    name: vncserver@:1
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+>>>>>>> parent of 007f1be (big refacto update WIP)
