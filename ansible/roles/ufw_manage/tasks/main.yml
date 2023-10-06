@@ -1,0 +1,88 @@
+---
+- name: ensure UFW present
+  apt:
+    name: ufw
+    state: present
+
+- name: allow OpenSSH 
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+  notify: reload ufw
+
+
+- name: Set UFW default
+  ufw:
+    default: "{{ ufw_default }}"
+  notify: reload ufw
+
+- name: allow ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    # proto: tcp
+    from_ip: any
+    insert_relative_to: zero
+  loop: "{{ ufw_allow_ports }}"
+  notify: reload ufw
+
+- name: deny ports
+  ufw:
+    rule: deny
+    port: "{{ item }}"
+    from_ip: any
+    # insert_relative_to: last-ipv4
+    insert_relative_to: zero
+  loop: "{{ ufw_deny_ports }}"
+  notify: reload ufw
+
+- name: allow IP
+  ufw:
+    rule: allow
+    # port: "any"
+    from_ip: "{{ item }}"
+    protocol: any
+    # last one wins apparently?
+    insert_relative_to: last-ipv4
+  loop: "{{ ufw_allow_ips }}"
+  notify: reload ufw
+
+- name: allow IP on deny ports
+  ufw:
+    rule: allow
+    port: "{{ item[1] }}"
+    from_ip: "{{ item[0] }}"
+    protocol: any
+    # most specific rule should go first/last?  
+    insert_relative_to: last-ipv4
+# FIXME: cannot work, how to do nested loops / other logic?
+  loop: "{{ ufw_allow_ips | product(ufw_deny_ports) |list  }}"
+  notify: reload ufw
+    
+- name: "Set UFW to {{ ufw_state }}"
+  ufw:
+    state: "{{ ufw_state }}"
+  notify: reload ufw
+
+
+# - name: Create table *nat in ufw iptable rules
+#   blockinfile:
+#     dest: /etc/ufw/before.rules
+#     block: |
+#       # NAT prerouting port forwarding rules to containers
+#       *nat
+#       :POSTROUTING ACCEPT [0:0]
+#       :PREROUTING ACCEPT [0:0]
+#       #Rules
+#       #One commit per table needed (here for nat table)
+#       COMMIT
+#   notify: flush nat and reload
+
+# # for every container loop on every rules by including a task loop
+# - name: loop to update nat rules in ufw
+#   include_tasks: nat_rules.yml
+#   loop: "{{ groups['linux_containers'] }}"
+#   loop_control:
+#     loop_var: container
+    

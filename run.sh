@@ -62,6 +62,7 @@ _setup_terraform() {
   printf "Setup Terraform resources\\n"
   printf "##############################################\\n"
   cd "$TERRAFORM_DIR"
+  tfenv use 0.14.9
   terraform init
   terraform plan
   terraform apply -auto-approve 
@@ -88,6 +89,7 @@ _ansible_guacamole() {
   printf "Setup infra VPS using Ansible\\n"
   printf "##############################################\\n"
   cd "$ANSIBLE_DIR"
+
   # ansible-galaxy install -i -r roles/requirements.yml -p roles
   ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUACAMOLE} -vv -e servers_provider=$(_get_domain_provider servers)
   cd "$PROJECT_DIR"

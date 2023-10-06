@@ -1,0 +1,12 @@
+- hosts: vnc_servers
+  become: yes
+  strategy: free
+
+  tasks:
+    # - name: Restart VNC service
+    #   notify: Restart vncserver
+
+    - name: Restart vncserver
+      systemd:
+        name: vncserver@:1
+        state: restarted

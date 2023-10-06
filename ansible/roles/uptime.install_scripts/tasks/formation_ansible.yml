@@ -1,0 +1,61 @@
+# - name: Ensure we have Ansible installed
+#   apt:
+#     name: ansible
+#     state: present
+#   tags: ["formation_ansible"]
+
+# - name: Ensure we have LXD "{{ lxd_state }}"
+#   snap:
+#     name: lxd
+#     state: "{{ lxd_state }}"
+#   tags: ["formation_ansible"]
+
+- name: template ansible lxd teaching install script
+  template:
+    src: "{{ item }}.j2"
+    dest: /opt/{{ item }}
+    mode: 0777
+  loop:
+    - lxd_config.yaml
+    - lxd.sh
+
+- name: Ensure /.ssh/ folder exists
+  file:
+    path: /home/{{ base_unix_user }}/.ssh
+    owner: "{{ base_unix_user }}"
+    group: "{{ base_unix_user }}"
+    state: directory
+  tags: ["formation_ansible"]
+
+- name: Ensure unix user has the stagiaire ssh key
+  template:
+    src: "{{ item }}"
+    dest: /home/{{ base_unix_user }}/.ssh/{{ item }}
+    owner: "{{ base_unix_user }}"
+    group: "{{ base_unix_user }}"
+    mode: 0600
+  tags: ["formation_ansible"]
+  loop:
+    - id_stagiaire
+    - id_stagiaire.pub
+
+- name: Ensure ssh-agent is started in bashrc
+  lineinfile:
+    path: /home/{{ base_unix_user }}/.bashrc
+    line: eval $(ssh-agent)
+  tags: ["formation_ansible"]
+  
+- name: Add pip to path
+  lineinfile:
+    path: "/home/{{ base_unix_user }}/.bashrc"
+    line: 'export PATH=$PATH:/home/{{ base_unix_user }}/.local/bin'
+  tags: ["formation_ansible"]
+
+- name: Ensure unix user is in the lxd group
+  user:
+    name: "{{ base_unix_user }}"
+    state: present
+    groups: ["lxd"]
+    append: yes
+  notify: Restart vncserver
+  tags: ["formation_ansible", "lxd_group"]

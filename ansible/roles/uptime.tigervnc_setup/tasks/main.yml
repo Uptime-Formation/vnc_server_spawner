@@ -1,0 +1,101 @@
+- name: Ensure some utils are present
+  apt:
+    update_cache: yes
+    name:
+      - htop
+      - vim
+
+- name: prevent the xubuntu-desktop install dialog
+  debconf: 
+    name: "{{ item }}"
+    question: "shared/default-x-display-manager"
+    vtype: "string"
+    value: "lightdm"
+  loop:
+    - gdm3
+    - lightdm
+ # https://askubuntu.com/questions/1114525/reconfigure-the-display-manager-non-interactively
+
+- name: Ensure xubuntu-desktop and dbus-x11 are present
+  apt:
+    name:
+      - xubuntu-desktop
+      # necessary to use dbus-launch xfce workaround (https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session)
+      - dbus-x11
+
+- name: Ensure some unwanted packages are absent
+  apt:
+    name:
+      - ubuntu-desktop
+      - gdm3
+      - xfce4-screensaver
+      # - light-locker
+      # - gvfs
+    state: absent
+    autoremove: yes
+    purge: yes
+
+# - name: crash reporting off (light-locker and xorg crashes)
+#   lineinfile:
+#       regexp: '^enabled='
+#       line: enabled=0
+#       path: /etc/default/apport
+
+- name: Ensure tigervnc server and plugins are present
+  apt:
+    name:
+      - tigervnc-standalone-server
+      - tigervnc-xorg-extension
+      # install 'vncpasswd' cli util
+      - tigervnc-common
+
+- name: Ensure home vnc dir present
+  file:
+    path: /home/{{ vnc_unix_user }}/.vnc
+    state: directory
+    owner: "{{ vnc_unix_user }}"
+  tags: vnc_passwd
+
+- name: Ensure password is configured
+  # with vncpasswd -f the password has to end with \n
+  shell: echo '{{ vnc_passwd_newline }}' | vncpasswd -f > /home/{{ vnc_unix_user }}/.vnc/passwd
+  become: yes
+  become_user: "{{ vnc_unix_user }}"
+  notify: Restart vncserver
+  tags: vnc_passwd
+
+# - name: debug view only password
+#   debug:
+#     msg: "{{ vnc_view_passwd }}"
+
+# FIXME: Not working
+# - name: Ensure some view only password is configured
+#   # moreover to generate a view only password concat a second binary passwd to the first one
+#   shell: echo '{{ vnc_view_passwd_newline }}' | vncpasswd -f  >> /home/{{ vnc_unix_user }}/.vnc/passwd
+#   become: yes
+#   become_user: "{{ vnc_unix_user }}"
+#   tags: vnc_passwd
+#   notify: Restart vncserver
+#   when: vnc_view_passwd_newline is defined
+
+- name: Ensure xstartup config exists
+  template:
+    src: xstartup.j2
+    dest: /home/{{ vnc_unix_user }}/.vnc/xstartup
+  become: yes
+  become_user: "{{ vnc_unix_user }}"
+  notify: Restart vncserver
+  tags: xstartup_config
+
+- name: Ensure vncserver service exists
+  template:
+    src: vncserver.service.j2
+    dest: /etc/systemd/system/vncserver@.service
+  notify: Restart vncserver
+
+- name: Ensure vncserver service is enabled and started on screen :1 and port 5901
+  systemd:
+    name: vncserver@:1
+    state: started
+    daemon_reload: yes
+    enabled: yes

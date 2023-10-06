@@ -1,5 +1,7 @@
 - hosts: guacamole_servers
   become: yes
+  # strategy: free
+
   roles:
     - name: uptime.docker_setup
       vars:

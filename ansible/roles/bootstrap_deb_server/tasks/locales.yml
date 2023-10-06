@@ -1,0 +1,29 @@
+- name: Ensure localisation files for '{{ deb_config_system_locale }}' are available
+  locale_gen:
+    name: "{{ deb_config_system_locale }}"
+    state: present
+
+- name: Ensure localisation files for '{{ deb_config_system_language }}' are available
+  locale_gen:
+    name: "{{ deb_config_system_language }}"
+    state: present
+
+- name: Get current locale and language configuration
+  command: localectl status
+  register: locale_status
+  changed_when: false
+
+- name: Parse 'LANG' from current locale and language configuration
+  set_fact:
+    locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Parse 'LANGUAGE' from current locale and language configuration
+  set_fact:
+    locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Configure locale to '{{ deb_config_system_locale }}' and language to '{{ deb_config_system_language }}'
+  command: localectl set-locale LANG={{ deb_config_system_locale }} LANGUAGE={{ deb_config_system_language }}
+  when: locale_lang != deb_config_system_locale or locale_language != deb_config_system_language
+  ignore_errors: "{{ ansible_check_mode }}"

@@ -1,0 +1,39 @@
+
+- name: Allow (or not) ssh connexion using password, {{ deb_server_allow_passwd_auth }}
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication {{ deb_server_allow_passwd_auth }}"
+  notify: reload sshd
+
+- name: Ensure user .ssh folder present
+  file:
+    state: directory
+    path: "/home/{{ item.name }}/.ssh"
+  loop: "{{ deb_server_users }}"
+
+- name: "Configure {{ item.name }} authorized_keys if a public key was defined"
+  authorized_key:
+    key: "{{ item.ssh_pubkey }}"
+    state: present
+    user: "{{ item.name }}"
+  when: item.ssh_pubkey is defined
+  loop: "{{ deb_server_users }}"
+
+- name: "Configure authorized_keys permissions"
+  file:
+    state: file
+    path: "/home/{{ item.name }}/.ssh/authorized_keys"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "0600"
+  loop: "{{ deb_server_users }}"
+  when: item.ssh_pubkey is defined
+
+
+- name: Setup mosh if required
+  apt:
+    name: mosh
+    state: present
+  when: deb_server_install_mosh

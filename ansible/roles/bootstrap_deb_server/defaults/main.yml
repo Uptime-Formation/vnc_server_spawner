@@ -1,0 +1,9 @@
+
+deb_server_allow_passwd_auth: "no"
+deb_server_allow_passwordless_sudo: "no"
+deb_server_users: []
+deb_server_install_mosh: yes
+deb_server_fail2ban_ignored_ips: []
+
+deb_config_system_language: fr_FR.UTF-8
+deb_config_system_locale: fr_FR.UTF-8

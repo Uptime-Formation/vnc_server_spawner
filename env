@@ -1,0 +1,12 @@
+export ANSIBLE_NOCOWS=1
+export PROJECT_DIR=$(pwd)
+export TERRAFORM_DIR=$PROJECT_DIR/terraform/
+export ANSIBLE_DIR=$PROJECT_DIR/ansible/
+export ANSIBLE_INVENTORY=$PROJECT_DIR/ansible/terraform-inventory.py
+export ANSIBLE_PLAYBOOK_VNC=$PROJECT_DIR/ansible/vnc.yml
+export ANSIBLE_PLAYBOOK_GUAC=$PROJECT_DIR/ansible/guacamole.yml
+export ANSIBLE_TF_DIR=$TERRAFORM_DIR
+
+export ANSIBLE_ENABLE_TASK_DEBUGGER=False 
+eval $(ssh-agent)  
+ssh-add ~/.ssh/id_hetzner_patate

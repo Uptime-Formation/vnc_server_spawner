@@ -1,4 +1,5 @@
 - hosts: all
+  strategy: free
   become: yes
   roles:
     - name: uptime.deb_server_prepare

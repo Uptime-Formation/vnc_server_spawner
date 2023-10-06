@@ -15,7 +15,7 @@
 # - create a network 'guacnetwork_compose' with the 'bridge' driver.
 # - create a service 'guacd_compose' from 'guacamole/guacd' connected to 'guacnetwork'
 # - create a service 'postgres_guacamole_compose' (1) from 'postgres' connected to 'guacnetwork'
-# - create a service 'guacamole_compose' (2)  from 'guacamole/guacamole/' conn. to 'guacnetwork'
+# - create a service 'guacamole' (2)  from 'guacamole/guacamole/' conn. to 'guacnetwork'
 # - create a service 'nginx-proxy' from 'nginx-proxy' connected to 'guacnetwork'
 # - create a service 'letsencrypt' from 'jrcs/letsencrypt-nginx-proxy-companion' connected to 'guacnetwork'
 #
@@ -84,9 +84,10 @@ services:
       - ./drive:/drive:rw
       - ./record:/record:rw
 
+
   # guacamole
   guacamole:
-    container_name: guacamole_compose
+    container_name: guacamole
     depends_on:
       - guacd
       # - postgres
@@ -103,18 +104,20 @@ services:
       - {{ guac_path }}/user-mapping.xml:/etc/guacamole/user-mapping.xml
     networks:
       - guacnetwork_compose
-    ports:
-      - "8080/tcp"
+    # ports:
+#      - "127.0.0.1:8080:8080"
+    #   - "8080/tcp"
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
       timeout: 10s
       retries: 10
-      start_period: 40s
+      start_period: 60s
 
   nginx-proxy:
     container_name: nginx-proxy
+    restart: always
     # depends_on:
     # - letsencrypt
     image: uptimeformation/nginx-proxy
@@ -125,11 +128,11 @@ services:
       - guacnetwork_compose
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs:ro
       - nginx_conf:/etc/nginx/conf.d
       - nginx_dhparam:/etc/nginx/dhparam
       - nginx_html:/usr/share/nginx/html
 
+      - /nginx_certs:/etc/nginx/certs:ro
       - /nginx_vhosts:/etc/nginx/vhost.d
 
     healthcheck:
@@ -140,6 +143,7 @@ services:
       start_period: 10s
 
   letsencrypt:
+    restart: always
     container_name: letsencrypt
     depends_on:
      - nginx-proxy
@@ -151,14 +155,13 @@ services:
       NGINX_PROXY_CONTAINER: nginx-proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx_certs:/etc/nginx/certs
       - nginx_dhparam:/etc/nginx/dhparam:ro
       - nginx_html:/usr/share/nginx/html
 
+      - /nginx_certs:/etc/nginx/certs
       - /nginx_vhosts:/etc/nginx/vhost.d
 
 volumes:
   nginx_conf:
-  nginx_certs:
   nginx_html:
   nginx_dhparam:

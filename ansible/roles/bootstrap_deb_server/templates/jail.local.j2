@@ -1,0 +1,7 @@
+[DEFAULT] ignoreip = 127.0.0.1/8 ::1{% for ignored_ip_cidr in deb_server_fail2ban_ignored_ips %} {{ ignored_ip_cidr }}{% endfor %} 
+bantime = 3600
+findtime = 600
+maxretry = 5
+
+[sshd] enabled = true
+

@@ -1,11 +1,23 @@
-- name: Upgrade servers
+- name: Upgrade packages
   apt:
-    update_cache: yes
     upgrade: "yes"
+    update_cache: yes
   register: first_ubuntu_update
   until: "first_ubuntu_update is not failed"
   retries: 10
   delay: 10
+
+- name: Fix pip mess idk
+  shell: >
+    mv /usr/local/lib/python3.8/dist-packages/cryptography /usr/local/lib/python3.8/dist-packages/cryptography.bkp && pip3 install pip --upgrade && pip3 install docker --upgrade
+  failed_when: false
+  # args:
+  #   warn: false
+  # when: apt_upgrade is failed
+
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
 
 - name: Ensure we have python3 tools installed
   apt:
@@ -44,6 +56,13 @@
     groups: ["sudo"]
     append: yes
 
+- name: Make sure {{ base_unix_user }} user owns its home
+  file:
+    path: /home/{{ base_unix_user }}
+    owner: "{{ base_unix_user }}"
+    group: "{{ base_unix_user }}"
+#     recurse: yes
+
 - name: Allow user '{{ base_unix_user }}' ssh connexion
   lineinfile:
     dest: /etc/ssh/sshd_config
@@ -64,6 +83,8 @@
   file:
     state: directory
     path: /home/{{ base_unix_user }}/.ssh
+    owner: "{{ base_unix_user }}"
+    group: "{{ base_unix_user }}"
 
 - name: Configure {{ base_unix_user }} authorized_keys if a public key was defined
   copy:

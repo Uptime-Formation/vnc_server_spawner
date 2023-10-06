@@ -39,3 +39,12 @@
 - name: run kubernetes install shell
   shell: /opt/kubernetes.sh
 
+- name: Include Ansible teaching requirements tasks
+  include_tasks: formation_ansible.yml
+  when: formation_ansible
+  tags: ["formation_ansible", "lxd_group"]
+
+- name: Include kubernetes teaching requirements tasks
+  include_tasks: formation_k8s.yml
+  when: formation_k8s
+  tags: ["formation_k8s"]

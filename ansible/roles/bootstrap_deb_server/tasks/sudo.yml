@@ -1,0 +1,14 @@
+- name: Ensure we have sudo installed
+  apt:
+    name: sudo
+    state: present
+
+- name: Make sure we have a 'sudo' group
+  group:
+    name: sudo
+    state: present
+
+- name: Ensure standard sudoers configuration {% if deb_server_allow_passwordless_sudo %} with passwordless sudo {% endif %}
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers

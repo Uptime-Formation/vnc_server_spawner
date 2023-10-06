@@ -1,0 +1,76 @@
+- name: Upgrade packages
+  apt:
+    update_cache: yes
+    upgrade: "yes"
+  retries: 3
+  delay: 30
+  register: apt_upgrade
+  until: apt_upgrade is success
+
+- name: Fix pip mess idk
+  shell: >
+    mv /usr/local/lib/python3.8/dist-packages/cryptography /usr/local/lib/python3.8/dist-packages/cryptography.bkp && pip3 install pip --upgrade && pip3 install docker --upgrade
+  # args:
+  #   warn: false
+  # when: apt_upgrade is failed
+  failed_when: false
+
+- name: Ensure we have git installed
+  apt:
+    name: git
+    state: "present"
+
+- name: "Ensure we have firefox {{ firefox_state }}"
+  apt:
+    name: firefox
+    state: "{{ firefox_state }}"
+
+- name: "Ensure we have Thonny"
+  apt:
+    name: thonny
+    state: present
+
+- name: Add repo and install vscode using shell apt
+  shell:
+    cmd: |
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+      echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+      apt update
+      apt install -y code
+      touch /root/vscode_install_flag
+    creates: /root/vscode_install_flag
+    executable: /bin/bash
+
+- name: Ensure we have snap installed
+  apt:
+    name: snapd
+    state: present
+
+# - name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
+#   shell: id --user {{ base_unix_user }}
+#   register: user_id
+
+- name: Fix some snap/vscode bug by first collecting user id for user {{ base_unix_user }}
+  shell: id --user {{ base_unix_user }}
+  register: user_id
+
+- name: Fix some snap/vscode bug by ensuring /run/user/{{ user_id.stdout }} is owned by user {{ base_unix_user }}
+  file:
+    path: "/run/user/{{ user_id.stdout }}"
+    state: "directory"
+    mode: "0700"
+    owner: "{{ base_unix_user }}"
+    recurse: true
+
+#- name: Ensure we have LXD installed if required, but don't uninstall it
+#  snap:
+#    name: lxd
+#    state: "{{ lxd_state }}"
+#  when: lxd_state == "present"
+#
+#- name: "Ensure we have kubectl {{ kubectl_state }}"
+#  snap:
+#    name: kubectl
+#    state: "{{ kubectl_state }}"
+#    classic: yes

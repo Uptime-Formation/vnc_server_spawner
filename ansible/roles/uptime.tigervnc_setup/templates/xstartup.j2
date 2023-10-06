@@ -1,0 +1,5 @@
+#!/bin/bash
+{# xfce startup is sometimes messy see for example: https://superuser.com/questions/887430/xfce-login-error-unable-to-load-failsafe-session #}
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+dbus-launch xfce4-session

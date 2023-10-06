@@ -1,0 +1,10 @@
+- name: Ensure we have some technical tools installed
+  apt:
+    name:
+      - vim
+      - byobu
+      - zsh
+    state: present
+    update_cache: yes
+
+# TODO: Load per user config for shell, screen and vim
