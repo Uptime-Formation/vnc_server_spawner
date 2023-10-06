@@ -34,7 +34,6 @@
       line: Hidden=true
       create: yes
 
-<<<<<<< HEAD
 - name: Ensure correct rights in home directory
   file:
     path: "/home/{{ vnc_unix_user }}/.config"
@@ -61,11 +60,9 @@
 #     state: restarted
 #     daemon_reload: yes
 #     enabled: yes
-=======
 - name: Restart vncserver
   systemd:
     name: vncserver@:1
     state: restarted
     daemon_reload: yes
     enabled: yes
->>>>>>> parent of 007f1be (big refacto update WIP)

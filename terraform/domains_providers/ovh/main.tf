@@ -9,11 +9,6 @@ terraform {
 }
 
 terraform {
-  required_providers {
-    ovh = {
-      source  = "ovh/ovh"
-    }
-  }
 }
 
 provider "ovh" {
@@ -78,6 +73,3 @@ resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
   target    = var.guacamole_public_ip
 }
 
-output "guacamole_domain" {
-  value = "${ovh_domain_zone_record.guacamole_node_subdomain.subdomain}.${ovh_domain_zone_record.guacamole_node_subdomain.zone}"
-}

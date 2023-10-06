@@ -1,11 +1,4 @@
-  - hosts: all
-  name: wait for ssh
-  gather_facts: false
-  tasks:
-    - wait_for:
-        port: 22
-        host: '{{ ansible_host }}'
-      delegate_to: localhost
+
 
 - import_playbook: playbooks/deb_server_prepare.yml
 - import_playbook: playbooks/xrdp.yml
