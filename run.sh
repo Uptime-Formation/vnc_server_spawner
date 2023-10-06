@@ -29,13 +29,13 @@ HEREDOC
 ACTIONS+=("setup_full")
 ACTIONS_HELP+=("Run all actions")
 _setup_full() {
-  _setup_all
+  _all
 }
 
-ACTIONS+=("setup_all")
+ACTIONS+=("all")
 ACTIONS_HELP+=("Run all actions (ditto)")
-_setup_all(){
-  _setup_terraform
+_all(){
+  _terraform
   _ansible
 }
 
@@ -56,9 +56,9 @@ _packer() {
 
 }
 
-ACTIONS+=("setup_terraform")
+ACTIONS+=("terraform")
 ACTIONS_HELP+=("Run Terraform only")
-_setup_terraform() {
+_terraform() {
   printf "Setup Terraform resources\\n"
   printf "##############################################\\n"
   cd "$TERRAFORM_DIR"
@@ -107,9 +107,9 @@ _ansible_vnc() {
 }
 
 
-ACTIONS+=("destroy_infra")
+ACTIONS+=("destroy")
 ACTIONS_HELP+=("Destroy the infra")
-_destroy_infra() {
+_destroy() {
   printf "DESTROY Terraform resources\\n"
   printf "##############################################\\n"
   cd "$TERRAFORM_DIR"
@@ -121,8 +121,8 @@ ACTIONS_HELP+=("Destroys and recreates the infra")
 _recreate_infra() {
   printf "DESTROY AND REPROVISION\\n"
   printf "##############################################\\n"
-  _destroy_infra
-  _setup_all
+  _destroy
+  _all
 }
 
 _convert_hcl_to_json(){
