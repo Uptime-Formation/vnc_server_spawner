@@ -9,6 +9,7 @@
       - python3-setuptools
       - curl
     state: present
+    update_cache: yes
 
 - name: Add Docker apt key.
   apt_key:

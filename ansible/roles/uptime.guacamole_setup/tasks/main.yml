@@ -58,6 +58,8 @@
 #     recursive: yes
 #     delete: no
 #     times: yes
+- pip:
+    name: docker-compose
 
 - name: Ensure docker-compose guacamole is started
   docker_compose:
@@ -88,7 +90,7 @@
   ansible.posix.synchronize:
     mode: pull
     src: /nginx_certs/
-    dest: "{{ playbook_dir }}/../stored_certs/"
+    dest: "{{ playbook_dir }}/../stored_certs/"
     delete: no
     recursive: yes
     times: yes

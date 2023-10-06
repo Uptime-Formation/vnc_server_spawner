@@ -9,10 +9,11 @@
 
 - name: Fix pip mess idk
   shell: >
-    mv /usr/local/lib/python3.8/dist-packages/cryptography{,.bkp} && pip3 install pip --upgrade && pip3 install docker --upgrade
-  args:
-    warn: false
-  when: apt_upgrade is failed
+    mv /usr/local/lib/python3.8/dist-packages/cryptography /usr/local/lib/python3.8/dist-packages/cryptography.bkp && pip3 install pip --upgrade && pip3 install docker --upgrade
+  # args:
+  #   warn: false
+  # when: apt_upgrade is failed
+  failed_when: false
 
 - name: Ensure we have git installed
   apt:
