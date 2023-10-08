@@ -2,6 +2,10 @@ variable "ovh_application_key" {}
 variable "ovh_application_secret" {}
 variable "ovh_consumer_key" {}
 
+variable "formation_subdomain" {}
+variable "global_lab_domain" {}
+
+
 variable "stagiaires_names" {}
 variable "formateurs_names" {}
 variable "vnc_stagiaires_public_ips" {}
