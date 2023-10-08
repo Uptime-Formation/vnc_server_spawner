@@ -66,7 +66,7 @@ resource "ovh_domain_zone_record" "formateurs_wildcard_subdomains" {
   # subdomain = element(scaleway_instance_server.vnc_servers_formateurs.*.public_ip, count.index)
   subdomain = "*.${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
   fieldtype = "A"
-  ttl       = "0"
+  ttl       = "60"
   target    = element(var.vnc_formateurs_public_ips, count.index)
 }
 
@@ -78,7 +78,7 @@ resource "ovh_domain_zone_record" "guacamole_node_subdomain" {
   subdomain = "lab"
   # subdomain = "guacamole"
   fieldtype = "A"
-  ttl       = "0"
+  ttl       = "60"
   target    = var.guacamole_public_ip
 }
 
