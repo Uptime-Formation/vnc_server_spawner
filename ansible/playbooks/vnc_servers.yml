@@ -28,7 +28,7 @@
     - name: uptime.dev_env_setup
       tags: ["dev_env_setup"]
 
-    - name: uptime.docker_setup
+    - name: geerlingguy.docker
       vars:
         docker_users:
           - "{{ base_unix_user }}"
