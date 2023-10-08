@@ -10,7 +10,3 @@ output "vnc_formateurs_public_ips" {
 output "guacamole_public_ip" {
   value = hcloud_server.guacamole_server.ipv4_address
 }
-
-output "lxd_images_public_ip" {
-  value = hcloud_server.vnc_servers_formateurs.0.ipv4_address
-}

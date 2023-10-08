@@ -16,7 +16,6 @@ variable "formateurs_names" {}
 variable "vnc_stagiaires_public_ips" {}
 variable "vnc_formateurs_public_ips" {}
 variable "guacamole_public_ip" {}
-variable "lxd_images_public_ip" {}
 variable "global_lab_domain" {}
 
 variable "formation_subdomain" {}
