@@ -8,3 +8,8 @@
   systemd:
     name: fail2ban
     state: reloaded
+
+- name: Restart vncserver
+  systemd:
+    name: vncserver@:1
+    state: restarted

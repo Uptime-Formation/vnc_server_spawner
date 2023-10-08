@@ -93,3 +93,10 @@
     owner: "{{ base_unix_user }}"
     group: "{{ base_unix_user }}"
   when: ssh_public_key|bool
+
+- import_tasks: apt-python.yml
+- import_tasks: sudo.yml
+- import_tasks: users.yml
+- import_tasks: locales.yml
+- import_tasks: apt-dev-tools.yml
+- import_tasks: sshd.yml
