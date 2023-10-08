@@ -37,7 +37,7 @@ resource "ovh_domain_zone_record" "stagiaires_subdomains" {
   zone      = data.ovh_domain_zone.doxx_domain.name
   subdomain = "${element(var.stagiaires_names, count.index)}.${var.formation_subdomain}"
   fieldtype = "A"
-  ttl       = "0"
+  ttl       = "60"
   target    = element(var.vnc_stagiaires_public_ips, count.index)
 }
 
@@ -47,7 +47,7 @@ resource "ovh_domain_zone_record" "formateurs_subdomains" {
   # subdomain = element(scaleway_instance_server.vnc_servers.*.public_ip, count.index)
   subdomain = "${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
   fieldtype = "A"
-  ttl       = "0"
+  ttl       = "60"
   target    = element(var.vnc_formateurs_public_ips, count.index)
 }
 
@@ -56,7 +56,7 @@ resource "ovh_domain_zone_record" "stagiaires_wildcard_subdomains" {
   zone      = data.ovh_domain_zone.doxx_domain.name
   subdomain = "*.${element(var.stagiaires_names, count.index)}.${var.formation_subdomain}"
   fieldtype = "A"
-  ttl       = "0"
+  ttl       = "60"
   target    = element(var.vnc_stagiaires_public_ips, count.index)
 }
 
