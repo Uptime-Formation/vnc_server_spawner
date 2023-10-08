@@ -1,0 +1,6 @@
+guac_path: /guacamole-docker-compose
+guac_stagiaire_passwd: ~
+guac_formateur_passwd: ~
+guac_vnc_servers_autoconfig: yes
+guacamole_domain: ~
+guac_letsencrypt_email: ~
