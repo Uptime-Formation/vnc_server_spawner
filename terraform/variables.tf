@@ -1,8 +1,4 @@
 variable "stagiaires_names" {
-  # default = [
-  #  "stagiaire1",
-  #  "stagiaire2",
-  #]
   type = list(string)
 }
 
@@ -11,7 +7,6 @@ variable "formateurs_names" {
 }
 
 variable "formation_subdomain" {
-  #default = "debug"
   type = string
 }
 
@@ -22,21 +17,17 @@ variable "global_lab_domain" {
 
 variable "ssh_key_content" {
   type = string
-  default = "changeme"
 }
 
 # Domain providers::OVH
 variable "ovh_application_key" {
   type    = string
-  default = "changeme"
 }
 variable "ovh_application_secret" {
   type    = string
-  default = "changeme"
 }
 variable "ovh_consumer_key" {
   type    = string
-  default = "changeme"
 }
 
 
