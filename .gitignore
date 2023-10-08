@@ -18,6 +18,8 @@ ansible-digital_ocean.cache
 terraform/variables.tf
 
 *.retry
-geerlingguy.*
 
 .DS_Store
+geerlingguy.*.
+terraform/crash.log
+.ansible_recipe
