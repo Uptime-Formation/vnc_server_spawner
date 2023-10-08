@@ -48,7 +48,7 @@ resource "hcloud_server" "vnc_servers_formateurs" {
 }
 
 resource "hcloud_server" "guacamole_server" {
-  name        = "guacamole-server.${var.formation_subdomain}"
+  name        = "lab.${var.formation_subdomain}"
   server_type = var.guacamole_server_type
   image       =  local.image.id
   location    = "hel1"
