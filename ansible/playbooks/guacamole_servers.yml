@@ -3,7 +3,7 @@
   # strategy: free
 
   roles:
-    - name: uptime.docker_setup
+    - name: geerlingguy.docker
       vars:
         docker_users:
           - "{{ base_unix_user }}"

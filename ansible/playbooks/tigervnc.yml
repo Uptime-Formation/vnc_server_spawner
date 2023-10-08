@@ -1,0 +1,7 @@
+- hosts: vnc_servers
+  become: yes
+  strategy: free
+
+  roles:
+    - name: uptime.tigervnc_setup
+      tags: ["tigervnc_setup"]
