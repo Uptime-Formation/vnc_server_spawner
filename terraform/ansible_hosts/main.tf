@@ -22,7 +22,7 @@ variable "formation_subdomain" {}
 
 resource "ansible_host" "ansible_vnc_servers" {
   count              = length(var.stagiaires_names)
-  inventory_hostname = "vnc-${element(var.stagiaires_names, count.index)}"
+  inventory_hostname = "${element(var.stagiaires_names, count.index)}"
   groups             = ["all", "scaleway", "vnc_servers", "vnc_servers_stagiaires", "wireguard", "guacamole_infra"]
   vars = {
     ansible_host = element(var.vnc_stagiaires_public_ips, count.index)
@@ -33,7 +33,7 @@ resource "ansible_host" "ansible_vnc_servers" {
 
 resource "ansible_host" "ansible_vnc_servers_formateur" {
   count              = length(var.formateurs_names)
-  inventory_hostname = "vnc-formateur-${element(var.formateurs_names, count.index)}"
+  inventory_hostname = "formateur-${element(var.formateurs_names, count.index)}"
   groups             = ["all", "scaleway", "vnc_servers", "vnc_servers_formateur", "wireguard", "guacamole_infra"]
   vars = {
     ansible_host = element(var.vnc_formateurs_public_ips, count.index)
