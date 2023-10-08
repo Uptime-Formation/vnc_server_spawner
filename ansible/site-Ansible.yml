@@ -1,0 +1,9 @@
+
+
+- import_playbook: playbooks/deb_server_prepare.yml
+- import_playbook: playbooks/xrdp.yml
+- import_playbook: playbooks/customize_xfce_vnc.yml
+- import_playbook: playbooks/k3s.yml
+- import_playbook: playbooks/bootstrap_cluster.yml
+- import_playbook: playbooks/install_guacamole_k8s.yml
+- import_playbook: playbooks/install_scripts.yml
