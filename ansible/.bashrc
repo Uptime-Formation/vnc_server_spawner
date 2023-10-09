@@ -115,6 +115,5 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-eval $(ssh-agent)
-source <(kubectl completion bash)
+
 source <(kubectl completion bash)
