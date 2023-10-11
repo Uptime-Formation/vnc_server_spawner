@@ -37,4 +37,4 @@ variable "hcloud_vnc_server_type" {
 
 variable "hcloud_guacamole_server_type" {
   default = "cx11"
-} #}
+}
