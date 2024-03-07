@@ -77,6 +77,8 @@ services:
   guacd:
     container_name: guacd_compose
     image: guacamole/guacd
+    environment:
+    - GUACD_LOG_LEVEL=debug 
     networks:
       - guacnetwork_compose
     restart: always
