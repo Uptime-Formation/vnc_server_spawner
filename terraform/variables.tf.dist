@@ -1,8 +1,5 @@
 
 variable "formateurs_names" {
-  default = [
-    "hadrien"
-  ]
 }
 
 variable "scaleway_vnc_servers_size" {
