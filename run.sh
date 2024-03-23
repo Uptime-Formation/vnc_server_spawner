@@ -47,6 +47,16 @@ _setup_ansible() {
   ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_VNC}
   cd "$PROJECT_DIR"
 }
+_setup_ansible_guac() {
+  printf "Setup Guac server only using Ansible\\n"
+  printf "##############################################\\n"
+  cd "$ANSIBLE_DIR"
+
+  # ansible-galaxy install -i -r roles/requirements.yml -p roles
+  # ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUAC} $@
+  ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUAC}
+  cd "$PROJECT_DIR"
+}
 
 _reboot_ansible() {
   printf "Reboot infra VPS using Ansible\\n"
@@ -84,6 +94,9 @@ _main() {
   elif [[ "${1:-}" =~ ^ansible[\ setup]?$  ]]
   then
     _setup_ansible
+  elif [[ "${1:-}" =~ ^[ansible\ ]?guac$  ]]
+  then
+    _setup_ansible_guac $@
   elif [[ "${1:-}" =~ ^[ansible\ ]?reboot$  ]]
   then
     _reboot_ansible
