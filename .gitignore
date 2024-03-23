@@ -15,8 +15,6 @@ ansible-digital_ocean.cache
 *.tfvars
 *.tfstate
 *.tfstate.backup
-terraform/variables.tf
-
 *.retry
 
 .DS_Store
