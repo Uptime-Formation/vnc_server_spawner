@@ -61,13 +61,19 @@
 - pip:
     name: docker-compose
 
+# Compose module broken, needs update but ansible modules/collections mgmt is hell
+# - name: Ensure docker-compose guacamole is started
+#   docker_compose:
+#     project_src: "{{ guac_path }}"
+#     restarted: yes
+#     recreate: always
+#     state: present
+#   register: guac_compose
+
 - name: Ensure docker-compose guacamole is started
-  docker_compose:
-    project_src: "{{ guac_path }}"
-    restarted: yes
-    recreate: always
-    state: present
-  register: guac_compose
+  shell:
+    cmd: docker compose up -d --force-recreate
+    chdir: "{{ guac_path }}"
 
 # - name: Check if nginx-proxy is healthy
 #   docker_container_info:

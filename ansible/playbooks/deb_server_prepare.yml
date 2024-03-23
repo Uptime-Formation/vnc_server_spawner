@@ -1,4 +1,10 @@
-- hosts: all
+- hosts: guacamole_servers
+  # strategy: free
+  become: yes
+  roles:
+    - name: uptime.deb_server_prepare
+
+- hosts: vnc_servers
   strategy: free
   become: yes
   roles:
