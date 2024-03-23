@@ -21,11 +21,14 @@
 
 - name: Ensure /.ssh/ folder exists
   file:
-    path: /home/{{ base_unix_user }}/.ssh
-    owner: "{{ base_unix_user }}"
-    group: "{{ base_unix_user }}"
+    path: /home/{{ item }}/.ssh
+    owner: "{{ item }}"
+    group: "{{ item }}"
     state: directory
   tags: ["formation_ansible"]
+  loop:
+  - root
+  - "{{ base_unix_user }}"
 
 - name: Ensure unix user has the stagiaire ssh key
   template:

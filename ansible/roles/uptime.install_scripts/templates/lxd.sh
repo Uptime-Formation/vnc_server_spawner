@@ -5,7 +5,6 @@ set -eux
 cd /tmp
 
 # sudo apt install -y sshpass lxc
-sudo apt install -y lxc
 
 mkdir -p /etc/apt/keyrings/
 curl -fsSL https://pkgs.zabbly.com/key.asc -o /etc/apt/keyrings/zabbly.asc
