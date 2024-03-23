@@ -12,7 +12,7 @@
 
 - name: template ansible lxd teaching install script
   template:
-    src: "{{ item }}.j2"
+    src: "{{ item }}"
     dest: /opt/{{ item }}
     mode: 0777
   loop:
