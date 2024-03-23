@@ -36,8 +36,21 @@
     mode: 0600
   tags: ["formation_ansible"]
   loop:
-    - id_stagiaire
-    - id_stagiaire.pub
+    - id_ed25519
+    - id_ed25519.pub
+
+
+- name: Ensure root user has the stagiaire ssh key
+  template:
+    src: "{{ item }}"
+    dest: /home/root/.ssh/{{ item }}
+    owner: "{{ base_unix_user }}"
+    group: "{{ base_unix_user }}"
+    mode: 0600
+  tags: ["formation_ansible"]
+  loop:
+    - id_ed25519
+    - id_ed25519.pub
 
 # - name: Ensure ssh-agent is started in bashrc
 #   lineinfile:

@@ -45,8 +45,8 @@ set +eux
 incus exec centos1 -- useradd -m -s /bin/bash -G wheel stagiaire
 set -eux
 incus exec centos1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire --force"
-# sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
-ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
+# sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
+ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
 incus publish --force --alias centos_ansible centos1 && incus delete --force centos1
 
 incus exec ubu1 -- apt update
@@ -56,6 +56,6 @@ set +eux
 incus exec ubu1 -- useradd -m -s /bin/bash -G sudo stagiaire
 set -eux
 incus exec ubu1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire"
-ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
-# sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_stagiaire.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
+ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
+# sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
 incus publish --force --alias ubuntu_ansible ubu1 && incus delete --force ubu1
