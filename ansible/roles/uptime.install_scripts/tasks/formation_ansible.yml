@@ -67,11 +67,12 @@
     line: 'export PATH=$PATH:/home/{{ base_unix_user }}/.local/bin'
   tags: ["formation_ansible"]
 
-- name: Ensure unix user is in the incus-admin group
-  user:
-    name: "{{ base_unix_user }}"
-    state: present
-    groups: ["incus-admin"]
-    append: yes
-  notify: Restart vncserver
-  tags: ["formation_ansible", "incus-admin"]
+# FIXME: not installed yet
+# - name: Ensure unix user is in the incus-admin group
+#   user:
+#     name: "{{ base_unix_user }}"
+#     state: present
+#     groups: ["incus-admin"]
+#     append: yes
+#   notify: Restart vncserver
+#   tags: ["formation_ansible", "incus-admin"]
