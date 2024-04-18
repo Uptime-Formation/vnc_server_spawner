@@ -1,5 +1,6 @@
 variable "hcloud_token" {}
 variable "hcloud_ssh_keys" {}
+variable "hcloud_image_name" {}
 
 variable "formation_subdomain" {}
 variable "stagiaires_names" {}
@@ -23,7 +24,7 @@ provider "hcloud" {
 
 resource "hcloud_server" "vnc_servers_stagiaires" {
   count = length(var.stagiaires_names)
-  image = "ubuntu-20.04"
+  image = var.hcloud_image_name
   ssh_keys = var.hcloud_ssh_keys
   name  = "vnc-${element(var.stagiaires_names, count.index)}.${var.formation_subdomain}"
   server_type = var.vnc_server_type

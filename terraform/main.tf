@@ -28,6 +28,8 @@ variable "ovh_consumer_key" {}
 module "servers" {
   source = "./servers_providers/hcloud"
   hcloud_token = var.hcloud_token
+  hcloud_image_name = "ubuntu-22.04"
+  # hcloud_image_name = var.hcloud_image_name
   hcloud_ssh_keys = var.hcloud_ssh_keys
 #   stagiaires_names = var.stagiaires_names
 #   formateurs_names = var.formateurs_names
