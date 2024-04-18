@@ -37,7 +37,7 @@ resource "hcloud_server" "vnc_servers_formateurs" {
   name  = "vnc-formateur-${element(var.formateurs_names, count.index)}.${var.formation_subdomain}"
   server_type = var.vnc_server_type 
 
-  image = "ubuntu-20.04"
+  image = var.hcloud_image_name
   location = "nbg1"
   ssh_keys = var.hcloud_ssh_keys
 #   ssh_keys = ["lenox-main"]
