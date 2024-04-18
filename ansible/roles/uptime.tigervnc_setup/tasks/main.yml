@@ -78,19 +78,20 @@
 #   notify: Restart vncserver
 #   when: vnc_view_passwd_newline is defined
 
-- name: Ensure vnc config exists
-  template:
-    src: vnc.config 
-    dest: /home/{{ vnc_unix_user }}/.vnc/config
-  become: yes
-  become_user: "{{ vnc_unix_user }}"
-  notify: Restart vncserver
-  tags: vnc_config
+# - name: Ensure vnc config exists
+  # template:
+  #   src: vnc.config 
+  #   dest: /home/{{ vnc_unix_user }}/.vnc/config
+  # become: yes
+  # become_user: "{{ vnc_unix_user }}"
+  # notify: Restart vncserver
+  # tags: vnc_config
 
 - name: Ensure xstartup config exists
   template:
     src: xstartup.j2
     dest: /home/{{ vnc_unix_user }}/.vnc/xstartup
+    mode: '0755'
   become: yes
   become_user: "{{ vnc_unix_user }}"
   notify: Restart vncserver
