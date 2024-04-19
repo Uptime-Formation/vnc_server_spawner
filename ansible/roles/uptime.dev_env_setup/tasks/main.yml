@@ -20,6 +20,28 @@
     name: git
     state: "present"
 
+- name: Add Mozilla repository
+  apt_repository:
+    repo: "ppa:mozillateam/ppa"
+    state: present
+
+- name: Remove Firefox snap
+  snap:
+    name: firefox
+    state: absent
+
+- name: Create preferences file for Mozilla Firefox
+  copy:
+    content: |
+      Package: *
+      Pin: release o=LP-PPA-mozillateam
+      Pin-Priority: 1001
+
+      Package: firefox
+      Pin: version 1:1snap1-0ubuntu2
+      Pin-Priority: -1
+    dest: /etc/apt/preferences.d/mozilla-firefox
+
 - name: "Ensure we have firefox {{ firefox_state }}"
   apt:
     name: firefox
