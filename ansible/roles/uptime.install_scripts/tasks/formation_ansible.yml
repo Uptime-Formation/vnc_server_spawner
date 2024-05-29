@@ -137,9 +137,11 @@
 
 
 - name: Init Incus
-  shell: | 
-    cat /opt/lxd_config.yaml | incus admin init --preseed
-
+  shell: 
+    cmd: | 
+      cat /opt/lxd_config.yaml | incus admin init --preseed
+      touch /opt/incus_initialized
+    creates: /opt/incus_initialized
 
 - name: Build lxd centos image
   shell: 
