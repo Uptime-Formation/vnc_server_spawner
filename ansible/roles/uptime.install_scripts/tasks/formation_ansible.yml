@@ -10,6 +10,19 @@
 #     state: "{{ lxd_state }}"
 #   tags: ["formation_ansible"]
 
+- name: initialize git
+  git_config:
+    name: user.name
+    value: "{{ base_unix_user }}"
+    scope: global
+
+- name: initialize git
+  git_config:
+    name: user.email
+    value: "{{ base_unix_user }}@formati.on"
+    scope: global
+
+
 - name: template ansible lxd teaching install script
   template:
     src: "{{ item }}"
@@ -47,8 +60,8 @@
   template:
     src: "{{ item }}"
     dest: /home/root/.ssh/{{ item }}
-    owner: "{{ base_unix_user }}"
-    group: "{{ base_unix_user }}"
+    owner: "root"
+    group: "root"
     mode: 0600
   tags: ["formation_ansible"]
   loop:
