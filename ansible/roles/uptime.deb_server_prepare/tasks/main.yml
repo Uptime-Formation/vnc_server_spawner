@@ -2,6 +2,7 @@
   apt:
     upgrade: "yes"
     update_cache: yes
+    allow_downgrade: yes
   retries: 3
   delay: 30
   register: apt_upgrade
@@ -9,7 +10,7 @@
 
 - name: Fix pip mess idk
   shell: >
-    mv /usr/local/lib/python3.8/dist-packages/cryptography /usr/local/lib/python3.8/dist-packages/cryptography.bkp && pip3 install pip --upgrade && pip3 install docker --upgrade
+    mv /usr/local/lib/python3.8/dist-packages/cryptography /usr/local/lib/python3.8/dist-packages/cryptography.bkp && pip3 install pip --upgrade && pip3 install docker --upgrade && pip3 install pyopenssl --upgrade
   failed_when: false
   # args:
   #   warn: false

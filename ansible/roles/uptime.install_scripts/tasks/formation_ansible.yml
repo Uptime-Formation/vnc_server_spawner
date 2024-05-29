@@ -67,6 +67,9 @@
     line: 'export PATH=$PATH:/home/{{ base_unix_user }}/.local/bin'
   tags: ["formation_ansible"]
 
+# - name: Exec lxd script
+#   shell: bash /opt/lxd.sh
+#   become: yes
 # FIXME: not installed yet
 # - name: Ensure unix user is in the incus-admin group
 #   user:
