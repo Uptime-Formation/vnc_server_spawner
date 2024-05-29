@@ -1,7 +1,7 @@
 vnc_passwd: devops202
 # FIXME: not working
 # vnc_view_passwd: devops101
-vnc_unix_user: formateur
-base_unix_user: formateur
+# vnc_unix_user: formateur
+# base_unix_user: formateur
 passwordless_sudo: true
 # vnc_base_screen_res: 1920x1080

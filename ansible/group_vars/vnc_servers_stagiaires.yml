@@ -1,6 +1,6 @@
 vnc_passwd: devops101
 # FIXME: not working
 # vnc_view_passwd: devops101
-vnc_unix_user: stagiaire
-base_unix_user: stagiaire
+# vnc_unix_user: stagiaire
+# base_unix_user: stagiaire
 passwordless_sudo: true
