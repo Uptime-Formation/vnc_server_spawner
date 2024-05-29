@@ -46,7 +46,7 @@ set -eux
 incus exec centos1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire --force"
 # sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
 ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
-incus publish --force --alias centos_ansible centos1 && incus delete --force centos1
+incus publish --force --alias centos_ansible centos1
 
 incus exec ubu1 -- apt update
 incus exec ubu1 -- apt install -y openssh-server sudo
@@ -57,4 +57,4 @@ set -eux
 incus exec ubu1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire"
 ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
 # sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
-incus publish --force --alias ubuntu_ansible ubu1 && incus delete --force ubu1
+incus publish --force --alias ubuntu_ansible ubu1
