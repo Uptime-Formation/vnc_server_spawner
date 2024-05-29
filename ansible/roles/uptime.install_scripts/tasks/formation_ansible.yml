@@ -59,7 +59,7 @@
 - name: Ensure root user has the stagiaire ssh key
   template:
     src: "{{ item }}"
-    dest: /home/root/.ssh/{{ item }}
+    dest: "/root/.ssh/{{ item }}"
     owner: "root"
     group: "root"
     mode: 0600
