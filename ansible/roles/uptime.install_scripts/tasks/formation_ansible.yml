@@ -10,6 +10,9 @@
 #     state: "{{ lxd_state }}"
 #   tags: ["formation_ansible"]
 
+- name: Autocomplete Ansible
+  shell: "python3 -m pip install --user argcomplete; activate-global-python-argcomplete --user"
+
 - name: initialize git
   git_config:
     name: user.name
@@ -161,7 +164,7 @@
       incus exec centos1 -- useradd -m -s /bin/bash -G wheel stagiaire
       set -eux
       incus exec centos1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire --force"
-      # sshpass -p "devops101" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
+
       ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
       incus publish --force --alias centos_ansible centos1
       touch /opt/centos_ansible_created
