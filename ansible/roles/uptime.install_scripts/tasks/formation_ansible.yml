@@ -10,8 +10,9 @@
 #     state: "{{ lxd_state }}"
 #   tags: ["formation_ansible"]
 
-- name: Autocomplete Ansible
-  shell: "python3 -m pip install --user argcomplete; activate-global-python-argcomplete --user"
+# FIXME: do as {{ base_unix_user }}"
+# - name: Autocomplete Ansible
+#   shell: "python3 -m pip install --user argcomplete; activate-global-python-argcomplete --user"
 
 - name: initialize git
   git_config:
