@@ -106,100 +106,100 @@
 
   # TODO: wait for
 
-- name: Ensure /etc/apt/keyrings directory exists
-  file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: '0755'
+# - name: Ensure /etc/apt/keyrings directory exists
+#   file:
+#     path: /etc/apt/keyrings
+#     state: directory
+#     mode: '0755'
 
-- name: Download Zabbly GPG key
-  ansible.builtin.get_url:
-    url: https://pkgs.zabbly.com/key.asc
-    dest: /etc/apt/keyrings/zabbly.asc
-    mode: '0644'
+# - name: Download Zabbly GPG key
+#   ansible.builtin.get_url:
+#     url: https://pkgs.zabbly.com/key.asc
+#     dest: /etc/apt/keyrings/zabbly.asc
+#     mode: '0644'
 
-- name: Create Zabbly Incus daily sources list
-  ansible.builtin.copy:
-    dest: /etc/apt/sources.list.d/zabbly-incus-daily.sources
-    content: |
-      Enabled: yes
-      Types: deb
-      URIs: https://pkgs.zabbly.com/incus/daily
-      Suites: {{ ansible_facts.lsb.codename }}
-      Components: main
-      Architectures: amd64
-      Signed-By: /etc/apt/keyrings/zabbly.asc
+# - name: Create Zabbly Incus daily sources list
+#   ansible.builtin.copy:
+#     dest: /etc/apt/sources.list.d/zabbly-incus-daily.sources
+#     content: |
+#       Enabled: yes
+#       Types: deb
+#       URIs: https://pkgs.zabbly.com/incus/daily
+#       Suites: {{ ansible_facts.lsb.codename }}
+#       Components: main
+#       Architectures: amd64
+#       Signed-By: /etc/apt/keyrings/zabbly.asc
 
-- name: Update apt package index
-  ansible.builtin.apt:
-    update_cache: yes
+# - name: Update apt package index
+#   ansible.builtin.apt:
+#     update_cache: yes
 
-- name: Install Incus package
-  ansible.builtin.apt:
-    name: incus
-    state: present
+# - name: Install Incus package
+#   ansible.builtin.apt:
+#     name: incus
+#     state: present
 
 
-- name: Init Incus
-  shell: 
-    cmd: | 
-      cat /opt/lxd_config.yaml | incus admin init --preseed
-      touch /opt/incus_initialized
-    creates: /opt/incus_initialized
+# - name: Init Incus
+#   shell: 
+#     cmd: | 
+#       cat /opt/lxd_config.yaml | incus admin init --preseed
+#       touch /opt/incus_initialized
+#     creates: /opt/incus_initialized
 
-- name: Build lxd centos image
-  shell: 
-    cmd: | 
-      set +eux
+# - name: Build lxd centos image
+#   shell: 
+#     cmd: | 
+#       set +eux
 
-      incus launch images:centos/7/amd64 centos1 
-      set -eux
+#       incus launch images:centos/7/amd64 centos1 
+#       set -eux
 
-      sleep 5 # wait for the network to boot in containers  incus exec centos1 -- yum update -y
-      incus exec centos1 -- yum install -y openssh-server sudo
-      incus exec centos1 -- systemctl start sshd
-      incus exec centos1 -- sed -i 's@\(%wheel.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
+#       sleep 5 # wait for the network to boot in containers  incus exec centos1 -- yum update -y
+#       incus exec centos1 -- yum install -y openssh-server sudo
+#       incus exec centos1 -- systemctl start sshd
+#       incus exec centos1 -- sed -i 's@\(%wheel.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
 
-      set +eux
+#       set +eux
 
-      incus exec centos1 -- useradd -m -s /bin/bash -G wheel stagiaire
-      set -eux
-      incus exec centos1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire --force"
+#       incus exec centos1 -- useradd -m -s /bin/bash -G wheel stagiaire
+#       set -eux
+#       incus exec centos1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire --force"
 
-      ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
-      incus publish --force --alias centos_ansible centos1
-      touch /opt/centos_ansible_created
-    creates: /opt/centos_ansible_created
-  become: true
-  tags: ["formation_ansible"]
+#       ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv centos1 | cut -d' ' -f1)
+#       incus publish --force --alias centos_ansible centos1
+#       touch /opt/centos_ansible_created
+#     creates: /opt/centos_ansible_created
+#   become: true
+#   tags: ["formation_ansible"]
   
-- name: Build lxd ubu image
-  shell: 
-    cmd: | 
-      set +eux
+# - name: Build lxd ubu image
+#   shell: 
+#     cmd: | 
+#       set +eux
 
-      incus launch images:ubuntu/focal/amd64 ubu1
-      set -eux
+#       incus launch images:ubuntu/focal/amd64 ubu1
+#       set -eux
 
-      sleep 5 
-      incus exec ubu1 -- apt update
-      incus exec ubu1 -- apt install -y openssh-server sudo
-      incus exec ubu1 -- sed -i 's@\(%sudo.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
-      set +eux
-      incus exec ubu1 -- useradd -m -s /bin/bash -G sudo stagiaire
-      set -eux
-      incus exec ubu1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire"
-      ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
+#       sleep 5 
+#       incus exec ubu1 -- apt update
+#       incus exec ubu1 -- apt install -y openssh-server sudo
+#       incus exec ubu1 -- sed -i 's@\(%sudo.*\)ALL@\1 NOPASSWD: ALL@' /etc/sudoers
+#       set +eux
+#       incus exec ubu1 -- useradd -m -s /bin/bash -G sudo stagiaire
+#       set -eux
+#       incus exec ubu1 -- bash -c "(echo 'devops101'; echo 'devops101') | passwd stagiaire"
+#       ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519.pub stagiaire@$(incus list -c4 --format csv ubu1 | cut -d' ' -f1)
 
-      incus publish --force --alias ubuntu_ansible ubu1
-      touch /opt/ubuntu_ansible_created
-    creates: /opt/ubuntu_ansible_created
+#       incus publish --force --alias ubuntu_ansible ubu1
+#       touch /opt/ubuntu_ansible_created
+#     creates: /opt/ubuntu_ansible_created
 
-- name: Ensure unix user is in the incus-admin group
-  user:
-    name: "{{ base_unix_user }}"
-    state: present
-    groups: ["incus-admin"]
-    append: yes
-  notify: Restart vncserver
-  tags: ["formation_ansible", "incus-admin"]
+# - name: Ensure unix user is in the incus-admin group
+#   user:
+#     name: "{{ base_unix_user }}"
+#     state: present
+#     groups: ["incus-admin"]
+#     append: yes
+#   notify: Restart vncserver
+#   tags: ["formation_ansible", "incus-admin"]
