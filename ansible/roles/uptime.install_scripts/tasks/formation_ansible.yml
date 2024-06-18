@@ -127,7 +127,7 @@
       URIs: https://pkgs.zabbly.com/incus/daily
       Suites: {{ ansible_facts.lsb.codename }}
       Components: main
-      Architectures: {{ ansible_architecture }}
+      Architectures: amd64
       Signed-By: /etc/apt/keyrings/zabbly.asc
 
 - name: Update apt package index
