@@ -58,8 +58,8 @@
 #     recursive: yes
 #     delete: no
 #     times: yes
-- pip:
-    name: docker-compose
+# - pip:
+#     name: docker-compose
 
 # Compose module broken, needs update but ansible modules/collections mgmt is hell
 # - name: Ensure docker-compose guacamole is started
