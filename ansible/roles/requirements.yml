@@ -1,4 +1,6 @@
 roles:
+- name: xanammaning.k3s
+  src: https://github.com/PyratLabs/ansible-role-k3s
 - name: mawalu.wireguard
   src: https://github.com/mawalu/wireguard-private-networking
 collections:
