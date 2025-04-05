@@ -23,3 +23,6 @@ hcloud_token.json
 geerlingguy.*.
 
 .ansible_recipe
+**/venv
+**/*.swp
+.trash
