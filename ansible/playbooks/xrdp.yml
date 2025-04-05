@@ -13,18 +13,18 @@
         create: yes
       tags: ["xrdp"]
 
-    # See URL :
-    - name : add file to avoid the error message on startup
-      copy :
-        content : |-
-            [Allow Colord all Users]
-            Identity=unix-user:*
-            Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
-            ResultAny=no
-            ResultInactive=no
-            ResultActive=yes
-        dest:  /etc/polkit-1/localauthority/50-local.d/ 45-allow-colord.pkla
-      tags: [ "xrdp" ]
+#    # See URL :
+#    - name : add file to avoid the error message on startup
+#      copy :
+#        content : |-
+#            [Allow Colord all Users]
+#            Identity=unix-user:*
+#            Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
+#            ResultAny=no
+#            ResultInactive=no
+#            ResultActive=yes
+#        dest:  /etc/polkit-1/localauthority/50-local.d/ 45-allow-colord.pkla
+#      tags: [ "xrdp" ]
 
     - name: add ssl-cert group
       group:
