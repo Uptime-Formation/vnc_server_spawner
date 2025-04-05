@@ -72,3 +72,11 @@
     owner: "{{ base_unix_user }}"
     group: "{{ base_unix_user }}"
   when: ssh_public_key|bool
+
+# Required for Scaleway
+# K8S API fails due to certificate error when the Floating IP doesn't appear in the /etc/hosts file
+- name: Ensure main ip is in the hosts file
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: '{{ansible_default_ipv4.address}} {{ansible_fqdn}} {{ansible_hostname}}'
+    insertbefore: 'BOF'
