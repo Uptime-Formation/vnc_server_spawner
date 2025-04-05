@@ -4,6 +4,8 @@
     - name: xanmanning.k3s
       tags:
        - k3s_cluster
+      vars:
+        k3s_registration_address: "{{ hostvars[groups['k3s_server'][0]].ansible_host }}"
 
 - hosts: localhost
   tasks:
