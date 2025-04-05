@@ -1,4 +1,4 @@
 - name: reload sshd
   systemd:
-    name: sshd
+    name: ssh
     state: reloaded
