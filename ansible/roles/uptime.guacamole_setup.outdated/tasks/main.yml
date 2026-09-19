@@ -1,3 +1,4 @@
+# @alban: removed on 2026-09-19, replaced with role uptime.install_guacamole_k8s
 - name: Ensure git package is present
   apt:
     name: git
