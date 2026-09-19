@@ -3,6 +3,11 @@ export PACKER_DIR=$PROJECT_DIR/packer
 export TERRAFORM_DIR=$PROJECT_DIR/terraform/
 export ANSIBLE_DIR=$PROJECT_DIR/ansible/
 export ANSIBLE_INVENTORY=$PROJECT_DIR/ansible/terraform-inventory.py
-export ANSIBLE_PLAYBOOK_GUACAMOLE=$PROJECT_DIR/ansible/playbooks/guacamole_servers.yml
-export ANSIBLE_PLAYBOOK_VNC=$PROJECT_DIR/ansible/playbooks/vnc_servers.yml
+export ANSIBLE_PLAYBOOK_GUACAMOLE=$PROJECT_DIR/ansible/playbooks/install_guacamole_k8s.yml
 export ANSIBLE_TF_DIR=$TERRAFORM_DIR
+
+# @alban: retired on 2026-09-19, guacamole_servers.yml/uptime.guacamole_setup
+# (docker-compose) replaced by uptime.install_guacamole_k8s; vnc_servers.yml
+# never existed on disk. Kept here, commented, instead of deleted.
+# export ANSIBLE_PLAYBOOK_GUACAMOLE=$PROJECT_DIR/ansible/playbooks/guacamole_servers.yml
+# export ANSIBLE_PLAYBOOK_VNC=$PROJECT_DIR/ansible/playbooks/vnc_servers.yml

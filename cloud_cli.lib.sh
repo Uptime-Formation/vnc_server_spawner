@@ -17,9 +17,11 @@ panic(){ echo $@; exit 1; }
 
 VERBOSITY="-v"
 
-ANSIBLE_DIR="${APP_PATH}/ansible"
-ANSIBLE_INVENTORY="${ANSIBLE_DIR}/terraform-inventory.py"
-ANSIBLE_PLAYBOOK_GUACAMOLE="${ANSIBLE_DIR}/playbooks/install_guacamole_k8s.yml"
+# ANSIBLE_DIR, ANSIBLE_INVENTORY, ANSIBLE_PLAYBOOK_GUACAMOLE (and other
+# path vars used below, e.g. PROJECT_DIR, TERRAFORM_DIR) are actually
+# defined in ./env_file, sourced from _main() below. That source runs
+# after this point and exports over anything set here, so keep them
+# defined in env_file only to avoid the two silently drifting apart.
 
 # ACTIONS and ACTIONS_HELP
 # --------------
