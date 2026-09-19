@@ -4,8 +4,12 @@ cilium_chart_version: 1.13.0
 
 ingress_nginx_chart_version: 4.15.1
 
-ingress_nginx_chart_values:
-  replicats: 2
+ingress_nginx_chart_values: {}
+# @alban: removed on 2026-09-19, "replicats: 2" was a typo for
+# controller.replicaCount and was silently ignored by Helm (unknown
+# key), so it never actually ran with 2 replicas. Chart default is
+# controller.replicaCount: 1, which is what we've effectively always
+# gotten -- left explicit here since that's fine.
 
 certmanager_chart_version: 1.21.2
 
