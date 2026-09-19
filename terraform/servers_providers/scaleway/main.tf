@@ -11,7 +11,14 @@ provider "scaleway" {
   access_key      = var.scaleway_api_access_key
   secret_key      = var.scaleway_api_secret_key
   organization_id = var.scaleway_orga_id
-  zone            = "fr-par-2"
+  # @alban: was fr-par-2 until 2026-09-19. Packer builds/resolves the
+  # xubuntu image in fr-par-1 (see packer/xubuntu_remote_desktop_server.json
+  # and terraform/secrets.auto.tfvars' scaleway_image_id) -- Scaleway
+  # images are zone-scoped, so a Terraform provider zone that doesn't
+  # match where the image was built means `terraform apply` fails with
+  # "resource instance_image with ID ... is not found" even though the
+  # image genuinely exists, just in the other zone.
+  zone            = "fr-par-1"
   region          = "fr-par"
 }
 
