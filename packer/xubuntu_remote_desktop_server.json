@@ -3,9 +3,9 @@
       {
         "type": "hcloud",
         "token": "{{user `hcloud_token`}}",
-        "image": "ubuntu-22.04",
+        "image": "ubuntu-24.04",
         "location": "hel1",
-        "server_type": "cx31",
+        "server_type": "cx32",
         "ssh_username": "root"
       },
       {
@@ -13,37 +13,31 @@
         "project_id": "{{user `scaleway_orga_id`}}",
         "access_key": "{{user `scaleway_api_access_key`}}",
         "secret_key": "{{user `scaleway_api_secret_key`}}",
-        "image": "ce453858-557c-4f1c-a7a9-70026e67d054",
+        "image": "c953dad8-9b91-44bf-9667-1f5d399d44d8",
         "zone": "fr-par-1",
-        "commercial_type": "DEV1-S",
+        "commercial_type": "DEV1-L",
         "ssh_username": "root"
       }
-
-
     ],
     "provisioners": [
         {
           "inline": [
+            "set -e",
             "export DEBIAN_FRONTEND=noninteractive",
             "apt-get update",
             "apt-get upgrade -y",
-            "apt-get install -yq dialog htop vim git neovim curl apt-transport-https ca-certificates gnupg2",
-            "apt-get install -yq xfce4 xfce4-goodies xrdp",
+            "apt-get install -yq dialog htop vim git neovim curl apt-transport-https ca-certificates gnupg2 snapd firefox",
+            "apt-get install -yq xfce4 xfce4-goodies xrdp python3-pip python3-setuptools ",
             "echo \"xfce4-session\" | tee .xsession",
-            "apt-get install -yq python3-pip python3-setuptools",
-            "apt-get install -yq snapd",
             "sudo mkdir -m 0755 -p /etc/apt/keyrings",
             "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
             "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
-            "apt-get update",
-            "apt-get install -yq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
-            "pip3 install docker",
-            "apt-get install -yq firefox",
+            "echo \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\" > /etc/apt/sources.list.d/vscode.list",
             "curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg",
             "install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/",
-            "echo \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\" > /etc/apt/sources.list.d/vscode.list",
-            "apt-get update",
-            "apt-get install -yq code"
+            "apt update",
+            "apt-get install -yq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin code"
+
           ],
           "type": "shell"
         }

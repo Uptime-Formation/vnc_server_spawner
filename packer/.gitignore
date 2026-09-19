@@ -1,2 +1,3 @@
 ssh_key_hcloud.pem
-variables.json
+variables*.json*
+!variables.json.dist
