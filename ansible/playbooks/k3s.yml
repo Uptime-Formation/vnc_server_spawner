@@ -7,22 +7,20 @@
       vars:
         k3s_registration_address: "{{ hostvars[groups['k3s_server'][0]].ansible_host }}"
         k3s_release_version: "v1.36.4+k3s1"
-        # @alban: added 2026-09-19. The role's memory-cgroup pre-check
-        # (pre_checks_cgroups.yml) greps /proc/cgroups for a "memory"
-        # line reporting enabled -- that's cgroup v1 subsystem
-        # accounting, which is absent by design on a cgroup-v2-only
-        # host even though memory accounting works fine there (verified
-        # "memory" is listed in /sys/fs/cgroup/cgroup.controllers on
-        # guacamole-server). False positive, not a real missing
-        # kernel feature. Dropping "memory" here (role param, outranks
-        # the role's own vars/main.yml) keeps the cpuset check and
-        # every other env pre-check intact, rather than disabling all
-        # of them via k3s_skip_env_checks.
-        k3s_cgroup_subsys:
-          - name: cpuset
-            documentation: |
-              If you are running Alpine Linux, see:
-              https://rancher.com/docs/k3s/latest/en/advanced/#additional-preparation-for-alpine-linux-setup
+        # @alban: added 2026-09-19. The role's cgroup pre-checks
+        # (pre_checks_cgroups.yml) grep /proc/cgroups for each
+        # subsystem's v1-style enabled line -- guacamole-server is
+        # cgroup-v2-only, so /proc/cgroups never reports memory OR
+        # cpuset as enabled there (both were tried and both false-
+        # positive-failed), even though both are genuinely present in
+        # /sys/fs/cgroup/cgroup.controllers. The check method itself
+        # doesn't apply to a v2-only kernel. Empty list (role param,
+        # outranks the role's own vars/main.yml) skips the whole
+        # cgroup pre-check loop, while every other env pre-check
+        # (Ansible/Python/init-system/openrc/packages) stays intact --
+        # narrower than k3s_skip_env_checks, which would disable those
+        # too.
+        k3s_cgroup_subsys: []
 
 - hosts: localhost
   tasks:
