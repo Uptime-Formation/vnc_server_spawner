@@ -19,6 +19,13 @@
   kubernetes.core.helm_repository:
     name: ingress-nginx
     repo_url: "https://kubernetes.github.io/ingress-nginx"
+    # force_update (helm repo add --force-update) re-syncs the local
+    # chart index even if the repo is already registered from a
+    # previous run -- without it, a bumped chart_version pin can fail
+    # with "failed to download ... at version X" even though the
+    # version genuinely exists upstream, because the stale cached
+    # index from months/years ago is still what gets consulted.
+    force_update: true
   tags:
     - ingress_nginx
 
@@ -38,6 +45,8 @@
   kubernetes.core.helm_repository:
     name: cert-manager
     repo_url: "https://charts.jetstack.io"
+    # see the ingress-nginx repo task above for why force_update matters
+    force_update: true
   tags:
     - cert_manager
 

@@ -13,8 +13,18 @@ docker_state: present
 # K8S config
 local_kubeconfig_path: ~/.kube/guac3s.kubeconfig
 
+# Helm chart_version pins below: these WILL go stale (repos prune old
+# chart releases from their index, and installs then fail with
+# "failed to download ... at version X"). Pin exact tested versions
+# (don't use "latest"/semver ranges -- kubernetes.core.helm's
+# chart_version doesn't support ranges anyway, and an untested major
+# jump landing silently mid-bootstrap is worse than a loud failure).
+# Each pin below is dated to when it was last verified against the
+# chart repo. To check for drift before it breaks a run:
+#   curl -s <repo_url>/index.yaml | grep -A2 'name: <chart>' | grep version
 cilium_chart_version: 1.13.0
 
+# verified 2026-09-19 against https://kubernetes.github.io/ingress-nginx/index.yaml
 ingress_nginx_chart_version: 4.15.1
 
 ingress_nginx_chart_values:
@@ -26,6 +36,7 @@ ingress_nginx_chart_values:
       labels:
         svccontroller.k3s.cattle.io/lbpool: server
 
+# verified 2026-09-19 against https://charts.jetstack.io/index.yaml
 certmanager_chart_version: 1.21.2
 
 certmanager_chart_values:
