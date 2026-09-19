@@ -1,41 +1,54 @@
-- name: Copy flavour install shell to disk
-  template:
-    src: flavour.sh.j2
-    dest: /opt/flavour.sh
-    mode: 0550
+#- name: Copy flavour install shell to disk
+#  template:
+#    src: flavour.sh.j2
+#    dest: /opt/flavour.sh
+#    mode: 0750
+#
+#
+#- name: template terraform install script
+#  template:
+#    src: terraform.sh.j2
+#    dest: /opt/terraform.sh
+#    mode: 0750
+#
+#- name: template ansible install script
+#  template:
+#    src: ansible.sh.j2
+#    dest: /opt/ansible.sh
+#    mode: 0750
+#
+#- name: template ansible install script
+#  template:
+#    src: kubernetes.sh.j2
+#    dest: /opt/kubernetes.sh
+#    mode: 0750
+#
+#- name: template ansible lxd teaching install script
+#  template:
+#    src: "{{ item }}.j2"
+#    dest: /opt/{{ item }}
+#    mode: 0750
+#  loop:
+#    - lxd_config.yaml
+#    - lxd.sh
 
-
-- name: template terraform install script
-  template:
-    src: terraform.sh.j2
-    dest: /opt/terraform.sh
-    mode: 0777
-
-- name: template ansible install script
-  template:
-    src: ansible.sh.j2
-    dest: /opt/ansible.sh
-    mode: 0777
-
-- name: template ansible install script
-  template:
-    src: kubernetes.sh.j2
-    dest: /opt/kubernetes.sh
-    mode: 0777
-
-- name: template ansible lxd teaching install script
-  template:
-    src: "{{ item }}.j2"
-    dest: /opt/{{ item }}
-    mode: 0777
-  loop:
-    - lxd_config.yaml
-    - lxd.sh
-
-
-- name: run flavour install shell
-  shell: /opt/flavour.sh
-
-- name: run kubernetes install shell
-  shell: /opt/kubernetes.sh
+#
+#- name: template nvidia install script
+#  template:
+#    src: nvidia.sh.j2
+#    dest: /opt/nvidia.sh
+#    mode: 0750
+#
+#- name: run nvidia install
+#  shell: /opt/nvidia.sh
+#
+#- name: Reboot machine and send a message
+#  ansible.builtin.reboot:
+#    msg: "Rebooting machine in 5 seconds"
+#
+#- name: run flavour install shell
+#  shell: /opt/flavour.sh
+#
+#- name: run kubernetes install shell
+#  shell: /opt/kubernetes.sh
 

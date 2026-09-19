@@ -84,7 +84,7 @@ variable "hcloud_token" {
 }
 variable "hcloud_vnc_server_type" {
   type    = string
-  default = "cx32"
+  default = "cpx31"
 }
 variable "hcloud_guacamole_server_type" {
   default = "cpx21"

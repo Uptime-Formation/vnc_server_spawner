@@ -11,7 +11,7 @@ provider "scaleway" {
   access_key      = var.scaleway_api_access_key
   secret_key      = var.scaleway_api_secret_key
   organization_id = var.scaleway_orga_id
-  zone            = "fr-par-1"
+  zone            = "fr-par-2"
   region          = "fr-par"
 }
 
@@ -38,7 +38,7 @@ resource "scaleway_instance_server" "vnc_servers_stagiaires" {
   name  = "vnc-server-${element(var.stagiaires_names, count.index)}"
   image = local.image.id
   ip_id = element(scaleway_instance_ip.vnc_servers_stagiaires_ips.*.id, count.index)
-  type  = "DEV1-L"
+  type  = var.vnc_server_type
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
@@ -52,7 +52,7 @@ resource "scaleway_instance_server" "vnc_servers_formateurs" {
   name  = "vnc-server-${element(var.formateurs_names, count.index)}"
   image = local.image.id
   ip_id = element(scaleway_instance_ip.vnc_servers_formateurs_ips.*.id, count.index)
-  type  = "DEV1-L"
+  type  = var.vnc_server_type
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }
 
@@ -63,6 +63,6 @@ resource "scaleway_instance_server" "guacamole_server" {
   name  = "guacamole-server"
   image = local.image.id
   ip_id = scaleway_instance_ip.guacamole_server_ip.id
-  type  = "DEV1-L"
+  type  = var.guacamole_server_type
   # scaleway automatically add available ssh keys from the account to every server (no need to do it manually)
 }

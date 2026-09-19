@@ -1,3 +1,105 @@
 # /bin/bash
 
-echo "This is the default flavour file. Update me according to needs."
+# @todo make it work for formaateur too
+
+srv(){
+
+	srv_path="/srv/$1"
+	mkdir -p $srv_path
+	echo $srv_path
+
+}
+
+ollama(){
+
+	docker container ps -f name=ollama | grep -F "ollama/ollama" && docker start ollama && return
+	docker run -d --restart unless-stopped -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+	echo "Let Ollama start"
+	sleep 15
+	docker exec ollama ollama pull minimax-m2:cloud 
+    docker exec ollama ollama pull qwen3-coder:30b 
+    docker exec ollama ollama pull gpt-oss:20b
+
+}
+
+openwebui(){
+
+	docker container ps -f name=open-webui| grep -F "open-webui" && return
+	docker run -d --restart unless-stopped  -p 31434:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
+
+}
+
+
+user=stagiaire
+
+app_dir="/home/${user}/.local/share/applications"
+
+echo $app_dir
+if [ ! -d $app_dir ]; then
+    echo "Folder ${app_dir} doesn't exist! Creating it."
+    mkdir -p $app_dir
+    echo "Created"
+fi
+
+
+pycharm(){
+
+	[[ -e /usr/local/bin/pycharm ]] && return
+	srv_path=$( srv pycharm )
+	cd $srv_path
+	wget https://download-cdn.jetbrains.com/python/pycharm-community-2025.1.2.tar.gz -O pycharm.tgz
+	tar -xzf pycharm.tgz
+	ln -s $srv_path/pycharm-community-2025.1.2/bin/pycharm.sh /usr/local/bin/pycharm
+	echo "[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyCharm Community Edition
+Icon=$srv_path/bin/pycharm.svg
+Exec=\"$srv_path/pycharm-community-2025.1.2/bin/pycharm.sh\" %f
+Comment=Python IDE for Professional Developers
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-pycharm-ce
+StartupNotify=true" | tee $app_dir/pycharm.desktop
+
+}
+
+
+void(){
+
+	[[ -e /usr/local/bin/void ]] && return
+	srv_path=$( srv void )
+	cd $srv_path
+	wget https://github.com/voideditor/binaries/releases/download/1.99.30039/Void-linux-x64-1.99.30039.tar.gz -O void.tgz
+	tar -xzf void.tgz
+	ln -s $srv_path/bin/void /usr/local/bin/void
+
+	echo "[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Void IDE
+Exec=\"$srv_path/bin/void\" %f
+Comment=AI IDE
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=void
+StartupNotify=true" | tee $app_dir/void.desktop
+
+}
+
+vscodium(){
+
+	[[ -e /usr/bin/codium ]] && return
+    sudo wget https://github.com/VSCodium/vscodium/releases/download/1.101.03933/codium_1.101.03933_amd64.deb -O /tmp/codium.deb
+    sudo apt install -y /tmp/codium.deb
+
+}
+
+# This should be a callback action
+chown -R stagiaire:stagiaire /home/stagiaire
+
+ollama
+openwebui
+pycharm
+void
+vscodium
