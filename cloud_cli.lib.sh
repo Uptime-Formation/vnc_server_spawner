@@ -204,29 +204,41 @@ _ansible() {
 
 # Action: ansible_guacamole
 # --------------
-# Runs the full site-K8S.yml playbook limited to the guacamole_infra host
-# (SSH wait, OS prep, xrdp, k3s, cluster bootstrap, then the guacamole k8s
-# manifests). Use ansible_guacamole_app_only to instead run just the
-# guacamole k8s manifest deploy against an already-running node/cluster.
+# Asks whether to run the full site-K8S.yml chain (SSH wait, OS prep,
+# xrdp, k3s, cluster bootstrap, then the guacamole k8s manifests) or
+# just the guacamole app deploy against an already-running node/
+# cluster. Defaults to full, since that's the only way to get a
+# working setup from scratch -- but re-running k3s install/bootstrap
+# on every call is wasteful (and not free) once the cluster is already
+# up, hence the prompt. Use ansible_guacamole_app_only directly to skip
+# the prompt in scripts/non-interactive use.
 #
 # Arguments:
 #   None
 #
 # Returns:
-#   Executes site-K8S.yml limited to the guacamole_infra host.
+#   Executes either site-K8S.yml (limited to guacamole_infra) or just
+#   the guacamole app playbook, per the user's choice.
 ACTIONS+=("ansible_guacamole")
-ACTIONS_HELP+=("Run full Ansible on the Guacamole server")
+ACTIONS_HELP+=("Run Ansible on the Guacamole server (asks: full or app-only)")
 _ansible_guacamole() {
   printf "Setup infra VPS using Ansible\n"
   printf "##############################################\n"
   cd "$ANSIBLE_DIR"
   # Install Ansible dependencies from requirements.yml
   __install_galaxy_deps
-  # bootstrap_cluster.yml and install_guacamole_k8s.yml both run against
-  # `hosts: localhost` (they talk to the cluster via kubeconfig, not SSH),
-  # so localhost must be included in the limit or those plays are
-  # silently skipped even though the rest of the run looks fine.
-  ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit "guacamole_infra:localhost" $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
+
+  read -i Y -e -p "Run the FULL provisioning chain (SSH wait, OS prep, xrdp, k3s, bootstrap) instead of just redeploying the Guacamole app? [Y/n] "
+  REPLY=${REPLY:-Y}
+  if [[ "N" == ${REPLY^^} ]]; then
+    ansible-playbook -i ${ANSIBLE_INVENTORY} ${ANSIBLE_PLAYBOOK_GUACAMOLE} $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
+  else
+    # bootstrap_cluster.yml and install_guacamole_k8s.yml both run against
+    # `hosts: localhost` (they talk to the cluster via kubeconfig, not SSH),
+    # so localhost must be included in the limit or those plays are
+    # silently skipped even though the rest of the run looks fine.
+    ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit "guacamole_infra:localhost" $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
+  fi
   cd "$PROJECT_DIR"
 }
 
