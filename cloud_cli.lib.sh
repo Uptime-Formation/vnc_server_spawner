@@ -204,16 +204,42 @@ _ansible() {
 
 # Action: ansible_guacamole
 # --------------
-# Runs Ansible on the Guacamole server only.
+# Runs the full site-K8S.yml playbook limited to the guacamole_infra host
+# (SSH wait, OS prep, xrdp, k3s, cluster bootstrap, then the guacamole k8s
+# manifests). Use ansible_guacamole_app_only to instead run just the
+# guacamole k8s manifest deploy against an already-running node/cluster.
 #
 # Arguments:
 #   None
 #
 # Returns:
-#   Executes the Ansible playbook for Guacamole.
+#   Executes site-K8S.yml limited to the guacamole_infra host.
 ACTIONS+=("ansible_guacamole")
-ACTIONS_HELP+=("Run Ansible on the Guacamole server only")
+ACTIONS_HELP+=("Run full Ansible on the Guacamole server")
 _ansible_guacamole() {
+  printf "Setup infra VPS using Ansible\n"
+  printf "##############################################\n"
+  cd "$ANSIBLE_DIR"
+  # Install Ansible dependencies from requirements.yml
+  __install_galaxy_deps
+  ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit guacamole_infra $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
+  cd "$PROJECT_DIR"
+}
+
+# Action: ansible_guacamole_app_only
+# --------------
+# Runs just the guacamole k8s manifest deploy (ANSIBLE_PLAYBOOK_GUACAMOLE),
+# skipping OS/xrdp/k3s provisioning. Use this to redeploy/update the
+# Guacamole app on a node/cluster that's already up.
+#
+# Arguments:
+#   None
+#
+# Returns:
+#   Executes the guacamole app-only Ansible playbook.
+ACTIONS+=("ansible_guacamole_app_only")
+ACTIONS_HELP+=("Run only the Guacamole k8s app deploy (no server provisioning)")
+_ansible_guacamole_app_only() {
   printf "Setup infra VPS using Ansible\n"
   printf "##############################################\n"
   cd "$ANSIBLE_DIR"
