@@ -222,7 +222,11 @@ _ansible_guacamole() {
   cd "$ANSIBLE_DIR"
   # Install Ansible dependencies from requirements.yml
   __install_galaxy_deps
-  ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit guacamole_infra $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
+  # bootstrap_cluster.yml and install_guacamole_k8s.yml both run against
+  # `hosts: localhost` (they talk to the cluster via kubeconfig, not SSH),
+  # so localhost must be included in the limit or those plays are
+  # silently skipped even though the rest of the run looks fine.
+  ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit "guacamole_infra:localhost" $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
   cd "$PROJECT_DIR"
 }
 
