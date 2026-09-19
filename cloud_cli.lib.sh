@@ -217,7 +217,7 @@ _ansible() {
 #   None
 #
 # Returns:
-#   Executes either site-K8S.yml (limited to guacamole_infra) or just
+#   Executes either site-K8S.yml (limited to guacamole_servers) or just
 #   guacamole_app.yml, per the user's choice.
 ACTIONS+=("ansible_guacamole")
 ACTIONS_HELP+=("Run Ansible on the Guacamole server (asks: full or app-only)")
@@ -238,7 +238,14 @@ _ansible_guacamole() {
     # `hosts: localhost` (they talk to the cluster via kubeconfig, not SSH),
     # so localhost must be included in the limit or those plays are
     # silently skipped even though the rest of the run looks fine.
-    ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit "guacamole_infra:localhost" $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
+    #
+    # NOTE: guacamole_infra is NOT "the guacamole host" -- per
+    # terraform/ansible_hosts/main.tf it's applied to every VNC server
+    # too (it just carries the shared infra_subdomain var used to build
+    # the kubeconfig path), so limiting to it matches all servers, not
+    # just the guacamole node. guacamole_servers is the group that's
+    # actually scoped to just the guacamole/k3s server resource.
+    ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/site-K8S.yml" --limit "guacamole_servers:localhost" $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
   fi
   cd "$PROJECT_DIR"
 }
