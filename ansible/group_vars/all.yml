@@ -32,15 +32,20 @@ ingress_nginx_chart_values:
   # controller.replicaCount that Helm silently ignored (unknown key) --
   # never actually set 2 replicas. Chart default (1) is fine.
   controller:
-    # @alban: added 2026-09-19. Without controller.extraArgs set at all,
-    # the chart's controller-role.yaml template does
-    # `ne (index .Values.controller.extraArgs "update-status") "false"`,
-    # which errors with "incompatible types for comparison" when
-    # extraArgs isn't present in the values kubernetes.core.helm passes
-    # through. Explicit {} matches the chart's own documented default
-    # and keeps `index` returning "" instead of nil. Known chart gotcha,
-    # see https://github.com/kubernetes/ingress-nginx/issues/10833.
-    extraArgs: {}
+    # @alban: added 2026-09-19, corrected same day. The chart's
+    # controller-role.yaml does
+    # `ne (index .Values.controller.extraArgs "update-status") "false"`.
+    # `index` on a missing map key returns Go's nil (not ""), whether
+    # extraArgs itself is absent OR present-but-empty ({} doesn't help,
+    # my first attempt at this was wrong) -- `ne nil "false"` then
+    # errors with "incompatible types for comparison" either way. The
+    # only real fix is to set update-status explicitly as a string.
+    # "true" matches the controller's actual default behavior (it does
+    # update Ingress .status) -- this isn't a behavior change, just
+    # making the value explicit so the comparison has a real string on
+    # both sides. See https://github.com/kubernetes/ingress-nginx/issues/10833.
+    extraArgs:
+      update-status: "true"
     service:
       labels:
         svccontroller.k3s.cattle.io/lbpool: server
