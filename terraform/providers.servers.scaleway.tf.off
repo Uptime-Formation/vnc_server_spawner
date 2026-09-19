@@ -10,6 +10,7 @@ module "servers" {
   scaleway_image_id       = var.scaleway_image_id
   scaleway_image_name     = var.scaleway_image_name
   scaleway_orga_id        = var.scaleway_orga_id
+  scaleway_zone           = var.scaleway_zone
 
   ssh_key_content         = var.ssh_key_content
   stagiaires_names        = var.stagiaires_names

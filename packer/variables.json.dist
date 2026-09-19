@@ -3,10 +3,12 @@
   "global_lab_domain": "",
   "digitalocean_token": "",
   "hcloud_token": "",
+  "hcloud_location": "hel1",
   "scaleway_api_access_key": "",
   "scaleway_api_secret_key": "",
   "scaleway_orga_id": "",
   "scaleway_project_id": "",
+  "scaleway_zone": "fr-par-1",
   "ssh_key_content": "",
   "hcloud_image_id": ""
 }

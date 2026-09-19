@@ -10,6 +10,7 @@ module "servers" {
   hcloud_image_id         = var.hcloud_image_id
   hcloud_image_name       = var.hcloud_image_name
   hcloud_token            = var.hcloud_token
+  hcloud_location         = var.hcloud_location
 
   ssh_key_content         = var.ssh_key_content
   stagiaires_names        = var.stagiaires_names

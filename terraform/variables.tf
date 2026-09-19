@@ -68,6 +68,14 @@ variable "scaleway_image_id" {
   type = string
   default = ""
 }
+variable "scaleway_zone" {
+  # @alban: shared with Packer (packer/xubuntu_remote_desktop_server.json's
+  # {{user `scaleway_zone`}}, via terraform/secrets.auto.tfvars ->
+  # packer/variables.json) so image builds and the Terraform provider
+  # zone can't drift apart -- Scaleway images are zone-scoped.
+  type    = string
+  default = "fr-par-1"
+}
 variable "scaleway_vnc_server_type" {
   type    = string
   default = "DEV1-L"
@@ -97,4 +105,12 @@ variable "hcloud_image_name" {
 variable "hcloud_image_id" {
   type = string
   default = ""
+}
+variable "hcloud_location" {
+  # @alban: shared with Packer (packer/xubuntu_remote_desktop_server.json's
+  # {{user `hcloud_location`}}, via terraform/secrets.auto.tfvars ->
+  # packer/variables.json) so image builds and the Terraform servers
+  # can't drift apart on location, same treatment as scaleway_zone.
+  type    = string
+  default = "hel1"
 }

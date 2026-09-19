@@ -8,4 +8,5 @@ variable "vnc_server_type" {}
 variable "hcloud_image_id" {}
 variable "hcloud_image_name" {}
 variable "hcloud_token" {}
+variable "hcloud_location" {}
 

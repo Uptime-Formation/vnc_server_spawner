@@ -12,4 +12,5 @@ variable "scaleway_api_access_key" {}
 variable "scaleway_orga_id" {}
 variable "scaleway_image_name" {}
 variable "scaleway_image_id" {}
+variable "scaleway_zone" {}
 

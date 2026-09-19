@@ -4,7 +4,7 @@
         "type": "hcloud",
         "token": "{{user `hcloud_token`}}",
         "image": "ubuntu-24.04",
-        "location": "hel1",
+        "location": "{{user `hcloud_location`}}",
         "server_type": "cx32",
         "ssh_username": "root"
       },
@@ -14,7 +14,7 @@
         "access_key": "{{user `scaleway_api_access_key`}}",
         "secret_key": "{{user `scaleway_api_secret_key`}}",
         "image": "c953dad8-9b91-44bf-9667-1f5d399d44d8",
-        "zone": "fr-par-1",
+        "zone": "{{user `scaleway_zone`}}",
         "commercial_type": "DEV1-L",
         "ssh_username": "root"
       }
