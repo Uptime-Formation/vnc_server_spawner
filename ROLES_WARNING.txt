@@ -1,0 +1,44 @@
+WARNING: local patches applied to vendored Galaxy roles
+========================================================
+
+The following files inside ansible/roles/ are vendored (installed via
+`ansible-galaxy role install -r requirements.yml`) but have been
+LOCALLY PATCHED to work around upstream bugs. Re-running the galaxy
+install for these roles with --force (or deleting/reinstalling the
+role directory) WILL SILENTLY DISCARD these patches.
+
+Do not run `ansible-galaxy role install -r requirements.yml --force`
+for the roles below until the upstream bug is confirmed fixed. If you
+do need to reinstall, re-apply the patch (or check upstream first) and
+remove that role's entry below.
+
+--------------------------------------------------------------------
+Role: xanmanning.k3s
+File: ansible/roles/xanmanning.k3s/vars/main.yml (line ~151)
+Patched: 2026-09-19
+
+Upstream bug: `k3s_ensure_directories_exist`'s "Private registry config
+file" entry chains `| dirname` after `default(omit)`:
+
+    path: "{{ (k3s_runtime_config['private-registry'] | default(omit)) | dirname }}"
+
+When k3s_runtime_config has no 'private-registry' key (the common
+case, and ours), default(omit) produces Ansible's internal _OmitType
+sentinel, which the dirname filter then chokes on:
+
+    [ERROR]: The filter plugin 'ansible.builtin.dirname' failed:
+    expected str, bytes or os.PathLike object, not _OmitType
+
+Fixed locally by routing through default('') first so dirname always
+receives a real string, then omitting the item if empty:
+
+    path: "{{ (k3s_runtime_config['private-registry'] | default('') | dirname) or omit }}"
+
+--------------------------------------------------------------------
+Also relevant: ansible/ansible.cfg has `allow_broken_conditionals = true`
+set to work around a separate, still-unfixed upstream bug in this same
+role (ensure_downloads.yml's `when: k3s_release_version | regex_search(...)`
+returns None on no match, which newer ansible-core rejects as a
+non-boolean conditional). That one doesn't need a role patch, just the
+cfg flag, but it's the same "vendored role hasn't caught up with newer
+ansible-core" story.

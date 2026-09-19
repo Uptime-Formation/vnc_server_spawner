@@ -148,7 +148,14 @@ k3s_ensure_directories_exist:
   - name: Default local storage path
     path: "{{ k3s_runtime_config['default-local-storage-path'] | default(omit) }}"
   - name: Private registry config file
-    path: "{{ (k3s_runtime_config['private-registry'] | default(omit)) | dirname }}"
+    # @alban: patched on 2026-09-19 (local override, see ROLES_WARNING.txt).
+    # Upstream chains `| dirname` after `default(omit)`, which crashes with
+    # "expected str, bytes or os.PathLike object, not _OmitType" whenever
+    # private-registry isn't set (the common case). Route through
+    # default('') first so dirname always gets a real string, then omit
+    # the whole item if the result is empty.
+    # path: "{{ (k3s_runtime_config['private-registry'] | default(omit)) | dirname }}"
+    path: "{{ (k3s_runtime_config['private-registry'] | default('') | dirname) or omit }}"
 
 # Config items that should not appear in k3s_server or k3s_agent
 k3s_config_exclude:

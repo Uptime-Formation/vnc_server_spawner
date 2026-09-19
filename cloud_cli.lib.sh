@@ -313,16 +313,33 @@ _recreate() {
 # --------------
 # Installs Ansible collections and roles from requirements.yml.
 #
+# Some vendored roles under ansible/roles/ have been locally patched to
+# work around upstream bugs (see ROLES_WARNING.txt at the repo root).
+# Re-running `ansible-galaxy role install` (e.g. with --force, or after
+# deleting the role dir) would silently overwrite those patches. As long
+# as ROLES_WARNING.txt exists, skip the role install entirely and just
+# warn -- install roles manually (and re-apply/verify the patches
+# against ROLES_WARNING.txt) once you've confirmed it's safe.
+#
 # Arguments:
 #   None
 #
 # Returns:
 #   Executes ansible-galaxy commands to install dependencies.
 __install_galaxy_deps(){
-    # Install Ansible collections from requirements.yml
+  # Install Ansible collections from requirements.yml (unaffected by the
+  # role patches below, safe to always run)
   ansible-galaxy collection install -i -r roles/requirements.yml
-  # Install Ansible roles from requirements.yml
-  ansible-galaxy role install -i -r roles/requirements.yml
+  if [[ -f "${APP_PATH}/ROLES_WARNING.txt" ]]; then
+    printf "##############################################\n"
+    cat "${APP_PATH}/ROLES_WARNING.txt"
+    printf "##############################################\n"
+    printf "SKIPPING ansible-galaxy role install -- patched roles present.\n"
+    printf "Run it manually once you've read ROLES_WARNING.txt above.\n"
+  else
+    # Install Ansible roles from requirements.yml
+    ansible-galaxy role install -i -r roles/requirements.yml
+  fi
 }
 
 # Function: _convert_hcl_to_json
