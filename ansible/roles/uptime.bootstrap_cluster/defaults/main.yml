@@ -2,12 +2,12 @@ local_kubeconfig_path: ~/.kube/guac3s.kubeconfig
 
 cilium_chart_version: 1.13.0
 
-ingress_nginx_chart_version: 4.1.4
+ingress_nginx_chart_version: 4.15.1
 
 ingress_nginx_chart_values:
   replicats: 2
 
-certmanager_chart_version: 1.9.1
+certmanager_chart_version: 1.21.2
 
 certmanager_chart_values:
   installCRDs: true
