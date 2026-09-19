@@ -205,20 +205,21 @@ _ansible() {
 # Action: ansible_guacamole
 # --------------
 # Asks whether to run the full site-K8S.yml chain (SSH wait, OS prep,
-# xrdp, k3s, cluster bootstrap, then the guacamole k8s manifests) or
-# just the guacamole app deploy against an already-running node/
-# cluster. Defaults to full, since that's the only way to get a
-# working setup from scratch -- but re-running k3s install/bootstrap
-# on every call is wasteful (and not free) once the cluster is already
-# up, hence the prompt. Use ansible_guacamole_app_only directly to skip
-# the prompt in scripts/non-interactive use.
+# xrdp, k3s install, then the guacamole service) or just the guacamole
+# service (ingress-nginx, cert-manager, ClusterIssuer, then the
+# guacamole app manifests -- see playbooks/guacamole_app.yml) against
+# an already-provisioned node/cluster. Defaults to full, since that's
+# the only way to get a working setup from scratch -- but re-running
+# k3s install on every call is wasteful (and not free) once the node
+# is already up, hence the prompt. Use ansible_guacamole_app_only
+# directly to skip the prompt in scripts/non-interactive use.
 #
 # Arguments:
 #   None
 #
 # Returns:
 #   Executes either site-K8S.yml (limited to guacamole_infra) or just
-#   the guacamole app playbook, per the user's choice.
+#   guacamole_app.yml, per the user's choice.
 ACTIONS+=("ansible_guacamole")
 ACTIONS_HELP+=("Run Ansible on the Guacamole server (asks: full or app-only)")
 _ansible_guacamole() {
@@ -244,9 +245,11 @@ _ansible_guacamole() {
 
 # Action: ansible_guacamole_app_only
 # --------------
-# Runs just the guacamole k8s manifest deploy (ANSIBLE_PLAYBOOK_GUACAMOLE),
-# skipping OS/xrdp/k3s provisioning. Use this to redeploy/update the
-# Guacamole app on a node/cluster that's already up.
+# Runs the guacamole service end to end (ingress-nginx, cert-manager,
+# ClusterIssuer, then the guacamole app manifests -- playbooks/
+# guacamole_app.yml, via ANSIBLE_PLAYBOOK_GUACAMOLE), skipping
+# OS/xrdp/k3s provisioning. Use this to (re)deploy the whole service
+# on a node/cluster that's already up, without re-running k3s install.
 #
 # Arguments:
 #   None
@@ -254,7 +257,7 @@ _ansible_guacamole() {
 # Returns:
 #   Executes the guacamole app-only Ansible playbook.
 ACTIONS+=("ansible_guacamole_app_only")
-ACTIONS_HELP+=("Run only the Guacamole k8s app deploy (no server provisioning)")
+ACTIONS_HELP+=("Run only the Guacamole service (ingress/cert-manager/app, no server provisioning)")
 _ansible_guacamole_app_only() {
   printf "Setup infra VPS using Ansible\n"
   printf "##############################################\n"

@@ -3,7 +3,7 @@ export PACKER_DIR=$PROJECT_DIR/packer
 export TERRAFORM_DIR=$PROJECT_DIR/terraform/
 export ANSIBLE_DIR=$PROJECT_DIR/ansible/
 export ANSIBLE_INVENTORY=$PROJECT_DIR/ansible/terraform-inventory.py
-export ANSIBLE_PLAYBOOK_GUACAMOLE=$PROJECT_DIR/ansible/playbooks/install_guacamole_k8s.yml
+export ANSIBLE_PLAYBOOK_GUACAMOLE=$PROJECT_DIR/ansible/playbooks/guacamole_app.yml
 export ANSIBLE_TF_DIR=$TERRAFORM_DIR
 
 # @alban: retired on 2026-09-19, guacamole_servers.yml/uptime.guacamole_setup

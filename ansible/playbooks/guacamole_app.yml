@@ -1,0 +1,8 @@
+# Brings up the full Guacamole service (ingress-nginx, cert-manager,
+# ClusterIssuer, then the guacamole app manifests) against an
+# already-provisioned k3s node/cluster, without the node-level
+# provisioning steps (SSH wait, OS prep, xrdp, k3s install) that
+# site-K8S.yml also does. Run those separately first if the node
+# itself isn't up yet -- see ansible_guacamole in cloud_cli.lib.sh.
+- import_playbook: bootstrap_cluster.yml
+- import_playbook: install_guacamole_k8s.yml
