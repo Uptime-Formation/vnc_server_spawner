@@ -26,3 +26,4 @@ geerlingguy.*.
 **/venv
 **/*.swp
 .trash
+TODO.local.md
