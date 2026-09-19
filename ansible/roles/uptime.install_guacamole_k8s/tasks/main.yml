@@ -19,7 +19,7 @@
     kubeconfig: "{{ local_kubeconfig_path }}"
     state: present
     namespace: guacamole
-    definition: "{{ lookup('template', '{{ item }}') | from_yaml }}"
+    definition: "{{ lookup('template', item) | from_yaml }}"
   with_fileglob:
     - "guacamole/*.yaml.j2"
   tags:
