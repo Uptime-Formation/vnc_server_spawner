@@ -1,2 +1,7 @@
 ansible
 passlib
+# Required by the kubernetes.core Ansible collection (uptime.bootstrap_cluster,
+# uptime.install_guacamole_k8s), per its own requirements.txt.
+kubernetes>=24.2.0
+requests-oauthlib
+jsonpatch
