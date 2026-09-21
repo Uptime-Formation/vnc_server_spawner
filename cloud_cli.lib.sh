@@ -271,28 +271,6 @@ _ansible_vnc() {
   cd "$PROJECT_DIR"
 }
 
-# Action: ansible_quiz
-# --------------
-# Installs/updates the formations-quiz CLI (albancrommer.formations_quiz
-# role) on the stagiaire VNC servers only.
-#
-# Arguments:
-#   None
-#
-# Returns:
-#   Executes playbooks/install_quiz.yml limited to vnc_servers_stagiaires.
-ACTIONS+=("ansible_quiz")
-ACTIONS_HELP+=("Install/update the formations-quiz CLI on stagiaire VNCs")
-_ansible_quiz() {
-  printf "Setup infra VPS using Ansible\n"
-  printf "##############################################\n"
-  cd "$ANSIBLE_DIR"
-  # Install Ansible dependencies from requirements.yml
-  __install_galaxy_deps
-  ansible-playbook -i ${ANSIBLE_INVENTORY} "${ANSIBLE_DIR}/playbooks/install_quiz.yml" $VERBOSITY -e servers_provider=$(_get_valid_resource_type_provider servers)
-  cd "$PROJECT_DIR"
-}
-
 # Action: destroy
 # --------------
 # Destroys Terraform resources.
