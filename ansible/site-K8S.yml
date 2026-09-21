@@ -13,3 +13,4 @@
 - import_playbook: playbooks/k3s.yml
 - import_playbook: playbooks/guacamole_app.yml
 - import_playbook: playbooks/install_scripts.yml
+- import_playbook: playbooks/install_quiz.yml
