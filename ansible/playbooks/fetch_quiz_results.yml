@@ -25,10 +25,18 @@
   become: true
   vars:
     fetch_results_dest: "{{ hostvars['localhost'].fetch_results_dest }}"
-  roles:
-    - role: albancrommer.formations_quiz
-      tasks_from: noop.yml
   tasks:
+    # @alban: fixed 2026-09-21. `tasks_from:` under the play-level
+    # `roles:` keyword is silently ignored by ansible-core -- it always
+    # runs tasks/main.yml (the real install) regardless of tasks_from,
+    # a known upstream bug (ansible/ansible#85876). That meant this
+    # "just fetch results" playbook was installing/updating the quiz
+    # CLI on every run. import_role does respect tasks_from correctly.
+    - name: Pull in role defaults (formations_quiz_results_dir etc.) without installing
+      ansible.builtin.import_role:
+        name: albancrommer.formations_quiz
+        tasks_from: noop.yml
+
     - name: Find result files on this host
       ansible.builtin.find:
         paths: "{{ formations_quiz_results_dir }}"
