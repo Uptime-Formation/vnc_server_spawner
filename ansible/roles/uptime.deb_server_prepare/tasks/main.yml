@@ -60,6 +60,24 @@
     line: "PasswordAuthentication {{ allow_passwd_ssh_connection }}"
   notify: reload sshd
 
+# @alban: retired on 2026-09-21. Scaleway/Ubuntu cloud images ship
+# /etc/ssh/sshd_config.d/60-cloudimg-settings.conf, which forces
+# "PasswordAuthentication no" -- sshd_config.d drop-ins are Included
+# near the top of the main sshd_config and win over the
+# PasswordAuthentication line set above, so password SSH stayed
+# blocked regardless of allow_passwd_ssh_connection. Renamed out of
+# the way instead of deleted so it's still there if needed.
+- name: Check if the cloudimg sshd drop-in exists
+  stat:
+    path: /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
+  register: cloudimg_sshd_dropin
+
+- name: Disable the cloudimg sshd drop-in overriding PasswordAuthentication
+  command:
+    cmd: mv /etc/ssh/sshd_config.d/60-cloudimg-settings.conf /etc/ssh/sshd_config.d/60-cloudimg-settings.conf.disabled-by-ansible
+  when: cloudimg_sshd_dropin.stat.exists
+  notify: reload sshd
+
 - name: Ensure user .ssh folder present
   file:
     state: directory
