@@ -83,3 +83,48 @@ You will be asked to select the providers you want to use.
 With Ansible installed and an inventory configured:
 `ansible-playbook -i $INVENTORY_PATH site.yml`
 
+Running a single playbook (or limiting to one host) directly, bypassing
+`cloud_cli.sh`:
+
+```bash
+cd ansible
+export ANSIBLE_TF_DIR=$(pwd)/../terraform
+ansible-playbook -i terraform-inventory.py playbooks/<playbook>.yml [--limit <hostname>]
+```
+
+`ANSIBLE_TF_DIR` is required so `terraform-inventory.py` can find your
+Terraform state — it's normally exported by `env_file`, which
+`cloud_cli.sh` sources for you, but that only happens when going through
+`cloud_cli.sh`.
+
+## Quiz CLI (formations-quiz)
+
+`ansible/roles/albancrommer.formations_quiz` installs the `quiz` CLI on
+student servers (`vnc_servers_stagiaires`), and two playbooks drive it:
+
+- `playbooks/install_quiz.yml` — install/update the CLI on every student
+  server (already wired into `site-K8S.yml`).
+- `playbooks/fetch_quiz_results.yml` — after a training session, pull every
+  student's quiz result files into a fresh local temp directory (one
+  subfolder per host), then prints the exact `qcompile <tmp_dir>` command
+  to run next.
+
+```bash
+cd ansible
+export ANSIBLE_TF_DIR=$(pwd)/../terraform
+ansible-playbook -i terraform-inventory.py playbooks/fetch_quiz_results.yml
+```
+
+`qcompile` merges the fetched result files into one CSV report (one row
+per attempt). It is **not** part of this repo — it's a separate CLI
+installed from the
+[quiz-cli](https://github.com/albancrommer/formations-quiz) project, on
+your own machine:
+
+```bash
+git clone https://github.com/albancrommer/formations-quiz
+cd formations-quiz
+pip install -e .
+qcompile <tmp_dir> [--out report.csv]
+```
+
