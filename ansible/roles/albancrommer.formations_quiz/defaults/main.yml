@@ -1,0 +1,17 @@
+---
+# GitHub repo releases are published from: https://github.com/albancrommer/formations-quiz/releases
+formations_quiz_github_repo: albancrommer/formations-quiz
+
+# "latest" resolves the newest release automatically; pin a tag (e.g. "v0.1.1")
+# to install a specific version instead.
+formations_quiz_version: latest
+
+formations_quiz_asset_name: quiz-cli-deploy.tar.gz
+
+formations_quiz_install_dir: /opt/quiz-cli
+formations_quiz_bin_dir: /usr/local/bin
+
+# Where quiz1/quiz2/... write their results. Left as a variable on purpose:
+# do not hardcode a path here that belongs to a specific deployment.
+formations_quiz_results_dir: "/home/{{ formations_quiz_student_user }}/quiz-results"
+formations_quiz_student_user: stagiaire

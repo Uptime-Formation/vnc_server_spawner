@@ -1,0 +1,49 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  # Resolve the same defaults the role itself uses, so host_vars overrides
+  # set in molecule.yml (e.g. formations_quiz_student_user) still win.
+  roles:
+    - role: albancrommer.formations_quiz
+      tasks_from: noop.yml
+  tasks:
+    - name: Check quiz wrapper exists and is executable
+      ansible.builtin.stat:
+        path: "{{ formations_quiz_bin_dir }}/quiz"
+      register: quiz_stat
+
+    - name: Assert quiz is installed and executable
+      ansible.builtin.assert:
+        that:
+          - quiz_stat.stat.exists
+          - quiz_stat.stat.executable
+
+    - name: Run quiz with no flags, picking the first quiz from the list (K8s Bases - Apres-midi)
+      ansible.builtin.shell:
+        cmd: "printf '1\\nB\\nC\\nB\\nB\\nC\\nB\\n' | {{ formations_quiz_bin_dir }}/quiz"
+      register: quiz_run
+      changed_when: false
+
+    - name: Assert the picker listed multiple quizzes
+      ansible.builtin.assert:
+        that:
+          - "'Quiz disponibles' in quiz_run.stdout"
+          - "'K8s Bases' in quiz_run.stdout"
+          - "'K8s Dev' in quiz_run.stdout"
+
+    - name: Assert quiz produced a score
+      ansible.builtin.assert:
+        that:
+          - "'Score :' in quiz_run.stdout"
+
+    - name: Check a result file was written
+      ansible.builtin.find:
+        paths: "{{ formations_quiz_results_dir }}"
+        patterns: "*.yaml"
+      register: result_files
+
+    - name: Assert at least one result file exists
+      ansible.builtin.assert:
+        that:
+          - result_files.matched > 0

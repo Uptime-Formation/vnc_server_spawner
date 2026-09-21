@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  role_name: formations_quiz
+  namespace: albancrommer
+  author: Alban Crommer
+  description: Installs the formations-quiz CLI (quiz1/quiz2/...) from GitHub Releases
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions: [jammy, noble]
+    - name: Debian
+      versions: [bullseye, bookworm]
+  galaxy_tags:
+    - education
+    - training
+
+dependencies: []

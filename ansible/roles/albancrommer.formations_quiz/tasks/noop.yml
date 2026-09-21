@@ -1,0 +1,6 @@
+---
+# Included by molecule/default/verify.yml to pull in this role's
+# defaults/main.yml at normal (low) precedence, without re-running the
+# install. host_vars overrides (e.g. formations_quiz_student_user in
+# molecule.yml) still take precedence over these defaults, matching how
+# converge.yml resolved them.

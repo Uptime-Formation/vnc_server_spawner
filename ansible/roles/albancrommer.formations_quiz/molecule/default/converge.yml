@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+    - name: Create the student user referenced by results dir ownership
+      ansible.builtin.user:
+        name: "{{ formations_quiz_student_user }}"
+        state: present
+
+    - name: Include albancrommer.formations_quiz
+      ansible.builtin.include_role:
+        name: albancrommer.formations_quiz

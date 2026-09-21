@@ -1,0 +1,6 @@
+- hosts: vnc_servers_stagiaires
+  become: yes
+
+  roles:
+    - name: albancrommer.formations_quiz
+      tags: ["install_quiz"]

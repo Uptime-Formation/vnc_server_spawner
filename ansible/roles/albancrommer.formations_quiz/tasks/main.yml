@@ -1,0 +1,72 @@
+---
+- name: Resolve release download URL from GitHub Releases
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/{{ formations_quiz_github_repo }}/releases/{{ 'latest' if formations_quiz_version == 'latest' else 'tags/' + formations_quiz_version }}"
+    return_content: true
+  register: formations_quiz_release
+  run_once: true
+  delegate_to: localhost
+  become: false
+
+- name: Determine release asset URL
+  ansible.builtin.set_fact:
+    formations_quiz_asset_url: "{{ (formations_quiz_release.json.assets | selectattr('name', 'equalto', formations_quiz_asset_name) | first).browser_download_url }}"
+    formations_quiz_resolved_tag: "{{ formations_quiz_release.json.tag_name }}"
+
+- name: Check currently installed version
+  ansible.builtin.slurp:
+    src: "{{ formations_quiz_install_dir }}/RELEASE_TAG"
+  register: formations_quiz_installed_tag_raw
+  failed_when: false
+
+- name: Record whether the target version is already installed
+  ansible.builtin.set_fact:
+    formations_quiz_already_installed: >-
+      {{ formations_quiz_installed_tag_raw.content is defined and
+         (formations_quiz_installed_tag_raw.content | b64decode | trim) == formations_quiz_resolved_tag }}
+
+- name: Install the release
+  when: not formations_quiz_already_installed
+  block:
+    - name: Create a working directory for the release archive
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: formations-quiz
+      register: formations_quiz_tmpdir
+      changed_when: false
+
+    - name: Download the release tarball
+      ansible.builtin.get_url:
+        url: "{{ formations_quiz_asset_url }}"
+        dest: "{{ formations_quiz_tmpdir.path }}/{{ formations_quiz_asset_name }}"
+        mode: "0644"
+
+    - name: Extract the release tarball
+      ansible.builtin.unarchive:
+        src: "{{ formations_quiz_tmpdir.path }}/{{ formations_quiz_asset_name }}"
+        dest: "{{ formations_quiz_tmpdir.path }}"
+        remote_src: true
+
+    - name: Run install.sh
+      ansible.builtin.command:
+        cmd: ./install.sh
+        chdir: "{{ formations_quiz_tmpdir.path }}"
+      environment:
+        INSTALL_DIR: "{{ formations_quiz_install_dir }}"
+        BIN_DIR: "{{ formations_quiz_bin_dir }}"
+        RESULTS_DIR: "{{ formations_quiz_results_dir }}"
+        STUDENT_USER: "{{ formations_quiz_student_user }}"
+      register: formations_quiz_install
+      changed_when: "'Installation terminee' in formations_quiz_install.stdout"
+
+    - name: Record the installed version
+      ansible.builtin.copy:
+        content: "{{ formations_quiz_resolved_tag }}\n"
+        dest: "{{ formations_quiz_install_dir }}/RELEASE_TAG"
+        mode: "0644"
+
+    - name: Clean up the working directory
+      ansible.builtin.file:
+        path: "{{ formations_quiz_tmpdir.path }}"
+        state: absent
+      changed_when: false
