@@ -1,0 +1,54 @@
+---
+# Pulls quiz result files off every student VPS into a fresh local temp
+# directory, one subfolder per host. Run after training, then compile
+# with `qcompile <the printed tmp_dir>`.
+#
+# Usage (from ansible/, with ANSIBLE_TF_DIR exported):
+#   ansible-playbook -i terraform-inventory.py playbooks/fetch_quiz_results.yml
+
+- name: Create a local temp directory to receive results
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: mktemp -d
+      ansible.builtin.command: mktemp -d -t formations-quiz-results-XXXXXX
+      register: fetch_results_tmpdir
+      changed_when: false
+
+    - name: Share the temp dir path with the other play
+      ansible.builtin.set_fact:
+        fetch_results_dest: "{{ fetch_results_tmpdir.stdout }}"
+
+- name: Fetch quiz results from student VPS
+  hosts: vnc_servers_stagiaires
+  become: true
+  vars:
+    fetch_results_dest: "{{ hostvars['localhost'].fetch_results_dest }}"
+  roles:
+    - role: albancrommer.formations_quiz
+      tasks_from: noop.yml
+  tasks:
+    - name: Find result files on this host
+      ansible.builtin.find:
+        paths: "{{ formations_quiz_results_dir }}"
+        patterns: "*.yaml"
+      register: found_results
+
+    - name: Fetch each result file to <tmp_dir>/<hostname>/
+      ansible.builtin.fetch:
+        src: "{{ item.path }}"
+        dest: "{{ fetch_results_dest }}/{{ inventory_hostname }}/"
+        flat: true
+      loop: "{{ found_results.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"
+
+- name: Report where the results landed
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Print the compile command
+      ansible.builtin.debug:
+        msg: "run qcompile {{ hostvars['localhost'].fetch_results_dest }}"
