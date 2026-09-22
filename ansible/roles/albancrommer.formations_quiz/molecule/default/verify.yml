@@ -19,9 +19,9 @@
           - quiz_stat.stat.exists
           - quiz_stat.stat.executable
 
-    - name: Run quiz with no flags, picking the first quiz from the list (K8s Bases - Apres-midi)
+    - name: Run quiz with no flags, picking the first quiz from the list (K8s Bases - Matin)
       ansible.builtin.shell:
-        cmd: "printf '1\\nB\\nC\\nB\\nB\\nC\\nB\\n' | {{ formations_quiz_bin_dir }}/quiz"
+        cmd: "printf '1\\nB\\nB\\nB\\nA\\nB\\nB\\n' | {{ formations_quiz_bin_dir }}/quiz"
       register: quiz_run
       changed_when: false
 
