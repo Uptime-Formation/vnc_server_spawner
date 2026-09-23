@@ -3,6 +3,8 @@ roles:
   src: https://github.com/PyratLabs/ansible-role-k3s
 - name: mawalu.wireguard
   src: https://github.com/mawalu/wireguard-private-networking
+- name: albancrommer.formations_quiz
+  src: https://github.com/albancrommer/formations-quiz/releases/download/v0.9.0/albancrommer.formations_quiz-0.9.0.tar.gz
 collections:
 - name: kubernetes.core
   type: galaxy
