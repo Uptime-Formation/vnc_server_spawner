@@ -12,6 +12,30 @@ for the roles below until the upstream bug is confirmed fixed. If you
 do need to reinstall, re-apply the patch (or check upstream first) and
 remove that role's entry below.
 
+To install/upgrade a SINGLE role from roles/requirements.yml (e.g. to
+bump albancrommer.formations_quiz to a new release) without touching
+the patched roles below, do NOT run the plain `-r requirements.yml`
+install -- it installs everything in that file. Instead:
+
+    cd ansible/roles
+    cat > /tmp/single-role.yml <<'EOF'
+    roles:
+      - name: <role_name>            # must match the name: in requirements.yml
+        src: <src_from_requirements.yml>
+    EOF
+    ansible-galaxy role install -r /tmp/single-role.yml -p . --force
+
+`-r` requires the file to end in .yml/.yaml (a heredoc piped to
+/dev/stdin will be rejected), and `name:` matters: installing straight
+from a bare tarball URL (no requirements file, no name:) lets
+ansible-galaxy derive the install directory from the tarball's own
+internal layout instead of the name you want -- e.g. installing
+albancrommer.formations_quiz's v0.9.0 tarball without a requirements
+file landed at ansible/roles/albancrommer.formations_quiz-0.9.0/
+instead of ansible/roles/albancrommer.formations_quiz/, breaking every
+playbook/role reference to it. Only a requirements file lets you pin
+the install directory name explicitly.
+
 --------------------------------------------------------------------
 Role: xanmanning.k3s
 File: ansible/roles/xanmanning.k3s/vars/main.yml (line ~151)
